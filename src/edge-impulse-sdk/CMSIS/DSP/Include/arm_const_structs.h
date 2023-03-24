@@ -4,13 +4,13 @@
  * Description:  Constant structs that are initialized for user convenience.
  *               For example, some can be given as arguments to the arm_cfft_f32() function.
  *
- * @version  V1.10.0
- * @date     08 July 2021
+ * $Date:        27. January 2017
+ * $Revision:    V.1.5.1
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2017 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *

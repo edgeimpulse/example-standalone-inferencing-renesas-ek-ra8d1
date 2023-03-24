@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * Copyright (C) 2010-2020 Arm Limited or its affiliates. All rights reserved.
  *
@@ -21,8 +23,8 @@
  * Title:        arm_convolve_HWC_q7_basic.c
  * Description:	 Q7 version of convolution
  *
- * $Date:        20. July 2021
- * $Revision:    V.1.1.1
+ * $Date:        09. October 2020
+ * $Revision:    V.1.0.1
  *
  * Target Processor:  Cortex-M cores
  *
@@ -88,7 +90,7 @@ arm_status arm_convolve_HWC_q7_basic(const q7_t *Im_in,
                                      q7_t *bufferB)
 {
     (void)bufferB;
-#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_DSP)
     /* Run the following code for Cortex-M4 and Cortex-M7 */
 
     int16_t i_out_y, i_out_x, i_ker_y, i_ker_x;
@@ -182,7 +184,7 @@ arm_status arm_convolve_HWC_q7_basic(const q7_t *Im_in,
     }
 #else
     /* Run the following code as reference implementation for Cortex-M0 and Cortex-M3 */
-    (void)bufferA;
+
     int i, j, k, l, m, n;
     int conv_out;
     int in_row, in_col;
@@ -225,3 +227,5 @@ arm_status arm_convolve_HWC_q7_basic(const q7_t *Im_in,
 /**
  * @} end of NNConv group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

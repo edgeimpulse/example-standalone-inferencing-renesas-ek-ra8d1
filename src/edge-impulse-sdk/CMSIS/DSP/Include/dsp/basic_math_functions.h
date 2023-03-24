@@ -1,9 +1,8 @@
 /******************************************************************************
  * @file     basic_math_functions.h
  * @brief    Public header file for CMSIS DSP Library
- * @version  V1.10.0
- * @date     08 July 2021
- * Target Processor: Cortex-M and Cortex-A cores
+ * @version  V1.9.0
+ * @date     20. July 2020
  ******************************************************************************/
 /*
  * Copyright (c) 2010-2020 Arm Limited or its affiliates. All rights reserved.
@@ -100,21 +99,6 @@ extern "C"
 
 
 
-/**
- * @brief Floating-point vector multiplication.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
-void arm_mult_f64(
-const float64_t * pSrcA,
-const float64_t * pSrcB,
-	  float64_t * pDst,
-	  uint32_t blockSize);
-
-
-
  /**
    * @brief Floating-point vector addition.
    * @param[in]  pSrcA      points to the first input vector
@@ -127,21 +111,6 @@ const float64_t * pSrcB,
   const float32_t * pSrcB,
         float32_t * pDst,
         uint32_t blockSize);
-
-
-
-/**
-  * @brief Floating-point vector addition.
-  * @param[in]  pSrcA      points to the first input vector
-  * @param[in]  pSrcB      points to the second input vector
-  * @param[out] pDst       points to the output vector
-  * @param[in]  blockSize  number of samples in each vector
-  */
- void arm_add_f64(
- const float64_t * pSrcA,
- const float64_t * pSrcB,
-	   float64_t * pDst,
-	   uint32_t blockSize);
 
 
 
@@ -203,21 +172,6 @@ const float64_t * pSrcB,
 
 
   /**
-   * @brief Floating-point vector subtraction.
-   * @param[in]  pSrcA      points to the first input vector
-   * @param[in]  pSrcB      points to the second input vector
-   * @param[out] pDst       points to the output vector
-   * @param[in]  blockSize  number of samples in each vector
-   */
-  void arm_sub_f64(
-  const float64_t * pSrcA,
-  const float64_t * pSrcB,
-        float64_t * pDst,
-        uint32_t blockSize);
-
-
-
-  /**
    * @brief Q7 vector subtraction.
    * @param[in]  pSrcA      points to the first input vector
    * @param[in]  pSrcB      points to the second input vector
@@ -270,21 +224,6 @@ const float64_t * pSrcB,
   const float32_t * pSrc,
         float32_t scale,
         float32_t * pDst,
-        uint32_t blockSize);
-
-
-
-  /**
-   * @brief Multiplies a floating-point vector by a scalar.
-   * @param[in]  pSrc       points to the input vector
-   * @param[in]  scale      scale factor to be applied
-   * @param[out] pDst       points to the output vector
-   * @param[in]  blockSize  number of samples in the vector
-   */
-  void arm_scale_f64(
-  const float64_t * pSrc,
-        float64_t scale,
-        float64_t * pDst,
         uint32_t blockSize);
 
 
@@ -362,18 +301,6 @@ const float64_t * pSrcB,
 
 
 
-/**
- * @brief Floating-point vector absolute value.
- * @param[in]  pSrc       points to the input buffer
- * @param[out] pDst       points to the output buffer
- * @param[in]  blockSize  number of samples in each vector
- */
-void arm_abs_f64(
-const float64_t * pSrc,
-	  float64_t * pDst,
-	  uint32_t blockSize);
-
-
 
   /**
    * @brief Q15 vector absolute value.
@@ -411,21 +338,6 @@ const float64_t * pSrc,
   const float32_t * pSrcB,
         uint32_t blockSize,
         float32_t * result);
-
-
-
-/**
- * @brief Dot product of floating-point vectors.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[in]  blockSize  number of samples in each vector
- * @param[out] result     output result returned here
- */
-void arm_dot_prod_f64(
-const float64_t * pSrcA,
-const float64_t * pSrcB,
-	  uint32_t blockSize,
-	  float64_t * result);
 
 
 
@@ -513,21 +425,6 @@ const float64_t * pSrcB,
         uint32_t blockSize);
 
 
-/**
- * @brief  Adds a constant offset to a floating-point vector.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  offset     is the offset to be added
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
-void arm_offset_f64(
-const float64_t * pSrc,
-	  float64_t offset,
-	  float64_t * pDst,
-	  uint32_t blockSize);
-
-
-
   /**
    * @brief  Adds a constant offset to a floating-point vector.
    * @param[in]  pSrc       points to the input vector
@@ -595,20 +492,6 @@ const float64_t * pSrc,
   const float32_t * pSrc,
         float32_t * pDst,
         uint32_t blockSize);
-
-
-
-/**
- * @brief  Negates the elements of a floating-point vector.
- * @param[in]  pSrc       points to the input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
-void arm_negate_f64(
-const float64_t * pSrc,
-	  float64_t * pDst,
-	  uint32_t blockSize);
-
 
 
   /**

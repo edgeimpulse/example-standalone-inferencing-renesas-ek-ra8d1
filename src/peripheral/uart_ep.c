@@ -87,15 +87,11 @@ fsp_err_t uart_initialize(void)
  *  @retval      FSP_ERR_TRANSFER_ABORTED   Upon event failure
  *  @retval      Any Other Error code apart from FSP_SUCCESS,  Unsuccessful write operation
  ****************************************************************************************************************/
-fsp_err_t uart_print_user_msg(uint8_t *p_msg)
+fsp_err_t uart_print_user_msg(uint8_t *p_msg, uint16_t msg_len)
 {
     fsp_err_t err   = FSP_SUCCESS;
-    uint8_t msg_len = RESET_VALUE;
     volatile uint32_t local_timeout = (DATA_LENGTH * UINT16_MAX);   /* could happen optimization */
     char *p_temp_ptr = (char *)p_msg;
-
-    /* Calculate length of message received */
-    msg_len = ((uint8_t)(strlen(p_temp_ptr)));
 
     /* Reset callback capture variable */
     g_uart_event = RESET_VALUE;

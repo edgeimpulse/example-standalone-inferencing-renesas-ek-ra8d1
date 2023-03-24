@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_scale_f16.c
  * Description:  Multiplies a floating-point vector by a scalar
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        18. March 2019
+ * $Revision:    V1.6.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -141,13 +143,13 @@ void arm_scale_f16(
     /* C = A * scale */
 
     /* Scale input and store result in destination buffer. */
-    *pDst++ = (_Float16)(*pSrc++) * (_Float16)scale;
+    *pDst++ = (*pSrc++) * scale;
 
-    *pDst++ = (_Float16)(*pSrc++) * (_Float16)scale;
+    *pDst++ = (*pSrc++) * scale;
 
-    *pDst++ = (_Float16)(*pSrc++) * (_Float16)scale;
+    *pDst++ = (*pSrc++) * scale;
 
-    *pDst++ = (_Float16)(*pSrc++) * (_Float16)scale;
+    *pDst++ = (*pSrc++) * scale;
 
     /* Decrement loop counter */
     blkCnt--;
@@ -168,7 +170,7 @@ void arm_scale_f16(
     /* C = A * scale */
 
     /* Scale input and store result in destination buffer. */
-    *pDst++ = (_Float16)(*pSrc++) * (_Float16)scale;
+    *pDst++ = (*pSrc++) * scale;
 
     /* Decrement loop counter */
     blkCnt--;
@@ -181,3 +183,5 @@ void arm_scale_f16(
 /**
   @} end of BasicScale group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

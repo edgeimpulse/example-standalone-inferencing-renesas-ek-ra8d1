@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_fast_f32.c
  * Description:  RFFT & RIFFT Floating point process function
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        18. March 2019
+ * $Revision:    V1.6.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -471,7 +473,7 @@ void merge_rfft_f32(
                    of the symmetry properties of the FFT and have a speed advantage over complex
                    algorithms of the same length.
   @par
-                   The Fast RFFT algorithm relays on the mixed radix CFFT that save processor usage.
+                   The Fast RFFT algorith relays on the mixed radix CFFT that save processor usage.
   @par
                    The real length N forward FFT of a sequence is computed using the steps shown below.
   @par
@@ -601,3 +603,5 @@ void arm_rfft_fast_f32(
 /**
 * @} end of RealFFT group
 */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

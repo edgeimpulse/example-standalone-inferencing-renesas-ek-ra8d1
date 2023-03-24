@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_cfft_init_f16.c
  * Description:  Initialization function for cfft f16 instance
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        07. January 2020
+ * $Revision:    V1.7.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -56,7 +58,7 @@
 
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_fft.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_fft.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_mve_tables_f16.h"
 
 arm_status arm_cfft_radix4by2_rearrange_twiddles_f16(arm_cfft_instance_f16 *S, int twidCoefModifier)
@@ -361,3 +363,5 @@ arm_status arm_cfft_init_f16(
 /**
   @} end of ComplexFFT group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

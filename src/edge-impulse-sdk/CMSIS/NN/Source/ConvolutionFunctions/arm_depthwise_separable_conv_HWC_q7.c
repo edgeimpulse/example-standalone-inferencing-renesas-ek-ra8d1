@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * Copyright (C) 2010-2021 Arm Limited or its affiliates. All rights reserved.
  *
@@ -21,8 +23,8 @@
  * Title:        arm_depthwise_separable_conv_HWC_q7.c
  * Description:  Q7 depthwise separable convolution function
  *
- * $Date:        July 20, 2021
- * $Revision:    V.1.1.2
+ * $Date:        January 26, 2021
+ * $Revision:    V.1.0.2
  *
  * Target Processor:  Cortex-M cores
  *
@@ -96,7 +98,7 @@ arm_status arm_depthwise_separable_conv_HWC_q7(const q7_t *Im_in,
                                                q7_t *bufferB)
 {
     (void)bufferB;
-#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_DSP)
     /* Run the following code for Cortex-M4 and Cortex-M7 */
 
     int16_t i_out_y, i_out_x;
@@ -420,3 +422,5 @@ arm_status arm_depthwise_separable_conv_HWC_q7(const q7_t *Im_in,
 /**
  * @} end of NNConv group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

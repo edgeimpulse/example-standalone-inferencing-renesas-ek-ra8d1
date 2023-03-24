@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * Copyright (C) 2010-2021 Arm Limited or its affiliates. All rights reserved.
  *
@@ -21,8 +23,8 @@
  * Title:        arm_convolve_HWC_q15_fast.c
  * Description:  Fast Q15 version of convolution
  *
- * $Date:        July 20, 2021
- * $Revision:    V.1.1.2
+ * $Date:        January 26, 2021
+ * $Revision:    V.1.0.2
  *
  * Target Processor:  Cortex-M cores
  *
@@ -77,7 +79,7 @@
  *
  * ch_im_in is multiple of 2
  *
- * ch_im_out is multiple of 2
+ * ch_im_out is multipe of 2
  *
  */
 
@@ -103,7 +105,7 @@ arm_status arm_convolve_HWC_q15_fast_nonsquare(const q15_t *Im_in,
                                                q7_t *bufferB)
 {
     (void)bufferB;
-#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_DSP)
     int16_t i_out_y, i_out_x, i_ker_y, i_ker_x;
 
     q15_t *pBuffer = bufferA;
@@ -268,3 +270,5 @@ arm_status arm_convolve_HWC_q15_fast_nonsquare(const q15_t *Im_in,
 /**
  * @} end of NNConv group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

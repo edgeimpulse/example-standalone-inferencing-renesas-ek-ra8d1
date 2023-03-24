@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_mult_f32.c
  * Description:  Floating-point matrix multiplication
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        18. March 2019
+ * $Revision:    V1.6.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -27,10 +29,6 @@
  */
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/dsp/matrix_functions.h"
-
-#if defined(ARM_MATH_NEON)
-#define GROUPOFROWS 8
-#endif
 
 /**
  * @ingroup groupMatrix
@@ -58,7 +56,14 @@
  * @{
  */
 
-
+/**
+ * @brief Floating-point matrix multiplication.
+ * @param[in]       *pSrcA points to the first input matrix structure
+ * @param[in]       *pSrcB points to the second input matrix structure
+ * @param[out]      *pDst points to output matrix structure
+ * @return     		The function returns either
+ * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+ */
 
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 
@@ -255,14 +260,6 @@ __STATIC_INLINE arm_status arm_mat_mult_f32_4x4_mve(
 }
 
 
-/**
- * @brief Floating-point matrix multiplication.
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return          The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
- */
 arm_status arm_mat_mult_f32(
   const arm_matrix_instance_f32 * pSrcA,
   const arm_matrix_instance_f32 * pSrcB,
@@ -517,14 +514,9 @@ arm_status arm_mat_mult_f32(
 #else
 
 #if defined(ARM_MATH_NEON)
-/**
- * @brief Floating-point matrix multiplication.
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return          The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
- */
+
+#define GROUPOFROWS 8
+
 arm_status arm_mat_mult_f32(
   const arm_matrix_instance_f32 * pSrcA,
   const arm_matrix_instance_f32 * pSrcB,
@@ -853,14 +845,6 @@ arm_status arm_mat_mult_f32(
   return (status);
 }
 #else
-/**
- * @brief Floating-point matrix multiplication.
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return          The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
- */
 arm_status arm_mat_mult_f32(
   const arm_matrix_instance_f32 * pSrcA,
   const arm_matrix_instance_f32 * pSrcB,
@@ -999,3 +983,5 @@ arm_status arm_mat_mult_f32(
 /**
  * @} end of MatrixMult group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

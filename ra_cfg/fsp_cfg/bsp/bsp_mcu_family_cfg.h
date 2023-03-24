@@ -125,7 +125,7 @@
 #ifndef BSP_TZ_CFG_MSSAR
 #define BSP_TZ_CFG_MSSAR (\
             (((RA_NOT_DEFINED > 0) ? 0U : 1U) << 0) /* ELC */ | \
-            (((RA_NOT_DEFINED > 0) ? 0U : 1U) << 1) /* DTC_DMAC */ | \
+            (((1 > 0) ? 0U : 1U) << 1) /* DTC_DMAC */ | \
             0xfffffffc) /* Unused */
 #endif
 
@@ -231,10 +231,10 @@
 #endif
 
 /* Set DTCSTSAR if the Secure program uses the DTC. */
-#if RA_NOT_DEFINED == RA_NOT_DEFINED
-#define BSP_TZ_CFG_DTC_USED (0U)
+#if 1 == RA_NOT_DEFINED
+ #define BSP_TZ_CFG_DTC_USED (0U)
 #else
- #define BSP_TZ_CFG_DTC_USED (1U)
+#define BSP_TZ_CFG_DTC_USED (1U)
 #endif
 
 /* Security attribution of FLWT and FCKMHZ registers. */

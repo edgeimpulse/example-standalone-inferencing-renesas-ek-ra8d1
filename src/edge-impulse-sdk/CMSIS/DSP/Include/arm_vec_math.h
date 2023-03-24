@@ -1,12 +1,11 @@
 /******************************************************************************
  * @file     arm_vec_math.h
  * @brief    Public header file for CMSIS DSP Library
- * @version  V1.10.0
- * @date     08 July 2021
- * Target Processor: Cortex-M and Cortex-A cores
+ * @version  V1.7.0
+ * @date     15. October 2019
  ******************************************************************************/
 /*
- * Copyright (c) 2010-2021 Arm Limited or its affiliates. All rights reserved.
+ * Copyright (c) 2010-2019 Arm Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -28,7 +27,7 @@
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_math_types.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_common_tables.h"
-#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
+#include "arm_helium_utils.h"
 
 #ifdef   __cplusplus
 extern "C"

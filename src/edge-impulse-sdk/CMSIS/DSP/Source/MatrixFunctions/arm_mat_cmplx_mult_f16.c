@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_cmplx_mult_f16.c
  * Description:  Floating-point matrix multiplication
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        18. March 2020
+ * $Revision:    V1.6.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -67,7 +69,7 @@ __STATIC_FORCEINLINE arm_status arm_mat_cmplx_mult_f16_2x2_mve(
     const arm_matrix_instance_f16 * pSrcB,
     arm_matrix_instance_f16 * pDst)
 {
-#define MATRIX_DIM 2
+    const uint16_t   MATRIX_DIM = 2;
     float16_t const *pInB = pSrcB->pData;  /* input data matrix pointer B */
     float16_t       *pInA = pSrcA->pData;  /* input data matrix pointer A */
     float16_t       *pOut = pDst->pData;   /* output data matrix pointer */
@@ -131,7 +133,6 @@ __STATIC_FORCEINLINE arm_status arm_mat_cmplx_mult_f16_2x2_mve(
      * Return to application
      */
     return (ARM_MATH_SUCCESS);
-#undef MATRIX_DIM
 }
 
 
@@ -141,7 +142,7 @@ __STATIC_FORCEINLINE arm_status arm_mat_cmplx_mult_f16_3x3_mve(
     const arm_matrix_instance_f16 * pSrcB,
     arm_matrix_instance_f16 * pDst)
 {
-#define MATRIX_DIM 3
+    const uint16_t   MATRIX_DIM = 3;
     float16_t const *pInB = pSrcB->pData;  /* input data matrix pointer B */
     float16_t       *pInA = pSrcA->pData;  /* input data matrix pointer A */
     float16_t       *pOut = pDst->pData;   /* output data matrix pointer */
@@ -227,7 +228,6 @@ __STATIC_FORCEINLINE arm_status arm_mat_cmplx_mult_f16_3x3_mve(
      * Return to application
      */
     return (ARM_MATH_SUCCESS);
-#undef MATRIX_DIM
 }
 
 
@@ -238,7 +238,7 @@ __STATIC_FORCEINLINE arm_status arm_mat_cmplx_mult_f16_4x4_mve(
     const arm_matrix_instance_f16 * pSrcB,
     arm_matrix_instance_f16 * pDst)
 {
-#define MATRIX_DIM 4
+    const uint16_t   MATRIX_DIM = 4;
     float16_t const *pInB = pSrcB->pData;  /* input data matrix pointer B */
     float16_t       *pInA = pSrcA->pData;  /* input data matrix pointer A */
     float16_t       *pOut = pDst->pData;   /* output data matrix pointer */
@@ -373,7 +373,6 @@ __STATIC_FORCEINLINE arm_status arm_mat_cmplx_mult_f16_4x4_mve(
      * Return to application
      */
     return (ARM_MATH_SUCCESS);
-#undef MATRIX_DIM
 }
 
 
@@ -418,8 +417,8 @@ if ((pSrcA->numCols != pSrcB->numRows) ||
     {
         if (numRowsA == 1)
         {
-            pOut[0] = (_Float16)pInA[0] * (_Float16)pInB[0] - (_Float16)pInA[1] * (_Float16)pInB[1];
-            pOut[1] = (_Float16)pInA[0] * (_Float16)pInB[1] + (_Float16)pInA[1] * (_Float16)pInB[0];
+            pOut[0] = pInA[0] * pInB[0] - pInA[1] * pInB[1];
+            pOut[1] = pInA[0] * pInB[1] + pInA[1] * pInB[0];
             return (ARM_MATH_SUCCESS);
         }
         else if  (numRowsA == 2)
@@ -933,3 +932,5 @@ arm_status arm_mat_cmplx_mult_f16(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

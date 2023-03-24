@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_fast_init_f32.c
  * Description:  Split Radix Decimation in Frequency CFFT Floating point processing function
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        18. March 2019
+ * $Revision:    V1.6.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -49,7 +51,7 @@
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
  */
 
-static arm_status arm_rfft_32_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
+arm_status arm_rfft_32_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
 
   arm_status status;
 
@@ -79,7 +81,7 @@ static arm_status arm_rfft_32_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
  */
 
-static arm_status arm_rfft_64_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
+arm_status arm_rfft_64_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
 
   arm_status status;
 
@@ -109,7 +111,7 @@ static arm_status arm_rfft_64_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
  */
 
-static arm_status arm_rfft_128_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
+arm_status arm_rfft_128_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
 
   arm_status status;
 
@@ -139,7 +141,7 @@ static arm_status arm_rfft_128_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 */
 
-static arm_status arm_rfft_256_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
+arm_status arm_rfft_256_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
 
   arm_status status;
 
@@ -169,7 +171,7 @@ static arm_status arm_rfft_256_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
  */
 
-static arm_status arm_rfft_512_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
+arm_status arm_rfft_512_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
 
   arm_status status;
 
@@ -198,7 +200,7 @@ static arm_status arm_rfft_512_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
  */
 
-static arm_status arm_rfft_1024_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
+arm_status arm_rfft_1024_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
 
   arm_status status;
 
@@ -226,7 +228,7 @@ static arm_status arm_rfft_1024_fast_init_f32( arm_rfft_fast_instance_f32 * S ) 
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
  */
-static arm_status arm_rfft_2048_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
+arm_status arm_rfft_2048_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
 
   arm_status status;
 
@@ -255,7 +257,7 @@ static arm_status arm_rfft_2048_fast_init_f32( arm_rfft_fast_instance_f32 * S ) 
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
  */
 
-static arm_status arm_rfft_4096_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
+arm_status arm_rfft_4096_fast_init_f32( arm_rfft_fast_instance_f32 * S ) {
 
   arm_status status;
 
@@ -339,7 +341,7 @@ arm_status arm_rfft_fast_init_f32(
     break;
 #endif
   default:
-    break;
+    return ARM_MATH_ARGUMENT_ERROR;
   }
 
   if( ! fptr ) return ARM_MATH_ARGUMENT_ERROR;
@@ -350,3 +352,5 @@ arm_status arm_rfft_fast_init_f32(
 /**
   @} end of RealFFT group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

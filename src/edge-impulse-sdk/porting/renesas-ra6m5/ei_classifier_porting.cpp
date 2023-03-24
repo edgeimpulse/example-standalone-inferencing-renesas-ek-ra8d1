@@ -1,30 +1,24 @@
-/* Edge Impulse inferencing library
- * Copyright (c) 2021 EdgeImpulse Inc.
+/*
+ * Copyright (c) 2022 EdgeImpulse Inc.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /* Includes */
 #include "../ei_classifier_porting.h"
-#if EI_PORTING_RENESASRA65 == 1
+#if ((EI_PORTING_RENESASRA65 == 1) || (EI_PORTING_RENESASRA8D1 == 1))
 
-#include "common_utils.h"
 #include <stdarg.h>
 #include <stdlib.h>
 #include <cstdio>
@@ -32,9 +26,8 @@
 #include "peripheral/uart_ep.h"
 #include <math.h>
 
-// extern "C" void Serial_Out(char *string, int length);
-extern "C" uint64_t timer_get_ms(void);
-// extern "C" fsp_err_t uart_print_user_msg(uint8_t *p_msg);
+extern "C" uint32_t timer_get_ms(void);
+extern "C" uint32_t timer_get_us(void);
 
 __attribute__((weak)) EI_IMPULSE_ERROR ei_run_impulse_check_canceled() {
     return EI_IMPULSE_OK;
@@ -54,17 +47,17 @@ __attribute__((weak)) EI_IMPULSE_ERROR ei_sleep(int32_t time_ms) {
 
 uint64_t ei_read_timer_ms() {
 
-    return timer_get_ms()/10;//Timer_getMs();
+    return timer_get_ms();//Timer_getMs();
 }
 
 uint64_t ei_read_timer_us() {
 
-    return timer_get_ms()*100;
+    return timer_get_us()*1000;
 }
 
 __attribute__((weak)) void ei_printf(const char *format, ...) {
 
-    char buffer[256] = {0};
+    char buffer[1024] = {0};
     int length;
     va_list myargs;
     va_start(myargs, format);
@@ -72,7 +65,7 @@ __attribute__((weak)) void ei_printf(const char *format, ...) {
     va_end(myargs);
 
     if (length > 0){
-        uart_print_user_msg((uint8_t *)buffer);
+        uart_print_user_msg((uint8_t *)buffer, length);
     }
     
 }
@@ -122,6 +115,18 @@ __attribute__((weak)) void ei_printf_float(float f) {
     ei_printf("%s", s);
 }
 
+/**
+ *
+ * @param c
+ */
+void ei_putchar(char c)
+{
+    uint8_t tx[2] = {0};
+    tx[0] = c;
+    //ei_printf("%c", c);
+    uart_print_user_msg((uint8_t *)tx, 1);
+}
+
 __attribute__((weak)) void *ei_malloc(size_t size) {
     return malloc(size);
 }
@@ -141,4 +146,4 @@ __attribute__((weak)) void DebugLog(const char* s) {
     ei_printf("%s", s);
 }
 
-#endif // EI_PORTING_RENESASRA65 == 1
+#endif

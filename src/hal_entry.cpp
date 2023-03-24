@@ -11,6 +11,7 @@ FSP_CPP_FOOTER
  **********************************************************************************************************************/
 void hal_entry(void)
 {
+    ei_init();  /* TODO ret value ? */
     ei_main();
 #if BSP_TZ_SECURE_BUILD
     /* Enter non-secure code */
@@ -41,14 +42,13 @@ void R_BSP_WarmStart(bsp_warm_start_event_t event)
     if (BSP_WARM_START_POST_C == event)
     {
         /* C runtime environment and system clocks are setup. */
-        SCB_EnableICache();
-        SCB_EnableDCache();
-        SCB->CCR |= SCB_CCR_BP_Msk; // enables branch prediction
-        __DSB();
-        __ISB();
+//        SCB_EnableICache();
+//        SCB_EnableDCache();
+//        SCB->CCR |= SCB_CCR_BP_Msk; // enables branch prediction
+//        __DSB();
+//        __ISB();
         /* Configure pins. */
         R_IOPORT_Open (&g_ioport_ctrl, g_ioport.p_cfg);
-        ei_init();  /* TODO ret value ? */
     }
 }
 

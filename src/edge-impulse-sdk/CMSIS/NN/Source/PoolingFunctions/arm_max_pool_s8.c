@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * Copyright (C) 2010-2021 Arm Limited or its affiliates.
+ * Copyright (C) 2010-2020 Arm Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,8 +23,8 @@
  * Title:        arm_max_pool_s8.c
  * Description:  Pooling function implementations
  *
- * $Date:        20. July 2021
- * $Revision:    V.2.0.3
+ * $Date:        19. Februari 2021
+ * $Revision:    V.2.0.2
  *
  * Target Processor:  Cortex-M CPUs
  *
@@ -75,7 +77,7 @@ static void compare_and_replace_if_larger_q7(q7_t *base, const q7_t *target, int
             ref_max.bytes[3] = comp_max.bytes[3];
         }
 
-        arm_nn_write_q7x4_ia(&dst, ref_max.word);
+        write_q7x4_ia(&dst, ref_max.word);
 
         cnt--;
     }
@@ -127,7 +129,7 @@ static void clamp_output(q7_t *source, int32_t length, const int32_t act_min, co
         in.bytes[3] = MAX(in.bytes[3], act_min);
         in.bytes[3] = MIN(in.bytes[3], act_max);
 
-        arm_nn_write_q7x4_ia(&source, in.word);
+        write_q7x4_ia(&source, in.word);
         cnt--;
     }
 
@@ -205,7 +207,7 @@ arm_status arm_max_pool_s8(const cmsis_nn_context *ctx,
 
                     if (count == 0)
                     {
-                        arm_memcpy_q7(dst, start, channel_in);
+                        memcpy(dst, start, channel_in);
                         count++;
                     }
                     else
@@ -227,3 +229,5 @@ arm_status arm_max_pool_s8(const cmsis_nn_context *ctx,
 /**
  * @} end of Pooling group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

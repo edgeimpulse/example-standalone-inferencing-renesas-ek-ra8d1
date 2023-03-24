@@ -27,10 +27,11 @@
 
 FSP_CPP_HEADER
 
-void ei_timer_init(void);
+extern void ei_timer_init(void);
 extern void ei_timer0_start(void);
 extern void ei_timer0_stop(void);
-extern uint64_t timer_get_ms(void);
+extern uint32_t timer_get_ms(void);
+extern uint32_t timer_get_us(void);
 
 FSP_CPP_FOOTER
 

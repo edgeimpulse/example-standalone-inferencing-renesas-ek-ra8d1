@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_cholesky_f16.c
  * Description:  Floating-point Cholesky decomposition
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -158,15 +158,15 @@ arm_status arm_mat_cholesky_f16(
           pG[j * n + i] = vecAddAcrossF16Mve(acc);
        }
 
-       if ((_Float16)pG[i * n + i] <= 0.0f16)
+       if (pG[i * n + i] <= 0.0f16)
        {
          return(ARM_MATH_DECOMPOSITION_FAILURE);
        }
 
-       invSqrtVj = 1.0f16/(_Float16)sqrtf((float32_t)pG[i * n + i]);
+       invSqrtVj = (_Float16)1.0f/sqrtf(pG[i * n + i]);
        for(j=i; j < n ; j++)
        {
-         pG[j * n + i] = (_Float16)pG[j * n + i] * (_Float16)invSqrtVj ;
+         pG[j * n + i] = (_Float16)pG[j * n + i] * invSqrtVj ;
        }
     }
 
@@ -220,22 +220,19 @@ arm_status arm_mat_cholesky_f16(
 
           for(k=0; k < i ; k++)
           {
-             pG[j * n + i] = (_Float16)pG[j * n + i] - (_Float16)pG[i * n + k] * (_Float16)pG[j * n + k];
+             pG[j * n + i] = pG[j * n + i] - pG[i * n + k] * pG[j * n + k];
           }
        }
 
-       if ((_Float16)pG[i * n + i] <= 0.0f16)
+       if (pG[i * n + i] <= 0.0f)
        {
          return(ARM_MATH_DECOMPOSITION_FAILURE);
        }
 
-       /* The division is done in float32 for accuracy reason and
-       because doing it in f16 would not have any impact on the performances.
-       */
-       invSqrtVj = 1.0f/sqrtf((float32_t)pG[i * n + i]);
+       invSqrtVj = 1.0f/sqrtf(pG[i * n + i]);
        for(j=i ; j < n ; j++)
        {
-         pG[j * n + i] = (_Float16)pG[j * n + i] * (_Float16)invSqrtVj ;
+         pG[j * n + i] = pG[j * n + i] * invSqrtVj ;
        }
     }
 
@@ -254,3 +251,5 @@ arm_status arm_mat_cholesky_f16(
   @} end of MatrixChol group
  */
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

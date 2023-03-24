@@ -1,16 +1,16 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_minkowski_distance_f16.c
  * Description:  Minkowski distance between two vectors
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -64,14 +64,15 @@
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "arm_vec_math_f16.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_math_f16.h"
 
 float16_t arm_minkowski_distance_f16(const float16_t *pA,const float16_t *pB, int32_t order, uint32_t blockSize)
 {
     uint32_t        blkCnt;
-    f16x8_t         a, b, tmpV, sumV;
+    f16x8_t         a, b, tmpV, accumV, sumV;
 
     sumV = vdupq_n_f16(0.0f);
+    accumV = vdupq_n_f16(0.0f);
 
     blkCnt = blockSize >> 3;
     while (blkCnt > 0U) {
@@ -103,7 +104,7 @@ float16_t arm_minkowski_distance_f16(const float16_t *pA,const float16_t *pB, in
         sumV = vaddq_m(sumV, sumV, tmpV, p0);
     }
 
-    return (powf((float32_t)vecAddAcrossF16Mve(sumV), (1.0f / (float32_t) order)));
+    return (powf(vecAddAcrossF16Mve(sumV), (1.0f / (float16_t) order)));
 }
 
 
@@ -115,14 +116,14 @@ float16_t arm_minkowski_distance_f16(const float16_t *pA,const float16_t *pB, in
     _Float16 sum;
     uint32_t i;
 
-    sum = 0.0f16; 
+    sum = 0.0f; 
     for(i=0; i < blockSize; i++)
     {
-       sum += (_Float16)powf(fabsf((float32_t)((_Float16)pA[i] - (_Float16)pB[i])),order);
+       sum += (_Float16)powf(fabsf(pA[i] - pB[i]),order);
     }
 
 
-    return(_Float16)(powf((float32_t)sum,(1.0f/(float32_t)order)));
+    return(powf(sum,(1.0f/order)));
 
 }
 
@@ -135,3 +136,5 @@ float16_t arm_minkowski_distance_f16(const float16_t *pA,const float16_t *pB, in
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_mult_f64.c
  * Description:  Floating-point matrix multiplication
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        18. March 2019
+ * $Revision:    V1.6.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -114,7 +116,7 @@ arm_status arm_mat_mult_f64(
       do
       {
         /* Set the variable sum, that acts as accumulator, to zero */
-        sum = 0.0;
+        sum = 0.0f;
 
         /* Initialize pointer pIn1 to point to starting address of column being processed */
         pIn1 = pInA;
@@ -200,3 +202,5 @@ arm_status arm_mat_mult_f64(
 /**
  * @} end of MatrixMult group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

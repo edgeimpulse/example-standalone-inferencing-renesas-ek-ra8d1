@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_inverse_f16.c
  * Description:  Floating-point matrix inverse
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        18. March 2020
+ * $Revision:    V1.6.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -67,7 +69,7 @@ arm_status arm_mat_inverse_f16(
     float16_t *pTmpA, *pTmpB;
 
     _Float16 in = 0.0f16;        /* Temporary input values  */
-    uint32_t  i, rowCnt, flag = 0U, j, loopCnt, l;   /* loop counters */
+    uint32_t  i, rowCnt, flag = 0U, j, loopCnt, k, l;   /* loop counters */
     arm_status status;          /* status of matrix inverse */
     uint32_t  blkCnt;
 
@@ -191,28 +193,31 @@ arm_status arm_mat_inverse_f16(
              * Temporary variable to hold the pivot value
              */
             in = *pInT1;
-            
+            /*
+             * Destination pointer modifier
+             */
+            k = 1U;
 
             /*
              * Check if the pivot element is zero
              */
-            if ((_Float16)*pInT1 == 0.0f16)
+            if (*pInT1 == 0.0f16)
             {
                 /*
                  * Loop over the number rows present below
                  */
-                for (i = 1U; i < numRows-l; i++)
+                for (i = (l + 1U); i < numRows; i++)
                 {
                     /*
                      * Update the input and destination pointers
                      */
                     pInT2 = pInT1 + (numCols * i);
-                    pOutT2 = pOutT1 + (numCols * i);
+                    pOutT2 = pOutT1 + (numCols * k);
                     /*
                      * Check if there is a non zero pivot element to
                      * * replace in the rows below
                      */
-                    if ((_Float16)*pInT2 != 0.0f16)
+                    if (*pInT2 != 0.0f16)
                     {
                         f16x8_t vecA, vecB;
                         /*
@@ -297,7 +302,10 @@ arm_status arm_mat_inverse_f16(
                          */
                         break;
                     }
-              
+                    /*
+                     * Update the destination pointer modifier
+                     */
+                    k++;
                 }
             }
 
@@ -536,7 +544,7 @@ arm_status arm_mat_inverse_f16(
             pIn = pSrc->pData;
             for (i = 0; i < numRows * numCols; i++)
             {
-                if ((_Float16)pIn[i] != 0.0f16)
+                if (pIn[i] != 0.0f16)
                     break;
             }
 
@@ -563,7 +571,7 @@ arm_status arm_mat_inverse_f16(
   uint32_t numCols = pSrc->numCols;              /* Number of Cols in the matrix  */
 
   _Float16 Xchg, in = 0.0f16, in1;                /* Temporary input values  */
-  uint32_t i, rowCnt, flag = 0U, j, loopCnt, k,l;      /* loop counters */
+  uint32_t i, rowCnt, flag = 0U, j, loopCnt, k, l;      /* loop counters */
   arm_status status;                             /* status of matrix inverse */
 
 #ifdef ARM_MATH_MATRIX_CHECK
@@ -674,21 +682,24 @@ arm_status arm_mat_inverse_f16(
       /* Temporary variable to hold the pivot value */
       in = *pInT1;
 
+      
+      /* Destination pointer modifier */
+      k = 1U;
 
       /* Check if the pivot element is zero */
-      if ((_Float16)*pInT1 == 0.0f16)
+      if (*pInT1 == 0.0f16)
       {
         /* Loop over the number rows present below */
 
-        for (i = 1U; i < numRows-l; i++)
+        for (i = (l + 1U); i < numRows; i++)
         {
           /* Update the input and destination pointers */
           pInT2 = pInT1 + (numCols * i);
-          pOutT2 = pOutT1 + (numCols * i);
+          pOutT2 = pOutT1 + (numCols * k);
 
           /* Check if there is a non zero pivot element to
            * replace in the rows below */
-          if ((_Float16)*pInT2 != 0.0f16)
+          if (*pInT2 != 0.0f16)
           {
             /* Loop over number of columns
              * to the right of the pilot element */
@@ -726,6 +737,10 @@ arm_status arm_mat_inverse_f16(
             break;
           }
 
+          /* Update the destination pointer modifier */
+          k++;
+
+          /* Decrement loop counter */
         }
       }
 
@@ -818,7 +833,7 @@ arm_status arm_mat_inverse_f16(
             /* Replace the element by the sum of that row
                and a multiple of the reference row  */
             in1 = *pInT1;
-            *pInT1++ = (_Float16)in1 - ((_Float16)in * (_Float16)*pPRT_in++);
+            *pInT1++ = in1 - (in * *pPRT_in++);
 
             /* Decrement the loop counter */
             j--;
@@ -833,7 +848,7 @@ arm_status arm_mat_inverse_f16(
             /* Replace the element by the sum of that row
                and a multiple of the reference row  */
             in1 = *pInT2;
-            *pInT2++ = (_Float16)in1 - ((_Float16)in * (_Float16)*pPRT_pDst++);
+            *pInT2++ = in1 - (in * *pPRT_pDst++);
 
             /* Decrement loop counter */
             j--;
@@ -864,12 +879,12 @@ arm_status arm_mat_inverse_f16(
     /* Set status as ARM_MATH_SUCCESS */
     status = ARM_MATH_SUCCESS;
 
-    if ((flag != 1U) && ((_Float16)in == 0.0f16))
+    if ((flag != 1U) && (in == 0.0f16))
     {
       pIn = pSrc->pData;
       for (i = 0; i < numRows * numCols; i++)
       {
-        if ((_Float16)pIn[i] != 0.0f16)
+        if (pIn[i] != 0.0f16)
             break;
       }
 
@@ -889,3 +904,5 @@ arm_status arm_mat_inverse_f16(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

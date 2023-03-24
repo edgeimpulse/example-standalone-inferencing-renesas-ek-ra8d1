@@ -6,7 +6,7 @@
         #endif
 /* Number of interrupts allocated */
 #ifndef VECTOR_DATA_IRQ_COUNT
-#define VECTOR_DATA_IRQ_COUNT    (5)
+#define VECTOR_DATA_IRQ_COUNT    (6)
 #endif
 /* ISR prototypes */
 void sci_b_uart_rxi_isr(void);
@@ -24,8 +24,10 @@ void gpt_counter_overflow_isr(void);
 #define SCI3_TEI_IRQn          ((IRQn_Type) 2) /* SCI3 TEI (Transmit end) */
 #define VECTOR_NUMBER_SCI3_ERI ((IRQn_Type) 3) /* SCI3 ERI (Receive error) */
 #define SCI3_ERI_IRQn          ((IRQn_Type) 3) /* SCI3 ERI (Receive error) */
-#define VECTOR_NUMBER_GPT0_COUNTER_OVERFLOW ((IRQn_Type) 4) /* GPT0 COUNTER OVERFLOW (Overflow) */
-#define GPT0_COUNTER_OVERFLOW_IRQn          ((IRQn_Type) 4) /* GPT0 COUNTER OVERFLOW (Overflow) */
+#define VECTOR_NUMBER_GPT1_COUNTER_OVERFLOW ((IRQn_Type) 4) /* GPT1 COUNTER OVERFLOW (Overflow) */
+#define GPT1_COUNTER_OVERFLOW_IRQn          ((IRQn_Type) 4) /* GPT1 COUNTER OVERFLOW (Overflow) */
+#define VECTOR_NUMBER_GPT0_COUNTER_OVERFLOW ((IRQn_Type) 5) /* GPT0 COUNTER OVERFLOW (Overflow) */
+#define GPT0_COUNTER_OVERFLOW_IRQn          ((IRQn_Type) 5) /* GPT0 COUNTER OVERFLOW (Overflow) */
 #ifdef __cplusplus
         }
         #endif

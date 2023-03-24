@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * Copyright (C) 2010-2022 Arm Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 Arm Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,8 +23,8 @@
  * Title:        arm_nn_mat_mul_core_1x_s8.c
  * Description:  General Matrix-multiplication function
  *
- * $Date:        19. April 2022
- * $Revision:    V.1.0.3
+ * $Date:        09. October 2020
+ * $Revision:    V.1.0.2
  *
  * Target Processor:  Cortex-M cores
  * -------------------------------------------------------------------- */
@@ -56,13 +58,13 @@ arm_status arm_nn_mat_mul_core_1x_s8(int32_t row_elements,
 
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-    __ASM volatile("   vldrb.8         q0, [%[col]], #16     \n"
+    __ASM volatile("   vldrb.8         q0, [%[col]], 16     \n"
                    "   wlstp.8         lr, %[cnt], 1f       \n"
                    "2:                                      \n"
                    "   vaddva.s8      %[sum], q0            \n"
-                   "   vldrb.8         q1, [%[row0]], #16    \n"
+                   "   vldrb.8         q1, [%[row0]], 16    \n"
                    "   vmladava.s8    %[out0], q0, q1       \n"
-                   "   vldrb.8         q0, [%[col]], #16     \n"
+                   "   vldrb.8         q0, [%[col]], 16     \n"
                    "   letp            lr, 2b               \n"
                    "1:                                      \n"
                    : [col] "+r"(col_base), [sum] "+Te"(sum_tmp), [row0] "+r"(row_base), [out0] "+Te"(acc_n0)
@@ -84,3 +86,5 @@ arm_status arm_nn_mat_mul_core_1x_s8(int32_t row_elements,
 /**
  * @} end of NNBasicMath group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

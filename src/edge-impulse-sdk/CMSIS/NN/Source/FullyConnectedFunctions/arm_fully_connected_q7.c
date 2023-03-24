@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * Copyright (C) 2010-2021 Arm Limited or its affiliates. All rights reserved.
  *
@@ -21,8 +23,8 @@
  * Title:        arm_fully_connected_q7.c
  * Description:  Q7 basic fully-connected layer function
  *
- * $Date:        July 20, 2021
- * $Revision:    V.1.1.2
+ * $Date:        January 26, 2021
+ * $Revision:    V.1.0.2
  *
  * Target Processor:  Cortex-M cores
  *
@@ -75,7 +77,7 @@ arm_status arm_fully_connected_q7(const q7_t *pV,
                                   q15_t *vec_buffer)
 {
 
-#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_DSP)
     /* Run the following code for Cortex-M4 and Cortex-M7 */
 
     const q7_t *pB = pM;
@@ -198,3 +200,5 @@ arm_status arm_fully_connected_q7(const q7_t *pV,
 /**
  * @} end of FC group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

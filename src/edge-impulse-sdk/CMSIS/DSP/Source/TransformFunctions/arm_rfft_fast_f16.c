@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_fast_f16.c
  * Description:  RFFT & RIFFT Floating point process function
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -72,15 +72,15 @@ void stage_rfft_f16(
    twI = *pCoeff++ ;
 
    // U1 = XA(1) + XB(1); % It is real
-   t1a = (_Float16)xBR + (_Float16)xAR  ;
+   t1a = xBR + xAR  ;
 
    // U2 = XB(1) - XA(1); % It is imaginary
-   t1b = (_Float16)xBI + (_Float16)xAI  ;
+   t1b = xBI + xAI  ;
 
    // real(tw * (xB - xA)) = twR * (xBR - xAR) - twI * (xBI - xAI);
    // imag(tw * (xB - xA)) = twI * (xBR - xAR) + twR * (xBI - xAI);
-   *pOut++ = 0.5f16 * ( (_Float16)t1a + (_Float16)t1b );
-   *pOut++ = 0.5f16 * ( (_Float16)t1a - (_Float16)t1b );
+   *pOut++ = 0.5f * ( t1a + t1b );
+   *pOut++ = 0.5f * ( t1a - t1b );
 
    // XA(1) = 1/2*( U1 - imag(U2) +  i*( U1 +imag(U2) ));
    pB  = p + 2*k - 14;
@@ -174,18 +174,18 @@ void stage_rfft_f16(
       twR = *pCoeff++;
       twI = *pCoeff++;
 
-      t1a = (_Float16)xBR - (_Float16)xAR ;
-      t1b = (_Float16)xBI + (_Float16)xAI ;
+      t1a = xBR - xAR ;
+      t1b = xBI + xAI ;
 
       // real(tw * (xB - xA)) = twR * (xBR - xAR) - twI * (xBI - xAI);
       // imag(tw * (xB - xA)) = twI * (xBR - xAR) + twR * (xBI - xAI);
-      p0 = (_Float16)twR * (_Float16)t1a;
-      p1 = (_Float16)twI * (_Float16)t1a;
-      p2 = (_Float16)twR * (_Float16)t1b;
-      p3 = (_Float16)twI * (_Float16)t1b;
+      p0 = twR * t1a;
+      p1 = twI * t1a;
+      p2 = twR * t1b;
+      p3 = twI * t1b;
 
-      *pOut++ = 0.5f16 * ((_Float16)xAR + (_Float16)xBR + (_Float16)p0 + (_Float16)p3 ); //xAR
-      *pOut++ = 0.5f16 * ((_Float16)xAI - (_Float16)xBI + (_Float16)p1 - (_Float16)p2 ); //xAI
+      *pOut++ = 0.5f * (xAR + xBR + p0 + p3 ); //xAR
+      *pOut++ = 0.5f * (xAI - xBI + p1 - p2 ); //xAI
 
       pA += 2;
       pB -= 2;
@@ -223,8 +223,8 @@ void merge_rfft_f16(
 
    pCoeff += 2 ;
 
-   *pOut++ = 0.5f16 * ( (_Float16)xAR + (_Float16)xAI );
-   *pOut++ = 0.5f16 * ( (_Float16)xAR - (_Float16)xAI );
+   *pOut++ = 0.5f * ( xAR + xAI );
+   *pOut++ = 0.5f * ( xAR - xAI );
 
    pB  =  p + 2*k - 14;
    pA +=  2    ;
@@ -293,18 +293,18 @@ void merge_rfft_f16(
       twR = *pCoeff++;
       twI = *pCoeff++;
 
-      t1a = (_Float16)xAR - (_Float16)xBR ;
-      t1b = (_Float16)xAI + (_Float16)xBI ;
+      t1a = xAR - xBR ;
+      t1b = xAI + xBI ;
 
-      r = (_Float16)twR * (_Float16)t1a;
-      s = (_Float16)twI * (_Float16)t1b;
-      t = (_Float16)twI * (_Float16)t1a;
-      u = (_Float16)twR * (_Float16)t1b;
+      r = twR * t1a;
+      s = twI * t1b;
+      t = twI * t1a;
+      u = twR * t1b;
 
       // real(tw * (xA - xB)) = twR * (xAR - xBR) - twI * (xAI - xBI);
       // imag(tw * (xA - xB)) = twI * (xAR - xBR) + twR * (xAI - xBI);
-      *pOut++ = 0.5f16 * ((_Float16)xAR + (_Float16)xBR - (_Float16)r - (_Float16)s ); //xAR
-      *pOut++ = 0.5f16 * ((_Float16)xAI - (_Float16)xBI + (_Float16)t - (_Float16)u ); //xAI
+      *pOut++ = 0.5f * (xAR + xBR - r - s ); //xAR
+      *pOut++ = 0.5f * (xAI - xBI + t - u ); //xAI
 
       pA += 2;
       pB -= 2;
@@ -342,15 +342,15 @@ void stage_rfft_f16(
 
 
    // U1 = XA(1) + XB(1); % It is real
-   t1a = (_Float16)xBR + (_Float16)xAR  ;
+   t1a = xBR + xAR  ;
 
    // U2 = XB(1) - XA(1); % It is imaginary
-   t1b = (_Float16)xBI + (_Float16)xAI  ;
+   t1b = xBI + xAI  ;
 
    // real(tw * (xB - xA)) = twR * (xBR - xAR) - twI * (xBI - xAI);
    // imag(tw * (xB - xA)) = twI * (xBR - xAR) + twR * (xBI - xAI);
-   *pOut++ = 0.5f16 * ( (_Float16)t1a + (_Float16)t1b );
-   *pOut++ = 0.5f16 * ( (_Float16)t1a - (_Float16)t1b );
+   *pOut++ = 0.5f * ( t1a + t1b );
+   *pOut++ = 0.5f * ( t1a - t1b );
 
    // XA(1) = 1/2*( U1 - imag(U2) +  i*( U1 +imag(U2) ));
    pB  = p + 2*k;
@@ -381,18 +381,18 @@ void stage_rfft_f16(
       twR = *pCoeff++;
       twI = *pCoeff++;
 
-      t1a = (_Float16)xBR - (_Float16)xAR ;
-      t1b = (_Float16)xBI + (_Float16)xAI ;
+      t1a = xBR - xAR ;
+      t1b = xBI + xAI ;
 
       // real(tw * (xB - xA)) = twR * (xBR - xAR) - twI * (xBI - xAI);
       // imag(tw * (xB - xA)) = twI * (xBR - xAR) + twR * (xBI - xAI);
-      p0 = (_Float16)twR * (_Float16)t1a;
-      p1 = (_Float16)twI * (_Float16)t1a;
-      p2 = (_Float16)twR * (_Float16)t1b;
-      p3 = (_Float16)twI * (_Float16)t1b;
+      p0 = twR * t1a;
+      p1 = twI * t1a;
+      p2 = twR * t1b;
+      p3 = twI * t1b;
 
-      *pOut++ = 0.5f16 * ((_Float16)xAR + (_Float16)xBR + (_Float16)p0 + (_Float16)p3 ); //xAR
-      *pOut++ = 0.5f16 * ((_Float16)xAI - (_Float16)xBI + (_Float16)p1 - (_Float16)p2 ); //xAI
+      *pOut++ = 0.5f * (xAR + xBR + p0 + p3 ); //xAR
+      *pOut++ = 0.5f * (xAI - xBI + p1 - p2 ); //xAI
 
 
       pA += 2;
@@ -422,8 +422,8 @@ void merge_rfft_f16(
 
    pCoeff += 2 ;
 
-   *pOut++ = 0.5f16 * ( (_Float16)xAR + (_Float16)xAI );
-   *pOut++ = 0.5f16 * ( (_Float16)xAR - (_Float16)xAI );
+   *pOut++ = 0.5f * ( xAR + xAI );
+   *pOut++ = 0.5f * ( xAR - xAI );
 
    pB  =  p + 2*k ;
    pA +=  2	   ;
@@ -441,18 +441,18 @@ void merge_rfft_f16(
       twR = *pCoeff++;
       twI = *pCoeff++;
 
-      t1a = (_Float16)xAR - (_Float16)xBR ;
-      t1b = (_Float16)xAI + (_Float16)xBI ;
+      t1a = xAR - xBR ;
+      t1b = xAI + xBI ;
 
-      r = (_Float16)twR * (_Float16)t1a;
-      s = (_Float16)twI * (_Float16)t1b;
-      t = (_Float16)twI * (_Float16)t1a;
-      u = (_Float16)twR * (_Float16)t1b;
+      r = twR * t1a;
+      s = twI * t1b;
+      t = twI * t1a;
+      u = twR * t1b;
 
       // real(tw * (xA - xB)) = twR * (xAR - xBR) - twI * (xAI - xBI);
       // imag(tw * (xA - xB)) = twI * (xAR - xBR) + twR * (xAI - xBI);
-      *pOut++ = 0.5f16 * ((_Float16)xAR + (_Float16)xBR - (_Float16)r - (_Float16)s ); //xAR
-      *pOut++ = 0.5f16 * ((_Float16)xAI - (_Float16)xBI + (_Float16)t - (_Float16)u ); //xAI
+      *pOut++ = 0.5f * (xAR + xBR - r - s ); //xAR
+      *pOut++ = 0.5f * (xAI - xBI + t - u ); //xAI
 
       pA += 2;
       pB -= 2;
@@ -477,7 +477,7 @@ void merge_rfft_f16(
                    of the symmetry properties of the FFT and have a speed advantage over complex
                    algorithms of the same length.
   @par
-                   The Fast RFFT algorithm relays on the mixed radix CFFT that save processor usage.
+                   The Fast RFFT algorith relays on the mixed radix CFFT that save processor usage.
   @par
                    The real length N forward FFT of a sequence is computed using the steps shown below.
   @par
@@ -610,3 +610,4 @@ void arm_rfft_fast_f16(
 */
 
 #endif /*  #if defined(ARM_FLOAT16_SUPPORTED) */
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

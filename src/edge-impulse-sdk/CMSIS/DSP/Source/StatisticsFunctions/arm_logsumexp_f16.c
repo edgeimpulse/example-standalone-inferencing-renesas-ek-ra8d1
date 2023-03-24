@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_logsumexp_f16.c
  * Description:  LogSumExp
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -67,7 +67,7 @@
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "arm_vec_math_f16.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_math_f16.h"
 
 float16_t arm_logsumexp_f16(const float16_t *in, uint32_t blockSize)
 {
@@ -111,12 +111,12 @@ float16_t arm_logsumexp_f16(const float16_t *in, uint32_t blockSize)
     while(blkCnt > 0)
     {
        tmp = *pIn++;
-       accum += (_Float16)expf((float32_t)((_Float16)tmp - (_Float16)maxVal));
+       accum += expf(tmp - maxVal);
        blkCnt--;
     
     }
 
-    accum = (_Float16)maxVal + (_Float16)logf((float32_t)accum);
+    accum = maxVal + logf(accum);
 
     return (accum);
 }
@@ -154,11 +154,11 @@ float16_t arm_logsumexp_f16(const float16_t *in, uint32_t blockSize)
     while(blkCnt > 0)
     {
        tmp = *pIn++;
-       accum += (_Float16)expf((float32_t)((_Float16)tmp - (_Float16)maxVal));
+       accum += expf(tmp - maxVal);
        blkCnt--;
     
     }
-    accum = (_Float16)maxVal + (_Float16)logf((float32_t)accum);
+    accum = maxVal + logf(accum);
 
     return(accum);
 }
@@ -170,3 +170,5 @@ float16_t arm_logsumexp_f16(const float16_t *in, uint32_t blockSize)
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

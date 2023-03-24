@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_solve_lower_triangular_f64.c
  * Description:  Solve linear system LT X = A with LT lower triangular matrix
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -57,8 +57,9 @@
 #ifdef ARM_MATH_MATRIX_CHECK
 
   /* Check for matrix mismatch condition */
-  if ((lt->numRows != lt->numCols) ||
-      (lt->numRows != a->numRows)   )
+  if ((ut->numRows != lt->numCols) ||
+      (a->numRows != a->numCols) ||
+      (ut->numRows != a->numRows)   )
   {
     /* Set status as ARM_MATH_SIZE_MISMATCH */
     status = ARM_MATH_SIZE_MISMATCH;
@@ -76,7 +77,9 @@
     x2 = (a2 - c2 x3) / b2
 
     */
-    int i,j,k,n,cols;
+    int i,j,k,n;
+
+    n = dst->numRows;
 
     float64_t *pX = dst->pData;
     float64_t *pLT = lt->pData;
@@ -85,30 +88,27 @@
     float64_t *lt_row;
     float64_t *a_col;
 
-    n = dst->numRows;
-    cols = dst->numCols;
-
-    for(j=0; j < cols; j ++)
+    for(j=0; j < n; j ++)
     {
        a_col = &pA[j];
 
        for(i=0; i < n ; i++)
        {
-            float64_t tmp=a_col[i * cols];
-
             lt_row = &pLT[n*i];
 
+            float64_t tmp=a_col[i * n];
+            
             for(k=0; k < i; k++)
             {
-                tmp -= lt_row[k] * pX[cols*k+j];
+                tmp -= lt_row[k] * pX[n*k+j];
             }
 
-            if (lt_row[i]==0.0)
+            if (lt_row[i]==0.0f)
             {
               return(ARM_MATH_SINGULAR);
             }
             tmp = tmp / lt_row[i];
-            pX[i*cols+j] = tmp;
+            pX[i*n+j] = tmp;
        }
 
     }
@@ -122,3 +122,5 @@
 /**
   @} end of MatrixInv group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_solve_lower_triangular_f16.c
  * Description:  Solve linear system LT X = A with LT lower triangular matrix
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -63,8 +63,9 @@
 #ifdef ARM_MATH_MATRIX_CHECK
 
   /* Check for matrix mismatch condition */
-  if ((lt->numRows != lt->numCols) ||
-      (lt->numRows != a->numRows)   )
+  if ((ut->numRows != lt->numCols) ||
+      (a->numRows != a->numCols) ||
+      (ut->numRows != a->numRows)   )
   {
     /* Set status as ARM_MATH_SIZE_MISMATCH */
     status = ARM_MATH_SIZE_MISMATCH;
@@ -82,10 +83,9 @@
     x2 = (a2 - c2 x3) / b2
 
     */
-    int i,j,k,n,cols;
+    int i,j,k,n;
 
     n = dst->numRows;
-    cols = dst->numCols;
 
     float16_t *pX = dst->pData;
     float16_t *pLT = lt->pData;
@@ -102,45 +102,45 @@
     for(i=0; i < n ; i++)
     {
 
-      for(j=0; j+7 < cols; j += 8)
+      for(j=0; j+7 < n; j += 8)
       {
-            vecA = vld1q_f16(&pA[i * cols + j]);
+            vecA = vld1q_f16(&pA[i * n + j]);
 
             for(k=0; k < i; k++)
             {
-                vecX = vld1q_f16(&pX[cols*k+j]);
+                vecX = vld1q_f16(&pX[n*k+j]);
                 vecA = vfmsq(vecA,vdupq_n_f16(pLT[n*i + k]),vecX);
             }
 
-            if ((_Float16)pLT[n*i + i]==0.0f16)
+            if (pLT[n*i + i]==0.0f16)
             {
               return(ARM_MATH_SINGULAR);
             }
 
             invLT = 1.0f16 / (_Float16)pLT[n*i + i];
             vecA = vmulq(vecA,vdupq_n_f16(invLT));
-            vst1q(&pX[i*cols+j],vecA);
+            vst1q(&pX[i*n+j],vecA);
 
        }
 
-       for(; j < cols; j ++)
+       for(; j < n; j ++)
        {
             a_col = &pA[j];
             lt_row = &pLT[n*i];
 
-            _Float16 tmp=a_col[i * cols];
+            _Float16 tmp=a_col[i * n];
             
             for(k=0; k < i; k++)
             {
-                tmp -= (_Float16)lt_row[k] * (_Float16)pX[cols*k+j];
+                tmp -= (_Float16)lt_row[k] * (_Float16)pX[n*k+j];
             }
 
-            if ((_Float16)lt_row[i]==0.0f16)
+            if (lt_row[i]==0.0f16)
             {
               return(ARM_MATH_SINGULAR);
             }
             tmp = tmp / (_Float16)lt_row[i];
-            pX[i*cols+j] = tmp;
+            pX[i*n+j] = tmp;
         }
 
     }
@@ -164,8 +164,9 @@
 #ifdef ARM_MATH_MATRIX_CHECK
 
   /* Check for matrix mismatch condition */
-  if ((lt->numRows != lt->numCols) ||
-      (lt->numRows != a->numRows)   )
+  if ((ut->numRows != lt->numCols) ||
+      (a->numRows != a->numCols) ||
+      (ut->numRows != a->numRows)   )
   {
     /* Set status as ARM_MATH_SIZE_MISMATCH */
     status = ARM_MATH_SIZE_MISMATCH;
@@ -183,10 +184,9 @@
     x2 = (a2 - c2 x3) / b2
 
     */
-    int i,j,k,n,cols;
+    int i,j,k,n;
 
     n = dst->numRows;
-    cols = dst->numCols;
 
     float16_t *pX = dst->pData;
     float16_t *pLT = lt->pData;
@@ -195,7 +195,7 @@
     float16_t *lt_row;
     float16_t *a_col;
 
-    for(j=0; j < cols; j ++)
+    for(j=0; j < n; j ++)
     {
        a_col = &pA[j];
 
@@ -203,19 +203,19 @@
        {
             lt_row = &pLT[n*i];
 
-            float16_t tmp=a_col[i * cols];
+            float16_t tmp=a_col[i * n];
             
             for(k=0; k < i; k++)
             {
-                tmp -= (_Float16)lt_row[k] * (_Float16)pX[cols*k+j];
+                tmp -= lt_row[k] * pX[n*k+j];
             }
 
-            if ((_Float16)lt_row[i]==0.0f16)
+            if (lt_row[i]==0.0f)
             {
               return(ARM_MATH_SINGULAR);
             }
-            tmp = (_Float16)tmp / (_Float16)lt_row[i];
-            pX[i*cols+j] = tmp;
+            tmp = tmp / lt_row[i];
+            pX[i*n+j] = tmp;
        }
 
     }
@@ -232,3 +232,5 @@
   @} end of MatrixInv group
  */
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

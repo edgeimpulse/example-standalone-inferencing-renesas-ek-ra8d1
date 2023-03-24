@@ -1,9 +1,8 @@
 /******************************************************************************
  * @file     interpolation_functions.h
  * @brief    Public header file for CMSIS DSP Library
- * @version  V1.10.0
- * @date     08 July 2021
- * Target Processor: Cortex-M and Cortex-A cores
+ * @version  V1.9.0
+ * @date     20. July 2020
  ******************************************************************************/
 /*
  * Copyright (c) 2010-2020 Arm Limited or its affiliates. All rights reserved.
@@ -202,7 +201,7 @@ extern "C"
    *
    */
   q31_t arm_linear_interp_q31(
-  const q31_t * pYData,
+  q31_t * pYData,
   q31_t x,
   uint32_t nValues);
 
@@ -220,7 +219,7 @@ extern "C"
    *
    */
   q15_t arm_linear_interp_q15(
-  const q15_t * pYData,
+  q15_t * pYData,
   q31_t x,
   uint32_t nValues);
 
@@ -237,7 +236,7 @@ extern "C"
    * This function can support maximum of table size 2^12.
    */
 q7_t arm_linear_interp_q7(
-  const q7_t * pYData,
+  q7_t * pYData,
   q31_t x,
   uint32_t nValues);
 

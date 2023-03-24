@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_bilinear_interp_f16.c
  * Description:  Floating-point bilinear interpolation
  *
- * $Date:        23 April 2021
+ * $Date:        22 July 2020
  * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -141,19 +143,18 @@
 
     /* Calculation of intermediate values */
     b1 = f00;
-    b2 = (_Float16)f01 - (_Float16)f00;
-    b3 = (_Float16)f10 - (_Float16)f00;
-    b4 = (_Float16)f00 - (_Float16)f01 - (_Float16)f10 + (_Float16)f11;
+    b2 = f01 - f00;
+    b3 = f10 - f00;
+    b4 = f00 - f01 - f10 + f11;
 
     /* Calculation of fractional part in X */
-    xdiff = (_Float16)X - (_Float16)xIndex;
+    xdiff = X - xIndex;
 
     /* Calculation of fractional part in Y */
-    ydiff = (_Float16)Y - (_Float16)yIndex;
+    ydiff = Y - yIndex;
 
     /* Calculation of bi-linear interpolated output */
-    out = (_Float16)b1 + (_Float16)b2 * (_Float16)xdiff + 
-    (_Float16)b3 * (_Float16)ydiff + (_Float16)b4 * (_Float16)xdiff * (_Float16)ydiff;
+    out = b1 + b2 * xdiff + b3 * ydiff + b4 * xdiff * ydiff;
 
     /* return to application */
     return (out);
@@ -166,3 +167,5 @@
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

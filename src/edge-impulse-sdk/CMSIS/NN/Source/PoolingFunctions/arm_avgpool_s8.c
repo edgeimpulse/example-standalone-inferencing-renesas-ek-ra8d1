@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * Copyright (C) 2010-2021 Arm Limited or its affiliates.
+ * Copyright (C) 2010-2020 Arm Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,8 +23,8 @@
  * Title:        arm_avgpool_s8.c
  * Description:  Pooling function implementations
  *
- * $Date:        01. March 2021
- * $Revision:    V.2.0.4
+ * $Date:        09. October 2020
+ * $Revision:    V.2.0.3
  *
  * Target Processor:  Cortex-M CPUs
  *
@@ -41,13 +43,6 @@ static void scale_q31_to_q7_and_clamp(const q31_t *buffer,
                                       const int act_max)
 {
     const int half_count = count / 2;
-
-    // Prevent static code issue DIVIDE_BY_ZERO.
-    if (count == 0)
-    {
-        return;
-    }
-
     for (int i = 0; i < length; i++)
     {
         int32_t sum = buffer[i] > 0 ? (buffer[i] + half_count) : (buffer[i] - half_count);
@@ -164,12 +159,6 @@ arm_status arm_avgpool_s8(const cmsis_nn_context *ctx,
                     }
                 }
 
-                // Prevent static code issue DIVIDE_BY_ZERO.
-                if (count == 0)
-                {
-                    return ARM_MATH_ARGUMENT_ERROR;
-                }
-
                 sumV1[0] = sumV1[0] > 0 ? (sumV1[0] + count / 2) / count : (sumV1[0] - count / 2) / count;
                 sumV1[1] = sumV1[1] > 0 ? (sumV1[1] + count / 2) / count : (sumV1[1] - count / 2) / count;
                 sumV1[2] = sumV1[2] > 0 ? (sumV1[2] + count / 2) / count : (sumV1[2] - count / 2) / count;
@@ -232,13 +221,6 @@ arm_status arm_avgpool_s8(const cmsis_nn_context *ctx,
                         count++;
                     }
                 }
-
-                // Prevent static code issue DIVIDE_BY_ZERO.
-                if (count == 0)
-                {
-                    return ARM_MATH_ARGUMENT_ERROR;
-                }
-
                 sum = sum > 0 ? (sum + count / 2) / count : (sum - count / 2) / count;
                 sum = MAX(sum, act_min);
                 sum = MIN(sum, act_max);
@@ -275,11 +257,6 @@ arm_status arm_avgpool_s8(const cmsis_nn_context *ctx,
     const int32_t act_min = pool_params->activation.min;
     const int32_t act_max = pool_params->activation.max;
     const int32_t ch_src = input_dims->c;
-
-    if (ctx->buf == NULL && arm_avgpool_s8_get_buffer_size(output_dims->w, input_dims->c))
-    {
-        return ARM_MATH_ARGUMENT_ERROR;
-    }
     q31_t *buffer = (q31_t *)ctx->buf;
 
 #if defined(ARM_MATH_DSP)
@@ -325,13 +302,6 @@ arm_status arm_avgpool_s8(const cmsis_nn_context *ctx,
                     count++;
                 }
             }
-
-            // Prevent static code issue DIVIDE_BY_ZERO.
-            if (count == 0)
-            {
-                return ARM_MATH_ARGUMENT_ERROR;
-            }
-
             scale_q31_to_q7_and_clamp(buffer, dst, ch_src, count, act_min, act_max);
             dst += ch_src;
         }
@@ -363,13 +333,6 @@ arm_status arm_avgpool_s8(const cmsis_nn_context *ctx,
                         }
                     }
                 }
-
-                // Prevent static code issue DIVIDE_BY_ZERO.
-                if (count == 0)
-                {
-                    return ARM_MATH_ARGUMENT_ERROR;
-                }
-
                 sum = sum > 0 ? (sum + count / 2) / count : (sum - count / 2) / count;
                 sum = MAX(sum, act_min);
                 sum = MIN(sum, act_max);
@@ -399,3 +362,5 @@ int32_t arm_avgpool_s8_get_buffer_size(const int output_x, const int ch_src)
 /**
  * @} end of Pooling group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

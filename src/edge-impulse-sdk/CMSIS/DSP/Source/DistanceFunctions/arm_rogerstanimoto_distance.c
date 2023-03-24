@@ -1,16 +1,16 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rogerstanimoto_distance.c
  * Description:  Roger Stanimoto distance between two vectors
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -73,3 +73,5 @@ float32_t arm_rogerstanimoto_distance(const uint32_t *pA, const uint32_t *pB, ui
 /**
  * @} end of BoolDist group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

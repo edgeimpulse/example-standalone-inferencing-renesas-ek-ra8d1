@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_cfft_f64.c
  * Description:  Combined Radix Decimation in Frequency CFFT Double Precision Floating point processing function
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        29. November 2019
+ * $Revision:    V1.0.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -316,3 +318,5 @@ void arm_cfft_f64(
 /**
   @} end of ComplexFFT group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

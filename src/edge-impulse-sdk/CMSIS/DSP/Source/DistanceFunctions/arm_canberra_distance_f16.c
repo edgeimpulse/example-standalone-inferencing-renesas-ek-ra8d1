@@ -1,16 +1,16 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_canberra_distance_f16.c
  * Description:  Canberra distance between two vectors
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -68,7 +68,7 @@
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "arm_vec_math_f16.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_math_f16.h"
 
 float16_t arm_canberra_distance_f16(const float16_t *pA,const float16_t *pB, uint32_t blockSize)
 {
@@ -150,11 +150,11 @@ float16_t arm_canberra_distance_f16(const float16_t *pA,const float16_t *pB, uin
       tmpA = *pA++;
       tmpB = *pB++;
 
-      diff = fabsf((float32_t)((_Float16)tmpA - (_Float16)tmpB));
-      sum = (_Float16)fabsf((float32_t)tmpA) + (_Float16)fabsf((float32_t)tmpB);
-      if (((_Float16)tmpA != 0.0f16) || ((_Float16)tmpB != 0.0f16))
+      diff = fabsf(tmpA - tmpB);
+      sum = fabsf(tmpA) + fabsf(tmpB);
+      if ((tmpA != 0.0f16) || (tmpB != 0.0f16))
       {
-         accum += ((_Float16)diff / (_Float16)sum);
+         accum += (diff / sum);
       }
       blockSize --;
    }
@@ -169,3 +169,5 @@ float16_t arm_canberra_distance_f16(const float16_t *pA,const float16_t *pB, uin
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

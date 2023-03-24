@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_var_q15.c
  * Description:  Variance of an array of Q15 type
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        18. March 2019
+ * $Revision:    V1.6.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -154,12 +156,12 @@ void arm_var_q15(
     /* Compute sum of squares and store result in a temporary variable, sumOfSquares. */
     /* Compute sum and store result in a temporary variable, sum. */
 #if defined (ARM_MATH_DSP)
-    in32 = read_q15x2_ia (&pSrc);
+    in32 = read_q15x2_ia ((q15_t **) &pSrc);
     sumOfSquares = __SMLALD(in32, in32, sumOfSquares);
     sum += ((in32 << 16U) >> 16U);
     sum +=  (in32 >> 16U);
 
-    in32 = read_q15x2_ia (&pSrc);
+    in32 = read_q15x2_ia ((q15_t **) &pSrc);
     sumOfSquares = __SMLALD(in32, in32, sumOfSquares);
     sum += ((in32 << 16U) >> 16U);
     sum +=  (in32 >> 16U);
@@ -228,3 +230,5 @@ void arm_var_q15(
 /**
   @} end of variance group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

@@ -38,7 +38,7 @@ FSP_HEADER
                                     UART_EVENT_ERR_PARITY)    /* UART Error event bits mapped in registers */
 
 /* Function declaration */
-fsp_err_t uart_print_user_msg(uint8_t *p_msg);
+fsp_err_t uart_print_user_msg(uint8_t *p_msg, uint16_t msg_len);
 fsp_err_t uart_initialize(void);
 fsp_err_t uart_set_baud(bool is_max_baud);
 void deinit_uart(void);

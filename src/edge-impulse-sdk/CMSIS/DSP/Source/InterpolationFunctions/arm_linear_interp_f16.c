@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_linear_interp_f16.c
  * Description:  Floating-point linear interpolation
  *
- * $Date:        23 April 2021
+ * $Date:        22 July 2020
  * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -91,7 +93,7 @@
     float16_t *pYData = S->pYData;               /* pointer to output table */
 
     /* Calculation of index */
-    i = (int32_t) (((_Float16)x - (_Float16)S->x1) / (_Float16)xSpacing);
+    i = (int32_t) ((x - S->x1) / xSpacing);
 
     if (i < 0)
     {
@@ -106,16 +108,15 @@
     else
     {
       /* Calculation of nearest input values */
-      x0 = (_Float16)S->x1 +  (_Float16)i      * (_Float16)xSpacing;
-      x1 = (_Float16)S->x1 + (_Float16)(i + 1) * (_Float16)xSpacing;
+      x0 = S->x1 +  i      * xSpacing;
+      x1 = S->x1 + (i + 1) * xSpacing;
 
       /* Read of nearest output values */
       y0 = pYData[i];
       y1 = pYData[i + 1];
 
       /* Calculation of output */
-      y = (_Float16)y0 + ((_Float16)x - (_Float16)x0) * 
-      (((_Float16)y1 - (_Float16)y0) / ((_Float16)x1 - (_Float16)x0));
+      y = y0 + (x - x0) * ((y1 - y0) / (x1 - x0));
 
     }
 
@@ -130,3 +131,5 @@
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

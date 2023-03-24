@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * Copyright (C) 2010-2021 Arm Limited or its affiliates. All rights reserved.
  *
@@ -21,8 +23,8 @@
  * Title:        arm_convolve_HWC_q7_RGB.c
  * Description:  Q7 version of convolution for RGB image
  *
- * $Date:        July 20, 2021
- * $Revision:    V.1.1.2
+ * $Date:        January 26, 2021
+ * $Revision:    V.1.0.2
  *
  * Target Processor:  Cortex-M cores
  *
@@ -94,7 +96,7 @@ arm_status arm_convolve_HWC_q7_RGB(const q7_t *Im_in,
                                    q7_t *bufferB)
 {
     (void)bufferB;
-#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_DSP)
     /* Run the following code for Cortex-M4 and Cortex-M7 */
     int16_t i_out_y, i_out_x, i_ker_y, i_ker_x;
 
@@ -122,7 +124,8 @@ arm_status arm_convolve_HWC_q7_RGB(const q7_t *Im_in,
                     if (i_ker_y < 0 || i_ker_y >= dim_im_in || i_ker_x < 0 || i_ker_x >= dim_im_in)
                     {
                         /* Equivalent to arm_fill_q15(0, pBuffer, ch_im_in) with assumption: ch_im_in = 3 */
-                        arm_memset_q7((q7_t *)pBuffer, (q7_t)0, 3 * sizeof(q15_t));
+                        *__SIMD32(pBuffer) = 0x0;
+                        *(pBuffer + 2) = 0;
                         pBuffer += 3;
                     }
                     else
@@ -154,8 +157,7 @@ arm_status arm_convolve_HWC_q7_RGB(const q7_t *Im_in,
                          *  version 2, no weight shuffling required
                          */
                         *pBuffer++ = top.half_words[0];
-                        int32_t packed_word = __PKHBT(bottom.word, top.word, 0);
-                        arm_memcpy_q7((q7_t *)pBuffer, (q7_t *)&packed_word, 4);
+                        *__SIMD32(pBuffer) = __PKHBT(bottom.word, top.word, 0);
 #else
                         /*
                          *  big-endian,    | 1st  | 2nd  | 3rd  | omit |
@@ -169,8 +171,7 @@ arm_status arm_convolve_HWC_q7_RGB(const q7_t *Im_in,
                          *  version 2, no weight shuffling required
                          */
                         *pBuffer++ = bottom.half_words[0];
-                        int32_t packed_word = __PKHTB(top.word, bottom.word, 0);
-                        arm_memcpy_q7((q7_t *)pBuffer, (q7_t *)&packed_word, 4);
+                        *__SIMD32(pBuffer) = __PKHTB(top.word, bottom.word, 0);
 #endif
                         pBuffer += 2;
                     }
@@ -278,3 +279,5 @@ arm_status arm_convolve_HWC_q7_RGB(const q7_t *Im_in,
 /**
  * @} end of NNConv group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

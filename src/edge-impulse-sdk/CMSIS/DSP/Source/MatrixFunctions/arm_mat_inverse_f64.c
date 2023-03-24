@@ -1,15 +1,17 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_inverse_f64.c
  * Description:  Floating-point matrix inverse
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
+ * $Date:        18. March 2019
+ * $Revision:    V1.6.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -63,7 +65,7 @@ arm_status arm_mat_inverse_f64(
 #if defined (ARM_MATH_DSP)
 
   float64_t Xchg, in = 0.0, in1;                /* Temporary input values  */
-  uint32_t i, rowCnt, flag = 0U, j, loopCnt, k,l;      /* loop counters */
+  uint32_t i, rowCnt, flag = 0U, j, loopCnt, k, l;      /* loop counters */
   arm_status status;                             /* status of matrix inverse */
 
 #ifdef ARM_MATH_MATRIX_CHECK
@@ -174,18 +176,18 @@ arm_status arm_mat_inverse_f64(
       /* Temporary variable to hold the pivot value */
       in = *pInT1;
 
-    
+      /* Destination pointer modifier */
+      k = 1U;
 
       /* Check if the pivot element is zero */
       if (*pInT1 == 0.0)
       {
         /* Loop over the number rows present below */
-
-        for (i = 1U; i < numRows - l; i++)
+        for (i = (l + 1U); i < numRows; i++)
         {
           /* Update the input and destination pointers */
           pInT2 = pInT1 + (numCols * i);
-          pOutT2 = pOutT1 + (numCols * i);
+          pOutT2 = pOutT1 + (numCols * k);
 
           /* Check if there is a non zero pivot element to
            * replace in the rows below */
@@ -227,8 +229,11 @@ arm_status arm_mat_inverse_f64(
             break;
           }
 
+          /* Update the destination pointer modifier */
+          k++;
 
           /* Decrement loop counter */
+          i--;
         }
       }
 
@@ -368,7 +373,7 @@ arm_status arm_mat_inverse_f64(
 #else
 
   float64_t Xchg, in = 0.0;                     /* Temporary input values  */
-  uint32_t i, rowCnt, flag = 0U, j, loopCnt, l;      /* loop counters */
+  uint32_t i, rowCnt, flag = 0U, j, loopCnt, k, l;      /* loop counters */
   arm_status status;                             /* status of matrix inverse */
 
 #ifdef ARM_MATH_MATRIX_CHECK
@@ -479,15 +484,18 @@ arm_status arm_mat_inverse_f64(
       /* Temporary variable to hold the pivot value */
       in = *pInT1;
 
+      /* Destination pointer modifier */
+      k = 1U;
+
       /* Check if the pivot element is zero */
       if (*pInT1 == 0.0)
       {
         /* Loop over the number rows present below */
-        for (i = 1U; i < numRows-l; i++)
+        for (i = (l + 1U); i < numRows; i++)
         {
           /* Update the input and destination pointers */
           pInT2 = pInT1 + (numCols * i);
-          pOutT2 = pOutT1 + (numCols * i);
+          pOutT2 = pOutT1 + (numCols * k);
 
           /* Check if there is a non zero pivot element to
            * replace in the rows below */
@@ -516,9 +524,11 @@ arm_status arm_mat_inverse_f64(
             /* Break after exchange is done */
             break;
           }
+
+          /* Update the destination pointer modifier */
+          k++;
         }
       }
-
 
       /* Update the status if the matrix is singular */
       if ((flag != 1U) && (in == 0.0))
@@ -642,3 +652,5 @@ arm_status arm_mat_inverse_f64(
 /**
   @} end of MatrixInv group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

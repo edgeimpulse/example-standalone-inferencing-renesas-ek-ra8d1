@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_cholesky_f32.c
  * Description:  Floating-point Cholesky decomposition
  *
- * $Date:        05 October 2021
- * $Revision:    V1.9.1
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -221,9 +221,7 @@ arm_status arm_mat_cholesky_f32(
     f32x4_t acc, acc0, acc1, acc2, acc3;
     f32x4_t vecGi;
     f32x4_t vecGj,vecGj0,vecGj1,vecGj2,vecGj3;
-#if !defined(__aarch64__)
-    f32x2_t tmp = vdup_n_f32(0);   
-#endif    
+    f32x2_t tmp = vdup_n_f32(0);    
     float32_t sum=0.0f;
     float32_t sum0=0.0f,sum1=0.0f,sum2=0.0f,sum3=0.0f;
 
@@ -266,7 +264,7 @@ arm_status arm_mat_cholesky_f32(
              k+=4;
           }
 
-#if defined(__aarch64__)
+#if __aarch64__
           sum0 = vpadds_f32(vpadd_f32(vget_low_f32(acc0), vget_high_f32(acc0)));
           sum1 = vpadds_f32(vpadd_f32(vget_low_f32(acc1), vget_high_f32(acc1)));
           sum2 = vpadds_f32(vpadd_f32(vget_low_f32(acc2), vget_high_f32(acc2)));
@@ -324,7 +322,7 @@ arm_status arm_mat_cholesky_f32(
              k+=4;
           }
 
-#if defined(__aarch64__)
+#if __aarch64__
           sum = vpadds_f32(vpadd_f32(vget_low_f32(acc), vget_high_f32(acc)));
 #else
           tmp = vpadd_f32(vget_low_f32(acc), vget_high_f32(acc));
@@ -436,3 +434,5 @@ arm_status arm_mat_cholesky_f32(
 /**
   @} end of MatrixChol group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

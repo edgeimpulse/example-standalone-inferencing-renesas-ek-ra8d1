@@ -24,22 +24,28 @@
 
 #include <stdint.h>
 #include "model_metadata.h"
+#include "edge-impulse-sdk/classifier/ei_model_types.h"
 
-const char* ei_classifier_inferencing_categories[] = { "idle", "snake", "updown", "wave" };
+const char* ei_classifier_inferencing_categories[] = { "beer", "can" };
 
-uint8_t ei_dsp_config_3_axes[] = { 0, 1, 2 };
-const uint32_t ei_dsp_config_3_axes_size = 3;
-ei_dsp_config_spectral_analysis_t ei_dsp_config_3 = {
-    1,
-    3,
-    0.05096839959f,
-    "none",
-    3.0f,
-    6,
-    64,
-    3,
-    0.1f,
-    "0.1, 0.5, 1.0, 2.0, 5.0"
+uint8_t ei_dsp_config_3_axes[] = { 0 };
+const uint32_t ei_dsp_config_3_axes_size = 1;
+ei_dsp_config_image_t ei_dsp_config_3 = {
+    3, // uint32_t blockId
+    1, // int implementationVersion
+    1, // int length of axes
+    "RGB" // select channels
+};
+
+#define EI_DSP_PARAMS_GENERATED 1
+
+const ei_model_performance_calibration_t ei_calibration = {
+    1, /* integer version number */
+    false, /* has configured performance calibration */
+    (int32_t)(EI_CLASSIFIER_RAW_SAMPLE_COUNT / ((EI_CLASSIFIER_FREQUENCY > 0) ? EI_CLASSIFIER_FREQUENCY : 1)) * 1000, /* Model window */
+    0.8f, /* Default threshold */
+    (int32_t)(EI_CLASSIFIER_RAW_SAMPLE_COUNT / ((EI_CLASSIFIER_FREQUENCY > 0) ? EI_CLASSIFIER_FREQUENCY : 1)) * 500, /* Half of model window */
+    0   /* Don't use flags */
 };
 
 #endif // _EI_CLASSIFIER_MODEL_METADATA_H_

@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * Copyright (C) 2010-2021 Arm Limited or its affiliates. All rights reserved.
  *
@@ -21,8 +23,8 @@
  * Title:        arm_convolve_1x1_HWC_q7_fast_nonsquare.c
  * Description:  Fast Q7 version of 1x1 convolution (non-square shape)
  *
- * $Date:        July 20, 2021
- * $Revision:    V.1.1.2
+ * $Date:        January 26, 2021
+ * $Revision:    V.1.0.2
  *
  * Target Processor:  Cortex-M cores
  *
@@ -70,7 +72,7 @@
  * separable convolution.
  *
  * This function is the version with full list of optimization tricks, but with
- * some constraints:
+ * some contraints:
  *   ch_im_in is multiple of 4
  *   ch_im_out is multiple of 2
  *
@@ -100,7 +102,7 @@ arm_status arm_convolve_1x1_HWC_q7_fast_nonsquare(const q7_t *Im_in,
                                                   q7_t *bufferB)
 {
     (void)bufferB;
-#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_DSP)
     /* Run the following code for Cortex-M4 and Cortex-M7 */
     (void)dim_im_in_y;
     int16_t i_out_y, i_out_x;
@@ -233,3 +235,5 @@ arm_status arm_convolve_1x1_HWC_q7_fast_nonsquare(const q7_t *Im_in,
 /**
  * @} end of NNConv group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_svm_rbf_predict_f16.c
  * Description:  SVM Radial Basis Function Classifier
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -52,7 +52,7 @@
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "arm_vec_math_f16.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_math_f16.h"
 
 void arm_svm_rbf_predict_f16(
     const arm_svm_rbf_instance_f16 *S,
@@ -70,7 +70,7 @@ void arm_svm_rbf_predict_f16(
     uint32_t         blkCnt;     /* loop counters */
     const float16_t *pDualCoef = S->dualCoefficients;
     _Float16       sum = S->intercept;
-    f16x8_t         vSum = vdupq_n_f16(0.0f16);
+    f16x8_t         vSum = vdupq_n_f16(0);
 
     row = numRows;
 
@@ -97,10 +97,10 @@ void arm_svm_rbf_predict_f16(
         /*
          * reset accumulators
          */
-        acc0 = vdupq_n_f16(0.0f16);
-        acc1 = vdupq_n_f16(0.0f16);
-        acc2 = vdupq_n_f16(0.0f16);
-        acc3 = vdupq_n_f16(0.0f16);
+        acc0 = vdupq_n_f16(0.0f);
+        acc1 = vdupq_n_f16(0.0f);
+        acc2 = vdupq_n_f16(0.0f);
+        acc3 = vdupq_n_f16(0.0f);
 
         pSrcA0Vec = pInA0;
         pSrcA1Vec = pInA1;
@@ -170,7 +170,7 @@ void arm_svm_rbf_predict_f16(
 
         vSum =
             vfmaq_m_f16(vSum, vld1q(pDualCoef),
-                      vexpq_f16(vmulq_n_f16(vtmp, -(_Float16)S->gamma)),vctp16q(4));
+                      vexpq_f16(vmulq_n_f16(vtmp, -S->gamma)),vctp16q(4));
         pDualCoef += 4;
         pSrcA += numCols * 4;
         /*
@@ -199,8 +199,8 @@ void arm_svm_rbf_predict_f16(
         /*
          * reset accumulators
          */
-        acc0 = vdupq_n_f16(0.0f16);
-        acc1 = vdupq_n_f16(0.0f16);
+        acc0 = vdupq_n_f16(0.0f);
+        acc1 = vdupq_n_f16(0.0f);
         pSrcA0Vec = pInA0;
         pSrcA1Vec = pInA1;
 
@@ -248,7 +248,7 @@ void arm_svm_rbf_predict_f16(
 
         vSum =
             vfmaq_m_f16(vSum, vld1q(pDualCoef),
-                        vexpq_f16(vmulq_n_f16(vtmp, -(_Float16)S->gamma)), vctp16q(2));
+                        vexpq_f16(vmulq_n_f16(vtmp, -S->gamma)), vctp16q(2));
         pDualCoef += 2;
 
         pSrcA += numCols * 2;
@@ -309,12 +309,12 @@ void arm_svm_rbf_predict_f16(
 
         vSum =
             vfmaq_m_f16(vSum, vld1q(pDualCoef),
-                        vexpq_f16(vmulq_n_f16(vtmp, -(_Float16)S->gamma)), vctp16q(1));
+                        vexpq_f16(vmulq_n_f16(vtmp, -S->gamma)), vctp16q(1));
 
     }
 
 
-    sum += (_Float16)vecAddAcrossF16Mve(vSum);
+    sum += vecAddAcrossF16Mve(vSum);
     *pResult = S->classes[STEP(sum)];
 }
 
@@ -337,7 +337,7 @@ void arm_svm_rbf_predict_f16(
             dot = dot + SQ((_Float16)in[j] - (_Float16) *pSupport);
             pSupport++;
         }
-        sum += (_Float16)S->dualCoefficients[i] * (_Float16)expf((float32_t)(-(_Float16)S->gamma * (_Float16)dot));
+        sum += (_Float16)S->dualCoefficients[i] * (_Float16)expf(-(_Float16)S->gamma * dot);
     }
     *pResult=S->classes[STEP(sum)];
 }
@@ -350,3 +350,5 @@ void arm_svm_rbf_predict_f16(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

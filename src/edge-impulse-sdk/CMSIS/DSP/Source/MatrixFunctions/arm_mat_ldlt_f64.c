@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_ldl_f64.c
  * Description:  Floating-point LDL decomposition
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -32,30 +32,23 @@
 
 
 /// @private
-#define SWAP_ROWS_F64(A,i,j) \
-{                            \
-  int w;                     \
-  for(w=0;w < n; w++)        \
+#define SWAP_ROWS(A,i,j)     \
+  for(int w=0;w < n; w++)    \
   {                          \
      float64_t tmp;          \
      tmp = A[i*n + w];       \
      A[i*n + w] = A[j*n + w];\
      A[j*n + w] = tmp;       \
-  }                          \
-}
-
+  }
 /// @private
-#define SWAP_COLS_F64(A,i,j) \
-{                            \
-  int w;                     \
-  for(w=0;w < n; w++)        \
+#define SWAP_COLS(A,i,j)     \
+  for(int w=0;w < n; w++)    \
   {                          \
      float64_t tmp;          \
      tmp = A[w*n + i];       \
      A[w*n + i] = A[w*n + j];\
      A[w*n + j] = tmp;       \
-  }                          \
-}
+  }
 
 /**
   @ingroup groupMatrix
@@ -97,7 +90,8 @@ arm_status arm_mat_ldlt_f64(
   if ((pSrc->numRows != pSrc->numCols) ||
       (pl->numRows != pl->numCols) ||
       (pd->numRows != pd->numCols) ||
-      (pl->numRows != pd->numRows)   )
+      (pp->numRows != pp->numCols) ||
+      (pl->numRows != pl->numRows)   )
   {
     /* Set status as ARM_MATH_SIZE_MISMATCH */
     status = ARM_MATH_SIZE_MISMATCH;
@@ -112,12 +106,10 @@ arm_status arm_mat_ldlt_f64(
     int fullRank = 1, diag,k;
     float64_t *pA;
 
-    memset(pd->pData,0,sizeof(float64_t)*n*n);
-
     memcpy(pl->pData,pSrc->pData,n*n*sizeof(float64_t));
     pA = pl->pData;
 
-    for(k=0;k < n; k++)
+    for(int k=0;k < n; k++)
     {
       pp[k] = k;
     }
@@ -127,10 +119,10 @@ arm_status arm_mat_ldlt_f64(
     {
         /* Find pivot */
         float64_t m=F64_MIN,a;
-        int w,r,j=k; 
+        int j=k; 
 
 
-        for(r=k;r<n;r++)
+        for(int r=k;r<n;r++)
         {
            if (pA[r*n+r] > m)
            {
@@ -141,8 +133,8 @@ arm_status arm_mat_ldlt_f64(
 
         if(j != k)
         {
-          SWAP_ROWS_F64(pA,k,j);
-          SWAP_COLS_F64(pA,k,j);
+          SWAP_ROWS(pA,k,j);
+          SWAP_COLS(pA,k,j);
         }
 
 
@@ -157,16 +149,15 @@ arm_status arm_mat_ldlt_f64(
             break;
         }
 
-        for(w=k+1;w<n;w++)
+        for(int w=k+1;w<n;w++)
         {
-          int x;
-          for(x=k+1;x<n;x++)
+          for(int x=k+1;x<n;x++)
           {
              pA[w*n+x] = pA[w*n+x] - pA[w*n+k] * pA[x*n+k] / a;
           }
         }
 
-        for(w=k+1;w<n;w++)
+        for(int w=k+1;w<n;w++)
         {
                pA[w*n+k] = pA[w*n+k] / a;
         }
@@ -181,38 +172,27 @@ arm_status arm_mat_ldlt_f64(
     if (!fullRank)
     {
       diag--;
+      for(int row=0; row < n;row++)
       {
-        int row;
-        for(row=0; row < n;row++)
+        for(int col=k; col < n;col++)
         {
-          int col;
-          for(col=k; col < n;col++)
-          {
-             pl->pData[row*n+col]=0.0;
-          }
+           pl->pData[row*n+col]=0.0;
         }
       }
     }
 
+    for(int row=0; row < n;row++)
     {
-      int row;
-      for(row=0; row < n;row++)
-      {
-         int col;
-         for(col=row+1; col < n;col++)
-         {
-           pl->pData[row*n+col] = 0.0;
-         }
-      }
+       for(int col=row+1; col < n;col++)
+       {
+         pl->pData[row*n+col] = 0.0;
+       }
     }
 
+    for(int d=0; d < diag;d++)
     {
-      int d;
-      for(d=0; d < diag;d++)
-      {
-        pd->pData[d*n+d] = pl->pData[d*n+d];
-        pl->pData[d*n+d] = 1.0;
-      }
+      pd->pData[d*n+d] = pl->pData[d*n+d];
+      pl->pData[d*n+d] = 1.0;
     }
   
     status = ARM_MATH_SUCCESS;
@@ -227,3 +207,5 @@ arm_status arm_mat_ldlt_f64(
 /**
   @} end of MatrixChol group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

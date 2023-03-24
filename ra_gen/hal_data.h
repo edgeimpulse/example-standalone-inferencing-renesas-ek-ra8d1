@@ -6,6 +6,8 @@
 #include "common_data.h"
 #include "r_gpt.h"
 #include "r_timer_api.h"
+#include "r_dtc.h"
+#include "r_transfer_api.h"
 #include "r_sci_b_uart.h"
 #include "r_uart_api.h"
 FSP_HEADER
@@ -19,6 +21,22 @@ extern const timer_cfg_t g_timer0_cfg;
 #ifndef periodic_timer_msgq_cb
 void periodic_timer_msgq_cb(timer_callback_args_t *p_args);
 #endif
+/** Timer on GPT Instance. */
+extern const timer_instance_t g_timer1;
+
+/** Access the GPT instance using these structures when calling API functions directly (::p_api is not used). */
+extern gpt_instance_ctrl_t g_timer1_ctrl;
+extern const timer_cfg_t g_timer1_cfg;
+
+#ifndef NULL
+void NULL(timer_callback_args_t *p_args);
+#endif
+/* Transfer on DTC Instance. */
+extern const transfer_instance_t g_transfer0;
+
+/** Access the DTC instance using these structures when calling API functions directly (::p_api is not used). */
+extern dtc_instance_ctrl_t g_transfer0_ctrl;
+extern const transfer_cfg_t g_transfer0_cfg;
 /** UART on SCI Instance. */
 extern const uart_instance_t g_uart3;
 

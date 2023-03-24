@@ -1,4 +1,4 @@
-// Patched by Edge Impulse to include reference, CMSIS-NN and ARC kernels
+// Patched by Edge Impulse to include reference and hardware-accelerated kernels
 #include "../../../../classifier/ei_classifier_config.h"
 #if 0 == 1
 /* noop */
@@ -270,7 +270,7 @@ void EvalIntegerSVDF(TfLiteContext* context, TfLiteNode* node,
       context->GetScratchBuffer(context, data.scratch_output_tensor_index));
 
   int8_t* output_data = tflite::micro::GetTensorData<int8_t>(output_tensor);
-  arm_svdf_state_s16_s8(
+  arm_svdf_s8(
       &scratch_ctx, &scratch_output_ctx, &svdf_params, &in_quant_params,
       &out_quant_params, &input_dims,
       (int8_t*)tflite::micro::GetTensorData<int8_t>(input_tensor), &state_dims,

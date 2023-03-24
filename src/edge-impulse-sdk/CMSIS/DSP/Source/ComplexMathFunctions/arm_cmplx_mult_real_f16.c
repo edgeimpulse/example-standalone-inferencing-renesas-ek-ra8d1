@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_cmplx_mult_real_f16.c
  * Description:  Floating-point complex by real multiplication
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -79,7 +79,7 @@ void arm_cmplx_mult_real_f16(
         float16_t * pCmplxDst,
         uint32_t numSamples)
 {
-    static const uint16_t stride_cmplx_x_real_16[8] = {
+    const static uint16_t stride_cmplx_x_real_16[8] = {
         0, 0, 1, 1, 2, 2, 3, 3
         };
     uint32_t blockSizeC = numSamples * CMPLX_DIM;   /* loop counters */
@@ -141,20 +141,20 @@ void arm_cmplx_mult_real_f16(
 
     in = *pSrcReal++;
     /* store result in destination buffer. */
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
+    *pCmplxDst++ = *pSrcCmplx++ * in;
+    *pCmplxDst++ = *pSrcCmplx++ * in;
 
     in = *pSrcReal++;
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
+    *pCmplxDst++ = *pSrcCmplx++ * in;
+    *pCmplxDst++ = *pSrcCmplx++ * in;
 
     in = *pSrcReal++;
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
+    *pCmplxDst++ = *pSrcCmplx++ * in;
+    *pCmplxDst++ = *pSrcCmplx++ * in;
 
     in = *pSrcReal++;
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
+    *pCmplxDst++ = *pSrcCmplx++* in;
+    *pCmplxDst++ = *pSrcCmplx++ * in;
 
     /* Decrement loop counter */
     blkCnt--;
@@ -177,8 +177,8 @@ void arm_cmplx_mult_real_f16(
 
     in = *pSrcReal++;
     /* store result in destination buffer. */
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
-    *pCmplxDst++ = (_Float16)*pSrcCmplx++ * (_Float16)in;
+    *pCmplxDst++ = *pSrcCmplx++ * in;
+    *pCmplxDst++ = *pSrcCmplx++ * in;
 
     /* Decrement loop counter */
     blkCnt--;
@@ -192,3 +192,4 @@ void arm_cmplx_mult_real_f16(
  */
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

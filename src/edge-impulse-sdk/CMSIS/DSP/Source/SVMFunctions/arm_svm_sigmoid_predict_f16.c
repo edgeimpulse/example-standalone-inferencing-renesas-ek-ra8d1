@@ -1,15 +1,15 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_svm_sigmoid_predict_f16.c
  * Description:  SVM Sigmoid Classifier
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -52,7 +52,7 @@
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "arm_vec_math_f16.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_math_f16.h"
 
 void arm_svm_sigmoid_predict_f16(
     const arm_svm_sigmoid_instance_f16 *S,
@@ -295,7 +295,7 @@ void arm_svm_sigmoid_predict_f16(
                         vtanhq_f16(vaddq_n_f16(vmulq_n_f16(vtmp, S->gamma), S->coef0)),
                         vctp16q(1));
     }
-    sum += (_Float16)vecAddAcrossF16Mve(vSum);
+    sum += vecAddAcrossF16Mve(vSum);
 
     *pResult = S->classes[STEP(sum)];
 }
@@ -316,9 +316,9 @@ void arm_svm_sigmoid_predict_f16(
         dot=0.0f16;
         for(j=0; j < S->vectorDimension; j++)
         {
-            dot = (_Float16)dot + (_Float16)in[j] * (_Float16)*pSupport++;
+            dot = dot + (_Float16)in[j] * (_Float16)*pSupport++;
         }
-        sum += (_Float16)S->dualCoefficients[i] * (_Float16)tanhf((float32_t)((_Float16)S->gamma * (_Float16)dot + (_Float16)S->coef0));
+        sum += (_Float16)S->dualCoefficients[i] * (_Float16)tanhf((_Float16)S->gamma * dot + (_Float16)S->coef0);
     }
     *pResult=S->classes[STEP(sum)];
 }
@@ -331,3 +331,5 @@ void arm_svm_sigmoid_predict_f16(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

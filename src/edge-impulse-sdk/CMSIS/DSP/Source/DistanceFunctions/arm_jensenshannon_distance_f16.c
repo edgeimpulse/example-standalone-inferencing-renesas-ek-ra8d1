@@ -1,16 +1,16 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_jensenshannon_distance_f16.c
  * Description:  Jensen-Shannon distance between two vectors
  *
- * $Date:        23 April 2021
- * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M and Cortex-A cores
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -54,7 +54,7 @@
 /// @private
 __STATIC_INLINE float16_t rel_entr(float16_t x, float16_t y)
 {
-    return ((_Float16)x * (_Float16)logf((float32_t)((_Float16)x / (_Float16)y)));
+    return (x * logf(x / y));
 }
 #endif
 
@@ -62,7 +62,7 @@ __STATIC_INLINE float16_t rel_entr(float16_t x, float16_t y)
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "arm_vec_math_f16.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_math_f16.h"
 
 float16_t arm_jensenshannon_distance_f16(const float16_t *pA,const float16_t *pB, uint32_t blockSize)
 {
@@ -117,7 +117,7 @@ float16_t arm_jensenshannon_distance_f16(const float16_t *pA,const float16_t *pB
 
     }
 
-    arm_sqrt_f16((_Float16)vecAddAcrossF16Mve(accumV) / 2.0f16, &tmp);
+    arm_sqrt_f16(vecAddAcrossF16Mve(accumV) / 2.0f, &tmp);
     return (tmp);
 }
 
@@ -162,7 +162,7 @@ float16_t arm_jensenshannon_distance_f16(const float16_t *pA,const float16_t *pB
 
 
     sum = left + right;
-    arm_sqrt_f16((_Float16)sum/2.0f16, &result);
+    arm_sqrt_f16(sum/2.0f, &result);
     return(result);
 
 }
@@ -175,3 +175,5 @@ float16_t arm_jensenshannon_distance_f16(const float16_t *pA,const float16_t *pB
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

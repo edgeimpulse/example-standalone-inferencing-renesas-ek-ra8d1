@@ -26,7 +26,7 @@
 #include <stdint.h>
 
 
-static volatile uint64_t _ms_time = 0;
+static volatile uint32_t _ms_time = 0;
 volatile bool _timer_1_set = false;
 
 /* public functions */
@@ -38,6 +38,21 @@ void ei_timer_init(void)
     fsp_err_t err = FSP_SUCCESS;
 
     err = R_GPT_Open (&g_timer0_ctrl, &g_timer0_cfg);
+    if (err != FSP_SUCCESS)
+    {
+        while(1) {
+            __NOP();
+        }
+    }
+
+    /* timer 1 */
+    err = R_GPT_Open (&g_timer1_ctrl, &g_timer1_cfg);
+    if (err != FSP_SUCCESS)
+    {
+        while(1) {
+            __NOP();
+        }
+    }
 
     if (FSP_SUCCESS != err)
     {
@@ -55,6 +70,17 @@ void ei_timer0_start(void)
 
     /* Start GPT module - no error control for now */
     err = R_GPT_Start (&g_timer0_ctrl);
+    err = R_GPT_Start (&g_timer1_ctrl);
+
+    timer_status_t status;
+    (void) R_GPT_StatusGet(&g_timer1_ctrl, &status);
+
+    if (status.state == TIMER_STATE_STOPPED) {
+        while (1)
+        {
+            __NOP();
+        }
+    }
 
     _ms_time = 0;
 }
@@ -92,7 +118,21 @@ void periodic_timer_msgq_cb(timer_callback_args_t *p_args)
  *
  * @return
  */
-uint64_t timer_get_ms(void)
+uint32_t timer_get_ms(void)
 {
+
+    /* Read the current counter value. Counter value is in status.counter. */
+    timer_status_t status;
+    (void) R_GPT_StatusGet(&g_timer0_ctrl, &status);
     return _ms_time;
+    return status.counter;
+}
+
+uint32_t timer_get_us(void)
+{
+    /* Read the current counter value. Counter value is in status.counter. */
+    timer_status_t status;
+    (void) R_GPT_StatusGet(&g_timer1_ctrl, &status);
+
+    return (status.counter);
 }

@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * Copyright (C) 2010-2020 Arm Limited or its affiliates. All rights reserved.
  *
@@ -21,8 +23,8 @@
  * Title:        arm_fully_connected_mat_q7_vec_q15_opt.c
  * Description:  Mixed Q15-Q7 opt fully-connected layer function
  *
- * $Date:        20. July 2021
- * $Revision:    V.1.1.1
+ * $Date:        09. October 2020
+ * $Revision:    V.1.0.1
  *
  * Target Processor:  Cortex-M cores
  *
@@ -125,7 +127,7 @@ arm_status arm_fully_connected_mat_q7_vec_q15_opt(const q15_t *pV,
 {
 
     (void)vec_buffer;
-#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_DSP)
     /* Run the following code for Cortex-M4 and Cortex-M7 */
 
     const q7_t *pB = pM;
@@ -415,3 +417,5 @@ arm_status arm_fully_connected_mat_q7_vec_q15_opt(const q15_t *pV,
 /**
  * @} end of FC group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

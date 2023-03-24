@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * Copyright (C) 2010-2021 Arm Limited or its affiliates.
+ * Copyright (C) 2010-2021 Arm Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -68,11 +70,6 @@ arm_status arm_depthwise_conv_s8_opt(const cmsis_nn_context *ctx,
     if (input_ch != output_ch)
     {
         return ARM_MATH_SIZE_MISMATCH;
-    }
-
-    if (ctx->buf == NULL && arm_depthwise_conv_s8_opt_get_buffer_size(input_dims, filter_dims) > 0)
-    {
-        return ARM_MATH_ARGUMENT_ERROR;
     }
 #ifdef ARM_MATH_DSP
     const int32_t input_x = input_dims->w;
@@ -431,3 +428,5 @@ int32_t arm_depthwise_conv_s8_opt_get_buffer_size(const cmsis_nn_dims *input_dim
 /**
  * @} end of NNConv group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

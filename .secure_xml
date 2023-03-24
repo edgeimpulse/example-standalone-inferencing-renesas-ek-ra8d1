@@ -43,7 +43,7 @@
     <node id="board.clock.clock.source" option="board.clock.clock.source.pll1p"/>
     <node id="board.clock.clkout.source" option="board.clock.clkout.source.disabled"/>
     <node id="board.clock.sciclk.source" option="board.clock.sciclk.source.pll1p"/>
-    <node id="board.clock.spiclk.source" option="board.clock.spiclk.source.disabled"/>
+    <node id="board.clock.spiclk.source" option="board.clock.spiclk.source.pll1p"/>
     <node id="board.clock.canfdclk.source" option="board.clock.canfdclk.source.disabled"/>
     <node id="board.clock.adcclk.source" option="board.clock.adcclk.source.disabled"/>
     <node id="board.clock.lcdclk.source" option="board.clock.lcdclk.source.disabled"/>
@@ -64,7 +64,7 @@
     <node id="board.clock.fclk.div" option="board.clock.fclk.div.8"/>
     <node id="board.clock.clkout.div" option="board.clock.clkout.div.1"/>
     <node id="board.clock.sciclk.div" option="board.clock.sciclk.div.4"/>
-    <node id="board.clock.spiclk.div" option="board.clock.spiclk.div.2"/>
+    <node id="board.clock.spiclk.div" option="board.clock.spiclk.div.8"/>
     <node id="board.clock.canfdclk.div" option="board.clock.canfdclk.div.6"/>
     <node id="board.clock.i3cclk.div" option="board.clock.i3cclk.div.1"/>
     <node id="board.clock.adcclk.div" option="board.clock.adcclk.div.1"/>
@@ -97,67 +97,10 @@
   <raModuleConfiguration/>
   <raPinConfiguration>
     <pincfg active="true" name="" symbol="">
-      <configSetting altId="adc0.an000.p004" configurationId="adc0.an000"/>
-      <configSetting altId="adc0.an001.p005" configurationId="adc0.an001"/>
-      <configSetting altId="adc0.an004.p007" configurationId="adc0.an004"/>
-      <configSetting altId="adc0.an007.p014" configurationId="adc0.an007"/>
-      <configSetting altId="adc1.an102.p002" configurationId="adc1.an102"/>
-      <configSetting altId="adc1.an104.p003" configurationId="adc1.an104"/>
-      <configSetting altId="adc1.an105.p015" configurationId="adc1.an105"/>
-      <configSetting altId="adc1.an106.p011" configurationId="adc1.an106"/>
-      <configSetting altId="ceu.vio_clk.p708" configurationId="ceu.vio_clk"/>
-      <configSetting altId="ceu.vio_d0.p400" configurationId="ceu.vio_d0"/>
-      <configSetting altId="ceu.vio_d12.p415" configurationId="ceu.vio_d12"/>
-      <configSetting altId="ceu.vio_hd.p709" configurationId="ceu.vio_hd"/>
-      <configSetting altId="ceu.vio_vd.p710" configurationId="ceu.vio_vd"/>
-      <configSetting altId="ether_rmii.et0_linksta.p403" configurationId="ether_rmii.et0_linksta"/>
-      <configSetting altId="ether_rmii.et0_mdc.p401" configurationId="ether_rmii.et0_mdc"/>
-      <configSetting altId="ether_rmii.et0_mdio.p402" configurationId="ether_rmii.et0_mdio"/>
-      <configSetting altId="ether_rmii.ref50ck0.p701" configurationId="ether_rmii.ref50ck0"/>
-      <configSetting altId="ether_rmii.rmii0_crs_dv.p705" configurationId="ether_rmii.rmii0_crs_dv"/>
-      <configSetting altId="ether_rmii.rmii0_rx_er.p704" configurationId="ether_rmii.rmii0_rx_er"/>
-      <configSetting altId="ether_rmii.rmii0_rxd0.p702" configurationId="ether_rmii.rmii0_rxd0"/>
-      <configSetting altId="ether_rmii.rmii0_rxd1.p703" configurationId="ether_rmii.rmii0_rxd1"/>
-      <configSetting altId="ether_rmii.rmii0_txd0.p700" configurationId="ether_rmii.rmii0_txd0"/>
-      <configSetting altId="ether_rmii.rmii0_txd1.p406" configurationId="ether_rmii.rmii0_txd1"/>
-      <configSetting altId="ether_rmii.rmii0_txd_en.p405" configurationId="ether_rmii.rmii0_txd_en"/>
-      <configSetting altId="glcd.lcd_clk.p806" configurationId="glcd.lcd_clk"/>
-      <configSetting altId="glcd.lcd_data0.p914" configurationId="glcd.lcd_data0"/>
-      <configSetting altId="glcd.lcd_data1.p915" configurationId="glcd.lcd_data1"/>
-      <configSetting altId="glcd.lcd_data10.p711" configurationId="glcd.lcd_data10"/>
-      <configSetting altId="glcd.lcd_data11.p712" configurationId="glcd.lcd_data11"/>
-      <configSetting altId="glcd.lcd_data12.p713" configurationId="glcd.lcd_data12"/>
-      <configSetting altId="glcd.lcd_data13.p714" configurationId="glcd.lcd_data13"/>
-      <configSetting altId="glcd.lcd_data14.p715" configurationId="glcd.lcd_data14"/>
-      <configSetting altId="glcd.lcd_data15.pb07" configurationId="glcd.lcd_data15"/>
-      <configSetting altId="glcd.lcd_data16.pb06" configurationId="glcd.lcd_data16"/>
-      <configSetting altId="glcd.lcd_data17.pb05" configurationId="glcd.lcd_data17"/>
-      <configSetting altId="glcd.lcd_data18.pb01" configurationId="glcd.lcd_data18"/>
-      <configSetting altId="glcd.lcd_data19.pb04" configurationId="glcd.lcd_data19"/>
-      <configSetting altId="glcd.lcd_data2.p910" configurationId="glcd.lcd_data2"/>
-      <configSetting altId="glcd.lcd_data20.pb03" configurationId="glcd.lcd_data20"/>
-      <configSetting altId="glcd.lcd_data21.pb02" configurationId="glcd.lcd_data21"/>
-      <configSetting altId="glcd.lcd_data22.pb00" configurationId="glcd.lcd_data22"/>
-      <configSetting altId="glcd.lcd_data23.p707" configurationId="glcd.lcd_data23"/>
-      <configSetting altId="glcd.lcd_data3.p911" configurationId="glcd.lcd_data3"/>
-      <configSetting altId="glcd.lcd_data4.p912" configurationId="glcd.lcd_data4"/>
-      <configSetting altId="glcd.lcd_data5.p913" configurationId="glcd.lcd_data5"/>
-      <configSetting altId="glcd.lcd_data6.p904" configurationId="glcd.lcd_data6"/>
-      <configSetting altId="glcd.lcd_data7.p903" configurationId="glcd.lcd_data7"/>
-      <configSetting altId="glcd.lcd_data8.p902" configurationId="glcd.lcd_data8"/>
-      <configSetting altId="glcd.lcd_data9.p207" configurationId="glcd.lcd_data9"/>
-      <configSetting altId="glcd.lcd_extclk.p514" configurationId="glcd.lcd_extclk"/>
-      <configSetting altId="glcd.lcd_tcon0.p805" configurationId="glcd.lcd_tcon0"/>
-      <configSetting altId="glcd.lcd_tcon1.p807" configurationId="glcd.lcd_tcon1"/>
-      <configSetting altId="glcd.lcd_tcon2.p513" configurationId="glcd.lcd_tcon2"/>
-      <configSetting altId="glcd.lcd_tcon3.p515" configurationId="glcd.lcd_tcon3"/>
-      <configSetting altId="iic1.scl1.p512" configurationId="iic1.scl1"/>
-      <configSetting altId="iic1.sda1.p511" configurationId="iic1.sda1"/>
       <configSetting altId="jtag_fslash_swd.tck.p211" configurationId="jtag_fslash_swd.tck"/>
       <configSetting altId="jtag_fslash_swd.tdi.p208" configurationId="jtag_fslash_swd.tdi"/>
       <configSetting altId="jtag_fslash_swd.tdo.p209" configurationId="jtag_fslash_swd.tdo"/>
       <configSetting altId="jtag_fslash_swd.tms.p210" configurationId="jtag_fslash_swd.tms"/>
-      <configSetting altId="mipi.dsi_te.p206" configurationId="mipi.dsi_te"/>
       <configSetting altId="ospi.om_cs1.p104" configurationId="ospi.om_cs1"/>
       <configSetting altId="ospi.om_dqs.p801" configurationId="ospi.om_dqs"/>
       <configSetting altId="ospi.om_ecsint1.p105" configurationId="ospi.om_ecsint1"/>
@@ -189,14 +132,8 @@
       <configSetting altId="pa07.input" configurationId="pa07"/>
       <configSetting altId="pa11.input" configurationId="pa11"/>
       <configSetting altId="pa13.output.low" configurationId="pa13"/>
-      <configSetting altId="sci2.cts_rts2.pa05" configurationId="sci2.cts_rts2"/>
-      <configSetting altId="sci2.rxd2.pa02" configurationId="sci2.rxd2"/>
-      <configSetting altId="sci2.sck2.pa04" configurationId="sci2.sck2"/>
-      <configSetting altId="sci2.txd2.pa03" configurationId="sci2.txd2"/>
       <configSetting altId="sci3.rxd3.p408" configurationId="sci3.rxd3" isUsedByDriver="true"/>
       <configSetting altId="sci3.txd3.p409" configurationId="sci3.txd3" isUsedByDriver="true"/>
-      <configSetting altId="sci9.rxd9.pa15" configurationId="sci9.rxd9"/>
-      <configSetting altId="sci9.txd9.pa14" configurationId="sci9.txd9"/>
       <configSetting altId="sdram.a1.p300" configurationId="sdram.a1"/>
       <configSetting altId="sdram.a10.p309" configurationId="sdram.a10"/>
       <configSetting altId="sdram.a11.p310" configurationId="sdram.a11"/>
@@ -236,10 +173,6 @@
       <configSetting altId="sdram.sdclk.pa09" configurationId="sdram.sdclk"/>
       <configSetting altId="sdram.sdcs.p115" configurationId="sdram.sdcs"/>
       <configSetting altId="sdram.we.p114" configurationId="sdram.we"/>
-      <configSetting altId="spi1.miso1.p410" configurationId="spi1.miso1"/>
-      <configSetting altId="spi1.mosi1.p411" configurationId="spi1.mosi1"/>
-      <configSetting altId="spi1.rspck1.p412" configurationId="spi1.rspck1"/>
-      <configSetting altId="spi1.sslb0.p413" configurationId="spi1.sslb0"/>
       <configSetting altId="usbfs.usb_dm.p815" configurationId="usbfs.usb_dm"/>
       <configSetting altId="usbfs.usb_dp.p814" configurationId="usbfs.usb_dp"/>
       <configSetting altId="usbfs.usb_ovrcura.p501" configurationId="usbfs.usb_ovrcura"/>
