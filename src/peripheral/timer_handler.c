@@ -120,11 +120,11 @@ void periodic_timer_msgq_cb(timer_callback_args_t *p_args)
  */
 uint32_t timer_get_ms(void)
 {
+    return _ms_time;
 
     /* Read the current counter value. Counter value is in status.counter. */
     timer_status_t status;
     (void) R_GPT_StatusGet(&g_timer0_ctrl, &status);
-    return _ms_time;
     return status.counter;
 }
 

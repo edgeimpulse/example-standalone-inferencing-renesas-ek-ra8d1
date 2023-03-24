@@ -58,8 +58,8 @@ int ei_main()
             EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE, sizeof(features) / sizeof(float));
         return 1;
     }
-
     ei_impulse_result_t result = { 0 };
+    ei_timer0_start();
 
     while (1) {
         // the features are stored into flash, and we don't want to load everything into RAM
