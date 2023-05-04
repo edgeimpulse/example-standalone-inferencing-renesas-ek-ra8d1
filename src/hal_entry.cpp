@@ -11,6 +11,14 @@ FSP_CPP_FOOTER
  **********************************************************************************************************************/
 void hal_entry(void)
 {
+    SCB->ICIALLU = 0UL;
+
+    __DSB();
+    __ISB();
+
+    SCB_EnableICache();
+    SCB_EnableDCache();
+
     ei_init();  /* TODO ret value ? */
     ei_main();
 #if BSP_TZ_SECURE_BUILD

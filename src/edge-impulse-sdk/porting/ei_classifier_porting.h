@@ -20,7 +20,6 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include "edge-impulse-sdk/tensorflow/lite/micro/debug_log.h"
 
 #if defined(__cplusplus) && EI_C_LINKAGE == 1
 extern "C" {
@@ -124,14 +123,6 @@ void ei_free(void *ptr);
 #define EI_PORTING_ARDUINO      1
 #else
 #define EI_PORTING_ARDUINO      0
-#endif
-#endif
-
-#ifndef EI_PORTING_ECM3532
-#ifdef ECM3532
-#define EI_PORTING_ECM3532      1
-#else
-#define EI_PORTING_ECM3532      0
 #endif
 #endif
 

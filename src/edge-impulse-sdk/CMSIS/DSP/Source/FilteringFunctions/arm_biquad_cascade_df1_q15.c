@@ -1,17 +1,15 @@
-#include "edge-impulse-sdk/dsp/config.hpp"
-#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_biquad_cascade_df1_q15.c
  * Description:  Processing function for the Q15 Biquad cascade DirectFormI(DF1) filter
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -105,9 +103,9 @@ void arm_biquad_cascade_df1_q15(
         bCoeffs1[6] = a1;
 
         bCoeffs2 =
-            vsetq_lane_s32(vgetq_lane_s32((q31x4_t) bCoeffs0, 3), (q31x4_t) bCoeffs2, 3);
+            (q15x8_t)vsetq_lane_s32(vgetq_lane_s32((q31x4_t) bCoeffs0, 3), (q31x4_t) bCoeffs2, 3);
         bCoeffs3 =
-            vsetq_lane_s32(vgetq_lane_s32((q31x4_t) bCoeffs1, 3), (q31x4_t) bCoeffs3, 3);
+            (q15x8_t)vsetq_lane_s32(vgetq_lane_s32((q31x4_t) bCoeffs1, 3), (q31x4_t) bCoeffs3, 3);
 
 
         /* 2 first elements are garbage, will be updated with history */
@@ -618,5 +616,3 @@ void arm_biquad_cascade_df1_q15(
 /**
   @} end of BiquadCascadeDF1 group
  */
-
-#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

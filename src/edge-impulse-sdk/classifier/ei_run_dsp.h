@@ -22,9 +22,7 @@
 #include "edge-impulse-sdk/dsp/spectral/spectral.hpp"
 #include "edge-impulse-sdk/dsp/speechpy/speechpy.hpp"
 #include "edge-impulse-sdk/classifier/ei_signal_with_range.h"
-#ifdef EI_CLASSIFIER_HAS_MODEL_VARIABLES
-#include "model-parameters/model_variables.h"
-#endif
+#include "model-parameters/model_metadata.h"
 
 #if defined(__cplusplus) && EI_C_LINKAGE == 1
 extern "C" {
@@ -1263,7 +1261,8 @@ __attribute__((unused)) int extract_drpai_features_quantized(signal_t *signal, m
 #endif //(EI_CLASSIFIER_TFLITE_INPUT_QUANTIZED == 1) && (EI_CLASSIFIER_INFERENCING_ENGINE == EI_CLASSIFIER_DRPAI)
 
 #if (EI_CLASSIFIER_TFLITE_INPUT_QUANTIZED == 1) && (EI_CLASSIFIER_INFERENCING_ENGINE != EI_CLASSIFIER_DRPAI)
-__attribute__((unused)) int extract_image_features_quantized(const ei_impulse_t *impulse, signal_t *signal, matrix_i8_t *output_matrix, void *config_ptr, const float frequency) {
+
+__attribute__((unused)) int extract_image_features_quantized(signal_t *signal, matrix_i8_t *output_matrix, void *config_ptr, float scale, float zero_point, const float frequency) {
     ei_dsp_config_image_t config = *((ei_dsp_config_image_t*)config_ptr);
 
     int16_t channel_count = strcmp(config.channels, "Grayscale") == 0 ? 1 : 3;
@@ -1300,14 +1299,14 @@ __attribute__((unused)) int extract_image_features_quantized(const ei_impulse_t 
 
             if (channel_count == 3) {
                 // fast code path
-                if (impulse->tflite_input_scale == 0.003921568859368563f && impulse->tflite_input_zeropoint == -128) {
+                if (scale == 0.003921568859368563f && zero_point == -128) {
                     int32_t r = static_cast<int32_t>(pixel >> 16 & 0xff);
                     int32_t g = static_cast<int32_t>(pixel >> 8 & 0xff);
                     int32_t b = static_cast<int32_t>(pixel & 0xff);
 
-                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(r + impulse->tflite_input_zeropoint);
-                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(g + impulse->tflite_input_zeropoint);
-                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(b + impulse->tflite_input_zeropoint);
+                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(r + zero_point);
+                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(g + zero_point);
+                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(b + zero_point);
                 }
                 // slow code path
                 else {
@@ -1315,14 +1314,14 @@ __attribute__((unused)) int extract_image_features_quantized(const ei_impulse_t 
                     float g = static_cast<float>(pixel >> 8 & 0xff) / 255.0f;
                     float b = static_cast<float>(pixel & 0xff) / 255.0f;
 
-                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(round(r / impulse->tflite_input_scale) + impulse->tflite_input_zeropoint);
-                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(round(g / impulse->tflite_input_scale) + impulse->tflite_input_zeropoint);
-                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(round(b / impulse->tflite_input_scale) + impulse->tflite_input_zeropoint);
+                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(round(r / scale) + zero_point);
+                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(round(g / scale) + zero_point);
+                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(round(b / scale) + zero_point);
                 }
             }
             else {
                 // fast code path
-                if (impulse->tflite_input_scale == 0.003921568859368563f && impulse->tflite_input_zeropoint == -128) {
+                if (scale == 0.003921568859368563f && zero_point == -128) {
                     int32_t r = static_cast<int32_t>(pixel >> 16 & 0xff);
                     int32_t g = static_cast<int32_t>(pixel >> 8 & 0xff);
                     int32_t b = static_cast<int32_t>(pixel & 0xff);
@@ -1331,7 +1330,7 @@ __attribute__((unused)) int extract_image_features_quantized(const ei_impulse_t 
                     // see: https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert
                     int32_t gray = (iRedToGray * r) + (iGreenToGray * g) + (iBlueToGray * b);
                     gray >>= 16; // scale down to int8_t
-                    gray += impulse->tflite_input_zeropoint;
+                    gray += zero_point;
                     if (gray < - 128) gray = -128;
                     else if (gray > 127) gray = 127;
                     output_matrix->buffer[output_ix++] = static_cast<int8_t>(gray);
@@ -1345,14 +1344,14 @@ __attribute__((unused)) int extract_image_features_quantized(const ei_impulse_t 
                     // ITU-R 601-2 luma transform
                     // see: https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert
                     float v = (0.299f * r) + (0.587f * g) + (0.114f * b);
-                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(round(v / impulse->tflite_input_scale) + impulse->tflite_input_zeropoint);
+                    output_matrix->buffer[output_ix++] = static_cast<int8_t>(round(v / scale) + zero_point);
                 }
             }
         }
 
         bytes_left -= elements_to_read;
-    }
 
+    }
     return EIDSP_OK;
 }
 #endif // (EI_CLASSIFIER_TFLITE_INPUT_QUANTIZED == 1) && (EI_CLASSIFIER_INFERENCING_ENGINE != EI_CLASSIFIER_DRPAI)

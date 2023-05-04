@@ -100,8 +100,8 @@
       <property id="config.bsp.fsp.mcu.canfd.max_data_rate_hz" value="5"/>
     </config>
     <config id="config.bsp.ra">
-      <property id="config.bsp.common.main" value="0x20000"/>
-      <property id="config.bsp.common.heap" value="0x3e800"/>
+      <property id="config.bsp.common.main" value="0x1000"/>
+      <property id="config.bsp.common.heap" value="0xA0000"/>
       <property id="config.bsp.common.vcc" value="3300"/>
       <property id="config.bsp.common.checking" value="config.bsp.common.checking.disabled"/>
       <property id="config.bsp.common.assert" value="config.bsp.common.assert.none"/>
@@ -129,9 +129,9 @@
     <node id="board.clock.pll.display" option="board.clock.pll.display.value"/>
     <node id="board.clock.pll1p.div" option="board.clock.pll1p.div.2"/>
     <node id="board.clock.pll1p.display" option="board.clock.pll1p.display.value"/>
-    <node id="board.clock.pll1q.div" option="board.clock.pll1q.div.6"/>
+    <node id="board.clock.pll1q.div" option="board.clock.pll1q.div.2"/>
     <node id="board.clock.pll1q.display" option="board.clock.pll1q.display.value"/>
-    <node id="board.clock.pll1r.div" option="board.clock.pll1r.div.6"/>
+    <node id="board.clock.pll1r.div" option="board.clock.pll1r.div.2"/>
     <node id="board.clock.pll1r.display" option="board.clock.pll1r.display.value"/>
     <node id="board.clock.pll2.source" option="board.clock.pll2.source.disabled"/>
     <node id="board.clock.pll2.div" option="board.clock.pll2.div.1"/>
@@ -145,8 +145,8 @@
     <node id="board.clock.pll2r.display" option="board.clock.pll2r.display.value"/>
     <node id="board.clock.clock.source" option="board.clock.clock.source.pll1p"/>
     <node id="board.clock.clkout.source" option="board.clock.clkout.source.disabled"/>
-    <node id="board.clock.sciclk.source" option="board.clock.sciclk.source.pll1p"/>
-    <node id="board.clock.spiclk.source" option="board.clock.spiclk.source.pll1p"/>
+    <node id="board.clock.sciclk.source" option="board.clock.sciclk.source.pll1q"/>
+    <node id="board.clock.spiclk.source" option="board.clock.spiclk.source.pll1r"/>
     <node id="board.clock.canfdclk.source" option="board.clock.canfdclk.source.disabled"/>
     <node id="board.clock.adcclk.source" option="board.clock.adcclk.source.disabled"/>
     <node id="board.clock.lcdclk.source" option="board.clock.lcdclk.source.disabled"/>
@@ -160,13 +160,13 @@
     <node id="board.clock.pclkb.div" option="board.clock.pclkb.div.8"/>
     <node id="board.clock.pclkc.div" option="board.clock.pclkc.div.8"/>
     <node id="board.clock.pclkd.div" option="board.clock.pclkd.div.4"/>
-    <node id="board.clock.pclke.div" option="board.clock.pclke.div.4"/>
+    <node id="board.clock.pclke.div" option="board.clock.pclke.div.2"/>
     <node id="board.clock.sdclkout.enable" option="board.clock.sdclkout.enable.enabled"/>
     <node id="board.clock.bclk.div" option="board.clock.bclk.div.4"/>
     <node id="board.clock.bclkout.div" option="board.clock.bclkout.div.2"/>
     <node id="board.clock.fclk.div" option="board.clock.fclk.div.8"/>
     <node id="board.clock.clkout.div" option="board.clock.clkout.div.1"/>
-    <node id="board.clock.sciclk.div" option="board.clock.sciclk.div.4"/>
+    <node id="board.clock.sciclk.div" option="board.clock.sciclk.div.8"/>
     <node id="board.clock.spiclk.div" option="board.clock.spiclk.div.8"/>
     <node id="board.clock.canfdclk.div" option="board.clock.canfdclk.div.6"/>
     <node id="board.clock.i3cclk.div" option="board.clock.i3cclk.div.1"/>
@@ -232,10 +232,6 @@
     </component>
     <component apiversion="" class="HAL Drivers" condition="" group="all" subgroup="r_gpt" variant="" vendor="Renesas" version="4.1.0-beta.0">
       <description>General PWM Timer</description>
-      <originalPack>Renesas.RA.4.1.0-beta.0.pack</originalPack>
-    </component>
-    <component apiversion="" class="HAL Drivers" condition="" group="all" subgroup="r_dtc" variant="" vendor="Renesas" version="4.1.0-beta.0">
-      <description>Data Transfer Controller</description>
       <originalPack>Renesas.RA.4.1.0-beta.0.pack</originalPack>
     </component>
   </raComponentSelection>
@@ -376,25 +372,9 @@
       <property id="module.driver.timer.gtioca_disable_setting" value="module.driver.timer.gtioca_disable_setting.gtioc_disable_prohibited"/>
       <property id="module.driver.timer.gtiocb_disable_setting" value="module.driver.timer.gtiocb_disable_setting.gtioc_disable_prohibited"/>
     </module>
-    <module id="module.driver.transfer_on_dtc.1297756420">
-      <property id="module.driver.transfer.name" value="g_transfer0"/>
-      <property id="module.driver.transfer.mode" value="module.driver.transfer.mode.mode_normal"/>
-      <property id="module.driver.transfer.size" value="module.driver.transfer.size.size_2_byte"/>
-      <property id="module.driver.transfer.dest_addr_mode" value="module.driver.transfer.dest_addr_mode.addr_mode_fixed"/>
-      <property id="module.driver.transfer.src_addr_mode" value="module.driver.transfer.src_addr_mode.addr_mode_fixed"/>
-      <property id="module.driver.transfer.repeat_area" value="module.driver.transfer.repeat_area.repeat_area_source"/>
-      <property id="module.driver.transfer.p_dest" value="NULL"/>
-      <property id="module.driver.transfer.p_src" value="NULL"/>
-      <property id="module.driver.transfer.interrupt" value="module.driver.transfer.interrupt.interrupt_end"/>
-      <property id="module.driver.transfer.length" value="0"/>
-      <property id="module.driver.transfer.num_blocks" value="0"/>
-      <property id="module.driver.transfer.activation_source" value="_disabled"/>
-    </module>
     <context id="_hal.0">
       <stack module="module.driver.ioport_on_ioport.0"/>
-      <stack module="module.driver.uart_on_sci_b_uart.1159137766">
-        <stack module="module.driver.transfer_on_dtc.1297756420" requires="module.driver.uart_on_sci_b_uart.requires.transfer_tx"/>
-      </stack>
+      <stack module="module.driver.uart_on_sci_b_uart.1159137766"/>
       <stack module="module.driver.timer_on_gpt.2075788462"/>
       <stack module="module.driver.timer_on_gpt.1154452971"/>
     </context>
@@ -404,12 +384,8 @@
     <config id="config.driver.sci_b_uart">
       <property id="config.driver.sci_b_uart.param_checking_enable" value="config.driver.sci_b_uart.param_checking_enable.bsp"/>
       <property id="config.driver.sci_b_uart.fifo_support" value="config.driver.sci_b_uart.fifo_support.disabled"/>
-      <property id="config.driver.sci_b_uart.dtc_support" value="config.driver.sci_b_uart.dtc_support.enabled"/>
+      <property id="config.driver.sci_b_uart.dtc_support" value="config.driver.sci_b_uart.dtc_support.disabled"/>
       <property id="config.driver.sci_b_uart.flow_control" value="config.driver.sci_b_uart.flow_control.disabled"/>
-    </config>
-    <config id="config.driver.dtc">
-      <property id="config.driver.dtc.param_checking_enable" value="config.driver.dtc.param_checking_enable.bsp"/>
-      <property id="config.driver.dtc.vector_table" value=".fsp_dtc_vector_table"/>
     </config>
     <config id="config.driver.gpt">
       <property id="config.driver.gpt.param_checking_enable" value="config.driver.gpt.param_checking_enable.bsp"/>

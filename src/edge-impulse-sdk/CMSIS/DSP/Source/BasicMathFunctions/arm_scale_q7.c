@@ -1,17 +1,15 @@
-#include "edge-impulse-sdk/dsp/config.hpp"
-#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_scale_q7.c
  * Description:  Multiplies a Q7 vector by a scalar
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -57,7 +55,6 @@
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
 
-
 void arm_scale_q7(
     const q7_t * pSrc,
     q7_t   scaleFract,
@@ -68,6 +65,7 @@ void arm_scale_q7(
     uint32_t  blkCnt;           /* loop counters */
     q7x16_t vecSrc;
     q7x16_t vecDst;
+    q15x8_t low, high;
 
 
     /* Compute 16 outputs at a time */
@@ -80,8 +78,14 @@ void arm_scale_q7(
          * Scale the input and then store the result in the destination buffer.
          */
         vecSrc = vld1q(pSrc);
-        vecDst = vmulhq(vecSrc, vdupq_n_s8(scaleFract));
-        vecDst = vqshlq_r(vecDst, shift + 1);
+
+        low = vmullbq_int(vecSrc, vdupq_n_s8(scaleFract));
+        low = vqshlq_r(low, shift);
+        vecDst = vqshrnbq_n_s16(vecDst,low,7);
+        high = vmulltq_int(vecSrc, vdupq_n_s8(scaleFract));
+        high = vqshlq_r(high, shift);
+        vecDst = vqshrntq_n_s16(vecDst,high,7);
+
         vst1q(pDst, vecDst);
         /*
          * Decrement the blockSize loop counter
@@ -101,9 +105,16 @@ void arm_scale_q7(
     {
         mve_pred16_t p0 = vctp8q(blkCnt);
         vecSrc = vld1q(pSrc);
-        vecDst = vmulhq(vecSrc, vdupq_n_s8(scaleFract));
-        vecDst = vqshlq_r(vecDst, shift + 1);
-        vstrbq_p(pDst, vecDst, p0);
+        low = vmullbq_int_s8(vecSrc, vdupq_n_s8(scaleFract));
+        low = vqshlq_r(low, shift);
+        vecDst = vqshrnbq_n_s16(vecDst,low,7);
+
+        high = vmulltq_int_s8(vecSrc, vdupq_n_s8(scaleFract));
+        high = vqshlq_r(high, shift);
+        vecDst = vqshrntq_n_s16(vecDst,high,7);
+
+        /* narrowing & merge */
+        vstrbq_p_s8(pDst, vecDst, p0);
     }
 
 }
@@ -186,5 +197,3 @@ void arm_scale_q7(
 /**
   @} end of BasicScale group
  */
-
-#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

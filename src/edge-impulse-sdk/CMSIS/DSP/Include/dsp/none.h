@@ -59,7 +59,7 @@ MSVC is not going to be used to cross-compile to ARM. So, having a MSVC
 compiler file in Core or Core_A would not make sense.
 
 */
-#if defined ( _MSC_VER ) || defined(__GNUC_PYTHON__)
+#if defined ( _MSC_VER ) || defined(__GNUC_PYTHON__) || defined(__APPLE_CC__)
     __STATIC_FORCEINLINE uint8_t __CLZ(uint32_t data)
     {
       if (data == 0U) { return 32U; }
@@ -205,8 +205,7 @@ __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
 #define mult_32x32_keep32(a, x, y) \
     a = (q31_t) (((q63_t) x * y ) >> 32)
 
-// Patched by Edge Impulse, don't redefine these macros on Arm cores
-#if defined ( _MSC_VER ) || defined(__GNUC_PYTHON__)
+#ifndef ARM_MATH_DSP
   /**
    * @brief definition to pack two 16 bit values.
    */
@@ -214,23 +213,6 @@ __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
                                       (((int32_t)(ARG2) << ARG3) & (int32_t)0xFFFF0000)  )
   #define __PKHTB(ARG1, ARG2, ARG3) ( (((int32_t)(ARG1) <<    0) & (int32_t)0xFFFF0000) | \
                                       (((int32_t)(ARG2) >> ARG3) & (int32_t)0x0000FFFF)  )
-
-
-  /*
-   * @brief C custom defined SADD16 (by Edge Impulse)
-   */
-  __STATIC_FORCEINLINE uint32_t __SADD16(
-  uint32_t x,
-  uint32_t y)
-  {
-    q31_t r, s;
-
-    r = (((((q31_t)x << 16) >> 16) + (((q31_t)y << 16) >> 16))) & (int32_t)0x0000FFFF;
-    s = (((((q31_t)x      ) >> 16) + (((q31_t)y      ) >> 16))) & (int32_t)0x0000FFFF;
-
-    return ((uint32_t)((s << 16) | (r      )));
-  }
-// Patched by Edge Impulse, don't redefine these macros on Arm cores
 #endif
 
    /**
@@ -251,11 +233,10 @@ __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
 
  
 
-// Patched by Edge Impulse, remove `!defined (ARM_MATH_DSP)` check
 /*
  * @brief C custom defined intrinsic functions
  */
-#if !defined (ARM_MATH_DSP) || defined ( _MSC_VER ) || defined(__GNUC_PYTHON__)
+#if !defined (ARM_MATH_DSP)
 
 
   /*
@@ -585,42 +566,8 @@ __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
     return (sum + (int32_t) (((int64_t) x * y) >> 32));
   }
 
-  // Rotate right, dual extract 8-bits and sign extend each to 16-bits.
-  // rotate value must be 8,16 or 24
-  // Patched by Edge Impulse to polyfill x86 support
-  __STATIC_FORCEINLINE uint32_t __SXTB16_RORn(uint32_t val1, uint32_t rotate)
-  {
-    uint32_t ret;
-    int8_t a, b;
-    int16_t a16, b16;
-    a = (int8_t)((val1 >> rotate) & 0xff);
-    rotate = (rotate + 16) & 31; // to extract second byte
-    b = (int8_t)((val1 >> rotate) & 0xff);
-    a16 = a; b16 = b; // sign extend
-    ret = (b16 << 16);
-    ret |= ((uint32_t)a16 & 0xffff);
-    return ret;
-  }
+#endif /* !defined (ARM_MATH_DSP) */
 
-  // Dual sign-extended 8 to 16-bit addition
-  // Patched by Edge Impulse to polyfill x86 support
-  __STATIC_FORCEINLINE uint32_t __SXTAB16(uint32_t val1, uint32_t val2)
-  {
-    int8_t a, b;
-    int16_t a16, b16;
-    uint32_t ret;
-    a16 = (int16_t)(val1);
-    b16 = (int16_t)(val1 >> 16);
-    a = (int8_t)(val2 & 0xff); // bits 0-7
-    b = (int8_t)((val2 >> 16) & 0xff);
-    a16 += a;
-    b16 += b;
-    ret = (b16 << 16);
-    ret |= ((uint32_t)a16 & 0xffff);
-    return ret;
-  }
-
-#endif /* !defined (ARM_MATH_DSP) || defined ( _MSC_VER ) || defined(__GNUC_PYTHON__) */
 
 #ifdef   __cplusplus
 }

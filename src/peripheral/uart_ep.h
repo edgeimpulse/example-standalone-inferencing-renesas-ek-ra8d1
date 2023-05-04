@@ -24,8 +24,7 @@
 #ifndef UART_EP_H_
 #define UART_EP_H_
 
-#include "common_utils.h"
-#include "fsp_common_api.h"
+#include "bsp_api.h"
 
 FSP_HEADER
 
@@ -43,6 +42,8 @@ fsp_err_t uart_initialize(void);
 fsp_err_t uart_set_baud(bool is_max_baud);
 void deinit_uart(void);
 char uart_get_rx_data(uint8_t is_inference_running);
+void uart_putc(uint8_t c);
+void DumpChar(char data);
 
 FSP_FOOTER
 

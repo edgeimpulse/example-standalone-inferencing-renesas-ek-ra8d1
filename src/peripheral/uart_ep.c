@@ -1,26 +1,23 @@
-/***********************************************************************************************************************
- * File Name    : uart.c
- * Description  : Contains UART functions definition.
- **********************************************************************************************************************/
-/***********************************************************************************************************************
- * DISCLAIMER
- * This software is supplied by Renesas Electronics Corporation and is only intended for use with Renesas products. No
- * other uses are authorized. This software is owned by Renesas Electronics Corporation and is protected under all
- * applicable laws, including copyright laws.
- * THIS SOFTWARE IS PROVIDED "AS IS" AND RENESAS MAKES NO WARRANTIES REGARDING
- * THIS SOFTWARE, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. ALL SUCH WARRANTIES ARE EXPRESSLY DISCLAIMED. TO THE MAXIMUM
- * EXTENT PERMITTED NOT PROHIBITED BY LAW, NEITHER RENESAS ELECTRONICS CORPORATION NOR ANY OF ITS AFFILIATED COMPANIES
- * SHALL BE LIABLE FOR ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES FOR ANY REASON RELATED TO THIS
- * SOFTWARE, EVEN IF RENESAS OR ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- * Renesas reserves the right, without notice, to make changes to this software and to discontinue the availability of
- * this software. By using this software, you agree to the additional terms and conditions found by accessing the
- * following link:
- * http://www.renesas.com/disclaimer
+/*
+ * Copyright (c) 2022 EdgeImpulse Inc.
  *
- * Copyright (C) 2020 Renesas Electronics Corporation. All rights reserved.
- ***********************************************************************************************************************/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 #include "uart_ep.h"
+#include "hal_data.h"
+#include <stdio.h>
 
 /*******************************************************************************************************************//**
  * @addtogroup r_SCI_B_UART_ep
@@ -33,6 +30,19 @@
 /*
  * Private function declarations
  */
+const sci_b_baud_setting_t g_uart3_baud_max_setting =
+        {
+        /* Baud rate calculated with 1.725% error. */.baudrate_bits_b.abcse = 0,
+          .baudrate_bits_b.abcs = 0, .baudrate_bits_b.bgdm = 1, .baudrate_bits_b.cks = 0, .baudrate_bits_b.brr = 3, .baudrate_bits_b.mddr =
+                  (uint8_t) 256,
+          .baudrate_bits_b.brme = false };
+
+const sci_b_baud_setting_t g_uart3_baud_default_setting =
+        {
+        /* Baud rate calculated with 1.725% error. */.baudrate_bits_b.abcse = 0,
+          .baudrate_bits_b.abcs = 0, .baudrate_bits_b.bgdm = 1, .baudrate_bits_b.cks = 0, .baudrate_bits_b.brr = 31, .baudrate_bits_b.mddr =
+                  (uint8_t) 256,
+          .baudrate_bits_b.brme = false };
 
 /*
  * Private global variables
@@ -40,17 +50,13 @@
 /* Temporary buffer to save data from receive buffer for further processing */
 static uint8_t g_temp_buffer[UART_RX_BUFFER_SIZE] = {RESET_VALUE};
 
-/* Flag to check whether data is received or not */
-//static volatile uint8_t g_data_received_flag = false;
-
-/* Flag for user callback */
-static volatile uint8_t g_uart_event = RESET_VALUE;
-
 /* Flag RX completed */
 static volatile uint8_t g_uart_rx_completed = false;
 
 /* Flag TX completed */
 static volatile uint8_t g_uart_tx_completed = false;
+static volatile uint8_t g_uart_tx_empty = true;
+
 
 /* Flag error occurred */
 static volatile uint8_t g_uart_error = false;
@@ -73,10 +79,21 @@ fsp_err_t uart_initialize(void)
 
     /* Initialize UART channel with baud rate 115200 */
     err = R_SCI_B_UART_Open (&g_uart3_ctrl, &g_uart3_cfg);
-    if (FSP_SUCCESS != err)
-    {
-        //APP_ERR_PRINT ("\r\n**  R_SCI_B_UART_Open API failed  **\r\n");
+
+    return err;
+}
+
+fsp_err_t uart_set_baud(bool is_max_baud)
+{
+    fsp_err_t err = FSP_SUCCESS;
+
+    if (is_max_baud == true) {
+        err = R_SCI_B_UART_BaudSet(&g_uart3_ctrl, &g_uart3_baud_max_setting);
     }
+    else{
+        err = R_SCI_B_UART_BaudSet(&g_uart3_ctrl, &g_uart3_baud_default_setting);
+    }
+
     return err;
 }
 
@@ -90,44 +107,75 @@ fsp_err_t uart_initialize(void)
 fsp_err_t uart_print_user_msg(uint8_t *p_msg, uint16_t msg_len)
 {
     fsp_err_t err   = FSP_SUCCESS;
-    volatile uint32_t local_timeout = (DATA_LENGTH * UINT16_MAX);   /* could happen optimization */
-    char *p_temp_ptr = (char *)p_msg;
 
     /* Reset callback capture variable */
-    g_uart_event = RESET_VALUE;
     g_uart_tx_completed = false;
+    g_uart_error = false;
 
+#if 0
+    volatile uint8_t *pbuffer = p_msg;
+    volatile uint16_t i;
+
+    for (i = 0; i < msg_len; i++) {
+        //err = R_SCI_B_UART_Write (&g_uart3_ctrl, p_msg, 1);
+        //while(g_uart_tx_completed == false){};
+        uart_putc(*p_msg);
+        g_uart_tx_completed = false;
+        p_msg++;
+    }
+
+    return FSP_SUCCESS;
+
+#else
+    //while ((g_uart_tx_empty == false)) {};
     /* Writing to terminal */
     err = R_SCI_B_UART_Write (&g_uart3_ctrl, p_msg, msg_len);
-    if (FSP_SUCCESS != err)
-    {
-        //APP_ERR_PRINT ("\r\n**  R_SCI_B_UART_Write API Failed  **\r\n");
+    if (FSP_SUCCESS != err) {
         return err;
     }
 
     /* Check for event transfer complete */
-    //while ((UART_EVENT_TX_COMPLETE != g_uart_event) && (--local_timeout))
-    while ((g_uart_tx_completed == false)
-            && (--local_timeout))
-    {
+    while (g_uart_tx_completed == false) {
         /* Check if any error event occurred */
-        if (g_uart_error == true)
-        {
-            g_uart_error = false;
-            //APP_ERR_PRINT ("\r\n**  UART Error Event Received  **\r\n");
-            //APP_ERR_PRINT ("Error %d \r\n", g_uart_event);
+        if (g_uart_error == true) {
             return FSP_ERR_TRANSFER_ABORTED;
         }
 
-        __NOP();
-    }
-
-    if(RESET_VALUE == local_timeout)
-    {
-        err = FSP_ERR_TIMEOUT;
     }
 
     return err;
+#endif
+}
+
+/**
+ *
+ * @param c
+ */
+void uart_putc(uint8_t c)
+{
+    R_SCI_B_UART_Write(&g_uart3_ctrl, &c, 1);
+    while(g_uart_tx_empty == false){};
+
+    g_uart_tx_empty = false;
+}
+
+void DumpChar(char data)
+{
+    //while (g_uart3_ctrl.p_reg->SSR_SMCI_b.TDRE == 0);
+    //g_uart3_ctrl.p_reg->TDR = data;
+    //g_uart3_ctrl.p_reg->SSR_SMCI_b.TDRE = 0;
+
+    /* Transmit interrupts must be disabled to start with. */
+    g_uart3_ctrl.p_reg->CCR0 &= (uint32_t) ~(R_SCI_B0_CCR0_TIE_Msk | R_SCI_B0_CCR0_TEIE_Msk);
+    while (g_uart3_ctrl.p_reg->CSR_b.TEND == 0);
+
+    g_uart3_ctrl.p_reg->CCR0 &= (uint32_t) ~(R_SCI_B0_CCR0_TE_Msk);
+    while (g_uart3_ctrl.p_reg->CESR_b.TIST == 1);
+
+    g_uart3_ctrl.p_reg->TDR = (uint32_t)data;
+    // CCR1.CTSE 
+
+    //g_uart3_ctrl.p_reg->CCR0 |= (uint32_t) (R_SCI_B0_CCR0_TE_Msk | R_SCI_B0_CCR0_TIE_Msk);  // fire interrupt
 }
 
 /**
@@ -184,14 +232,10 @@ char uart_get_rx_data(uint8_t is_inference_running)
  **********************************************************************************************************************/
 void deinit_uart(void)
 {
-    fsp_err_t err = FSP_SUCCESS;
+    //fsp_err_t err = FSP_SUCCESS;
 
     /* Close module */
-    err =  R_SCI_B_UART_Close (&g_uart3_ctrl);
-    if (FSP_SUCCESS != err)
-    {
-        //APP_ERR_PRINT ("\r\n**  R_SCI_B_UART_Close API failed  ** \r\n");
-    }
+    R_SCI_B_UART_Close (&g_uart3_ctrl);
 }
 
 /*****************************************************************************************************************
@@ -202,23 +246,14 @@ void deinit_uart(void)
 void user_uart_callback(uart_callback_args_t *p_args)
 {
     /* Logged the event in global variable */
-    g_uart_event = (uint8_t)p_args->event;
-
-    /* Reset g_temp_buffer index if it exceeds than buffer size */
-    if(sizeof(g_temp_buffer) == g_rx_index)
-    {
-        g_rx_index = RESET_VALUE;
-    }
+    //g_uart_event = (uint8_t)p_args->event;
 
     switch(p_args->event)
     {
         case UART_EVENT_RX_CHAR:
         {
             g_temp_buffer[g_rx_index++] = (uint8_t ) p_args->data;
-            if (p_args->data == CARRIAGE_ASCII)
-            {
-                //g_counter_var = RESET_VALUE;
-                //g_data_received_flag  = true;
+            if (p_args->data == CARRIAGE_ASCII) {
                 g_uart_rx_completed = true;
             }
         }
@@ -241,9 +276,10 @@ void user_uart_callback(uart_callback_args_t *p_args)
             g_uart_error = true;
         }
         break;
+        case UART_EVENT_TX_DATA_EMPTY:
         default:
         {
-
+            g_uart_tx_empty = true;
         }
         break;
     }

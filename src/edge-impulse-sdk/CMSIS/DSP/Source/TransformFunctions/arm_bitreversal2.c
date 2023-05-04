@@ -1,14 +1,12 @@
-#include "edge-impulse-sdk/dsp/config.hpp"
-#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_bitreversal2.c
  * Description:  Bitreversal functions
  *
- * $Date:        18. March 2019
- * $Revision:    V1.0.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
  * Copyright (C) 2019 ARM Limited or its affiliates. All rights reserved.
@@ -45,7 +43,8 @@ void arm_bitreversal_64(
   const uint16_t bitRevLen,
   const uint16_t *pBitRevTab)
 {
-  uint64_t a, b, i, tmp;
+  uint64_t a, b, tmp;
+  uint32_t i;
 
   for (i = 0; i < bitRevLen; )
   {
@@ -114,7 +113,8 @@ void arm_bitreversal_16(
   const uint16_t bitRevLen,
   const uint16_t *pBitRevTab)
 {
-  uint16_t a, b, i, tmp;
+  uint16_t a, b, tmp;
+  uint32_t i;
 
   for (i = 0; i < bitRevLen; )
   {
@@ -134,5 +134,3 @@ void arm_bitreversal_16(
     i += 2;
   }
 }
-
-#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

@@ -1,17 +1,15 @@
-#include "edge-impulse-sdk/dsp/config.hpp"
-#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_cfft_init_q31.c
  * Description:  Initialization function for cfft q31 instance
  *
- * $Date:        07. January 2020
- * $Revision:    V1.7.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2020 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -57,7 +55,7 @@
 
 #if defined(ARM_MATH_MVEI)  && !defined(ARM_MATH_AUTOVECTORIZE)
 
-#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_fft.h"
+#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_fft.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_mve_tables.h"
 
 
@@ -356,5 +354,3 @@ arm_status arm_cfft_init_q31(
 /**
   @} end of ComplexFFT group
  */
-
-#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

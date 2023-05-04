@@ -476,6 +476,7 @@ EI_IMPULSE_ERROR run_nn_inference(
     const ei_impulse_t *impulse,
     ei::matrix_t *afmatrix,
     ei_impulse_result_t *result,
+    void *config_ptr,
     bool debug = false)
 {
     static std::vector<Ort::Value> input_tensors;
@@ -490,7 +491,8 @@ EI_IMPULSE_ERROR run_nn_inference(
 
     EI_IMPULSE_ERROR init_res = inference_onnx_setup(impulse,
         &ctx_start_us,
-        &input_tensors, &output_tensors,
+        &input_tensors,
+        &output_tensors,
         &session,
         &run_options,
         &binding);

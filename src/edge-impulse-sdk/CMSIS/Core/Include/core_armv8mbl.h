@@ -114,7 +114,7 @@
 
 #endif
 
-#include "edge-impulse-sdk/CMSIS/Core/Include/cmsis_compiler.h"               /* CMSIS compiler specific defines */
+#include "cmsis_compiler.h"               /* CMSIS compiler specific defines */
 
 
 #ifdef __cplusplus

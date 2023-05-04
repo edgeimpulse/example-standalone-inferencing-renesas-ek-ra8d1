@@ -47,12 +47,12 @@ __attribute__((weak)) EI_IMPULSE_ERROR ei_sleep(int32_t time_ms) {
 
 uint64_t ei_read_timer_ms() {
 
-    return timer_get_ms();//Timer_getMs();
+    return timer_get_ms();
 }
 
 uint64_t ei_read_timer_us() {
 
-    return timer_get_ms()*1000;
+    return timer_get_us();
 }
 
 __attribute__((weak)) void ei_printf(const char *format, ...) {
@@ -64,7 +64,7 @@ __attribute__((weak)) void ei_printf(const char *format, ...) {
     length = vsnprintf(buffer, sizeof(buffer), format, myargs);
     va_end(myargs);
 
-    if (length > 0){
+    if (length > 0) {
         uart_print_user_msg((uint8_t *)buffer, length);
     }
     
@@ -121,10 +121,14 @@ __attribute__((weak)) void ei_printf_float(float f) {
  */
 void ei_putchar(char c)
 {
+    /*
     uint8_t tx[2] = {0};
     tx[0] = c;
-    //ei_printf("%c", c);
     uart_print_user_msg((uint8_t *)tx, 1);
+    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+    */
+    uart_putc(c);
 }
 
 __attribute__((weak)) void *ei_malloc(size_t size) {
@@ -146,4 +150,4 @@ __attribute__((weak)) void DebugLog(const char* s) {
     ei_printf("%s", s);
 }
 
-#endif
+#endif // EI_PORTING_RENESASRA65 == 1

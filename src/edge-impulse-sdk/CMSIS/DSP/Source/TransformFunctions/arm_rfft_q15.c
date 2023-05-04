@@ -1,17 +1,15 @@
-#include "edge-impulse-sdk/dsp/config.hpp"
-#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_q15.c
  * Description:  RFFT & RIFFT Q15 process function
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -66,16 +64,41 @@ void arm_split_rifft_q15(
                    Internally input is downscaled by 2 for every stage to avoid saturations inside CFFT/CIFFT process.
                    Hence the output format is different for different RFFT sizes.
                    The input and output formats for different RFFT sizes and number of bits to upscale are mentioned in the tables below for RFFT and RIFFT:
+  @par             Input and Output formats for RFFT Q15
+
+| RFFT Size  | Input Format  | Output Format  | Number of bits to upscale |
+| ---------: | ------------: | -------------: | ------------------------: |
+| 32         | 1.15          | 5.11           | 5                         |
+| 64         | 1.15          | 6.10           | 6                         |
+| 128        | 1.15          | 7.9            | 7                         |
+| 256        | 1.15          | 8.8            | 8                         |
+| 512        | 1.15          | 9.7            | 9                         |
+| 1024       | 1.15          | 10.6           | 10                        |
+| 2048       | 1.15          | 11.5           | 11                        |
+| 4096       | 1.15          | 12.4           | 12                        |
+| 8192       | 1.15          | 13.3           | 13                        |
+             
+  @par             Input and Output formats for RIFFT Q15
+
+| RIFFT Size  | Input Format  | Output Format  | Number of bits to upscale |
+| ----------: | ------------: | -------------: | ------------------------: |
+| 32          | 1.15          | 5.11           | 0                         |
+| 64          | 1.15          | 6.10           | 0                         |
+| 128         | 1.15          | 7.9            | 0                         |
+| 256         | 1.15          | 8.8            | 0                         |
+| 512         | 1.15          | 9.7            | 0                         |
+| 1024        | 1.15          | 10.6           | 0                         |
+| 2048        | 1.15          | 11.5           | 0                         |
+| 4096        | 1.15          | 12.4           | 0                         |
+| 8192        | 1.15          | 13.3           | 0                         |
+  
   @par
-                   \image html RFFTQ15.gif "Input and Output Formats for Q15 RFFT"
-  @par
-                   \image html RIFFTQ15.gif "Input and Output Formats for Q15 RIFFT"
-  @par
-                   If the input buffer is of length N, the output buffer must have length 2*N.
+                   If the input buffer is of length N (fftLenReal), the output buffer must have length 2N + 2
+                   since it is containing the conjugate part. (N/2 + 1 + N/2 complex samples)
                    The input buffer is modified by this function.
   @par
-                   For the RIFFT, the source buffer must at least have length 
-                   fftLenReal + 2.
+                   For the RIFFT, the source buffer must have at least length 
+                   fftLenReal + 2 which is (N/2 + 1 complex samples). It is not using the conjugate part.
                    The last two elements must be equal to what would be generated
                    by the RFFT:
                      (pSrc[0] - pSrc[1]) >> 1 and 0
@@ -138,7 +161,7 @@ void arm_rfft_q15(
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_fft.h"
+#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_fft.h"
 
 #if defined(__CMSIS_GCC_H)
 #define MVE_CMPLX_MULT_FX_AxB_S16(A,B)          vqdmladhxq_s16(vqdmlsdhq_s16((__typeof(A))vuninitializedq_s16(), A, B), A, B)
@@ -190,8 +213,8 @@ void arm_split_rfft_q15(
         q15x8_t         out = vhaddq_s16(MVE_CMPLX_MULT_FX_AxB_S16(in1, coefA),
                                      MVE_CMPLX_MULT_FX_AxConjB_S16(coefB, in2));
 #else
-        q15x8_t         out = vhaddq_s16(MVE_CMPLX_MULT_FX_AxB(in1, coefA),
-                                     MVE_CMPLX_MULT_FX_AxConjB(coefB, in2));
+        q15x8_t         out = vhaddq_s16(MVE_CMPLX_MULT_FX_AxB(in1, coefA, q15x8_t),
+                                         MVE_CMPLX_MULT_FX_AxConjB(coefB, in2, q15x8_t));
 #endif
         vst1q_s16(pOut1, out);
         pOut1 += 8;
@@ -370,7 +393,7 @@ void arm_split_rfft_q15(
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_fft.h"
+#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_fft.h"
 
 void arm_split_rifft_q15(
         q15_t * pSrc,
@@ -415,8 +438,8 @@ void arm_split_rifft_q15(
         q15x8_t         coefB = vldrhq_gather_shifted_offset_s16(pCoefBb, offsetCoef);
 
         /* can we avoid the conjugate here ? */
-        q15x8_t         out = vhaddq_s16(MVE_CMPLX_MULT_FX_AxConjB(in1, coefA),
-                                     vmulq(conj, MVE_CMPLX_MULT_FX_AxB(in2, coefB)));
+        q15x8_t         out = vhaddq_s16(MVE_CMPLX_MULT_FX_AxConjB(in1, coefA, q15x8_t),
+                                         vmulq(conj, MVE_CMPLX_MULT_FX_AxB(in2, coefB, q15x8_t)));
 
         vst1q_s16(pDst, out);
         pDst += 8;
@@ -526,5 +549,3 @@ void arm_split_rifft_q15(
 
 }
 #endif /* defined(ARM_MATH_MVEI) */
-
-#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

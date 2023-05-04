@@ -70,8 +70,8 @@ FSP Configuration
     Main Oscillator Wait Time: 8163 cycles
     
   RA Common
-    Main stack size (bytes): 0x20000
-    Heap size (bytes): 0x3e800
+    Main stack size (bytes): 0x1000
+    Heap size (bytes): 0xA0000
     MCU Vcc (mV): 3300
     Parameter checking: Disabled
     Assert Failures: Return FSP_ERR_ASSERTION
@@ -93,8 +93,8 @@ FSP Configuration
     PLL Div /1
     PLL Mul x40-59|Mul x48|PLL Mul x48.00
     PLL1P Div /2
-    PLL1Q Div /6
-    PLL1R Div /6
+    PLL1Q Div /2
+    PLL1R Div /2
     PLL2 Disabled
     PLL2 Div /1
     PLL2 Mul x26-39|Mul x26|PLL2 Mul x26.00
@@ -103,8 +103,8 @@ FSP Configuration
     PLL2R Div /6
     Clock Src: PLL1P
     CLKOUT Disabled
-    SCICLK Src: PLL1P
-    SPICLK Src: PLL1P
+    SCICLK Src: PLL1Q
+    SPICLK Src: PLL1R
     CANFDCLK Disabled
     ADCCLK Disabled
     LCDCLK Disabled
@@ -118,13 +118,13 @@ FSP Configuration
     PCLKB Div /8
     PCLKC Div /8
     PCLKD Div /4
-    PCLKE Div /4
+    PCLKE Div /2
     SDCLK Enabled
     BCLK Div /4
     EBCLK Div /2
     FCLK Div /8
     CLKOUT Div /1
-    SCICLK Div /4
+    SCICLK Div /8
     SPICLK Div /8
     CANFDCLK Div /6
     I3CCLK Div /1
@@ -596,7 +596,7 @@ FSP Configuration
   Module "UART (r_sci_b_uart)"
     Parameter Checking: Default (BSP)
     FIFO Support: Disable
-    DTC Support: Enable
+    DTC Support: Disable
     Flow Control Support: Disable
     
   Module "Timer, General PWM (r_gpt)"
@@ -604,10 +604,6 @@ FSP Configuration
     Pin Output Support: Disabled
     Write Protect Enable: Disabled
     Clock Source: PCLKD
-    
-  Module "Transfer (r_dtc)"
-    Parameter Checking: Default (BSP)
-    Linker section to keep DTC vector table: .fsp_dtc_vector_table
     
   HAL
     Instance "g_ioport I/O Port (r_ioport)"
@@ -648,20 +644,6 @@ FSP Configuration
       Interrupts: Transmit End Interrupt Priority: Priority 12
       Interrupts: Error Interrupt Priority: Priority 12
       
-      Instance "g_transfer0 Transfer (r_dtc) SCI3 TXI (Transmit data empty)"
-        Name: g_transfer0
-        Mode: Normal
-        Transfer Size: 1 Byte
-        Destination Address Mode: Fixed
-        Source Address Mode: Incremented
-        Repeat Area (Unused in Normal Mode): Source
-        Destination Pointer: NULL
-        Source Pointer: NULL
-        Interrupt Frequency: After all transfers have completed
-        Number of Transfers: 0
-        Number of Blocks (Valid only in Block Mode): 0
-        Activation Source: SCI3 TXI (Transmit data empty)
-        
     Instance "g_timer1 Timer, General PWM (r_gpt)"
       General: Name: g_timer1
       General: Channel: 1

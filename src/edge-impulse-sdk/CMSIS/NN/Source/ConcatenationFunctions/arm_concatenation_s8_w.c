@@ -1,7 +1,5 @@
-#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
-#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * Copyright (C) 2010-2019 Arm Limited or its affiliates. All rights reserved.
+ * SPDX-FileCopyrightText: Copyright 2010-2022 Arm Limited and/or its affiliates <open-source-office@arm.com>
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -23,17 +21,18 @@
  * Title:        arm_concatenation_s8_w.c
  * Description:  s8 version of concatenation along the W axis
  *
- * $Date:        October 2019
- * $Revision:    V.1.0.0
+ * $Date:        26 October 2022
+ * $Revision:    V.1.0.1
  *
  * Target Processor:  Cortex-M cores
  *
  * -------------------------------------------------------------------- */
 
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnfunctions.h"
+#include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnsupportfunctions.h"
 
 /**
- *  @ingroup groupNN
+ *  @ingroup Public
  */
 
 /**
@@ -59,11 +58,9 @@ void arm_concatenation_s8_w(const int8_t *input,
 
     output += offset_w * (input_x * input_y * input_z);
 
-    memcpy(output, input, input_copy_size);
+    arm_memcpy_s8(output, input, input_copy_size);
 }
 
 /**
  * @} end of Concatenation group
  */
-
-#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

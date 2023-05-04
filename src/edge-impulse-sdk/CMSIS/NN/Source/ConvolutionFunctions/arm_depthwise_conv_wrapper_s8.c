@@ -1,7 +1,5 @@
-#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
-#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * Copyright (C) 2010-2020 Arm Limited or its affiliates. All rights reserved.
+ * SPDX-FileCopyrightText: Copyright 2010-2023 Arm Limited and/or its affiliates <open-source-office@arm.com>
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -24,17 +22,17 @@
  * Description:  Wrapper API to select appropriate depthwise conv API based
  *               on dimensions.
  *
- * $Date:        09. October 2020
- * $Revision:    V.1.0.2
+ * $Date:        13 January 2023
+ * $Revision:    V.2.1.0
  *
- * Target Processor:  Cortex-M CPUs
+ * Target :  Arm(R) M-Profile Architecture
  *
  * -------------------------------------------------------------------- */
 
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnfunctions.h"
 
 /**
- *  @ingroup groupNN
+ *  @ingroup Public
  */
 
 /**
@@ -48,23 +46,25 @@
  *  Refer header file for details.
  *
  */
-arm_status arm_depthwise_conv_wrapper_s8(const cmsis_nn_context *ctx,
-                                         const cmsis_nn_dw_conv_params *dw_conv_params,
-                                         const cmsis_nn_per_channel_quant_params *quant_params,
-                                         const cmsis_nn_dims *input_dims,
-                                         const q7_t *input,
-                                         const cmsis_nn_dims *filter_dims,
-                                         const q7_t *filter,
-                                         const cmsis_nn_dims *bias_dims,
-                                         const int32_t *bias,
-                                         const cmsis_nn_dims *output_dims,
-                                         q7_t *output)
+arm_cmsis_nn_status arm_depthwise_conv_wrapper_s8(const cmsis_nn_context *ctx,
+                                                  const cmsis_nn_dw_conv_params *dw_conv_params,
+                                                  const cmsis_nn_per_channel_quant_params *quant_params,
+                                                  const cmsis_nn_dims *input_dims,
+                                                  const int8_t *input,
+                                                  const cmsis_nn_dims *filter_dims,
+                                                  const int8_t *filter,
+                                                  const cmsis_nn_dims *bias_dims,
+                                                  const int32_t *bias,
+                                                  const cmsis_nn_dims *output_dims,
+                                                  int8_t *output)
 {
-    arm_status status = ARM_MATH_SUCCESS;
-    if (1 == dw_conv_params->ch_mult)
+    arm_cmsis_nn_status status = ARM_CMSIS_NN_SUCCESS;
+    if (1 == dw_conv_params->ch_mult && input_dims->n == 1 && dw_conv_params->dilation.w == 1 &&
+        dw_conv_params->dilation.h == 1)
     {
 #if !defined(ARM_MATH_MVEI)
-        if ((filter_dims->w == 3) && (filter_dims->h == 3) && (dw_conv_params->padding.h <= 1))
+        if (filter_dims->w == 3 && filter_dims->h == 3 && dw_conv_params->padding.h <= 1 &&
+            dw_conv_params->padding.w <= 1)
         {
             status = arm_depthwise_conv_3x3_s8(ctx,
                                                dw_conv_params,
@@ -113,24 +113,6 @@ arm_status arm_depthwise_conv_wrapper_s8(const cmsis_nn_context *ctx,
     return status;
 }
 
-int32_t arm_depthwise_conv_wrapper_s8_get_buffer_size(const cmsis_nn_dw_conv_params *dw_conv_params,
-                                                      const cmsis_nn_dims *input_dims,
-                                                      const cmsis_nn_dims *filter_dims,
-                                                      const cmsis_nn_dims *output_dims)
-{
-    (void)dw_conv_params;
-    int32_t size = 0;
-
-    if (input_dims->c == output_dims->c)
-    {
-        size = arm_depthwise_conv_s8_opt_get_buffer_size(input_dims, filter_dims);
-    }
-
-    return size;
-}
-
 /**
  * @} end of NNConv group
  */
-
-#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
