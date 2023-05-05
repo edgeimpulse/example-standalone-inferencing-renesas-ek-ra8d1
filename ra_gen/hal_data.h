@@ -10,11 +10,11 @@
 #include "r_uart_api.h"
 FSP_HEADER
 /** Timer on GPT Instance. */
-extern const timer_instance_t g_timer_us_ctrl;
+extern const timer_instance_t g_timer_us;
 
 /** Access the GPT instance using these structures when calling API functions directly (::p_api is not used). */
-extern gpt_instance_ctrl_t g_timer_us_ctrl_ctrl;
-extern const timer_cfg_t g_timer_us_ctrl_cfg;
+extern gpt_instance_ctrl_t g_timer_us_ctrl;
+extern const timer_cfg_t g_timer_us_cfg;
 
 #ifndef periodic_timer_msgq_cb
 void periodic_timer_msgq_cb(timer_callback_args_t *p_args);

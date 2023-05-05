@@ -1,9 +1,9 @@
 /* generated HAL source file - do not edit */
 #include "hal_data.h"
 
-gpt_instance_ctrl_t g_timer_us_ctrl_ctrl;
+gpt_instance_ctrl_t g_timer_us_ctrl;
 #if 0
-const gpt_extended_pwm_cfg_t g_timer_us_ctrl_pwm_extend =
+const gpt_extended_pwm_cfg_t g_timer_us_pwm_extend =
 {
     .trough_ipl          = (BSP_IRQ_DISABLED),
 #if defined(VECTOR_NUMBER_GPT0_COUNTER_UNDERFLOW)
@@ -25,7 +25,7 @@ const gpt_extended_pwm_cfg_t g_timer_us_ctrl_pwm_extend =
     .gtiocb_disable_setting = GPT_GTIOC_DISABLE_PROHIBITED,
 };
 #endif
-const gpt_extended_cfg_t g_timer_us_ctrl_extend =
+const gpt_extended_cfg_t g_timer_us_extend =
         { .gtioca =
         { .output_enabled = false, .stop_level = GPT_PIN_LEVEL_LOW },
           .gtiocb =
@@ -49,7 +49,7 @@ const gpt_extended_cfg_t g_timer_us_ctrl_extend =
           .capture_filter_gtioca = GPT_CAPTURE_FILTER_NONE,
           .capture_filter_gtiocb = GPT_CAPTURE_FILTER_NONE,
 #if 0
-    .p_pwm_cfg                   = &g_timer_us_ctrl_pwm_extend,
+    .p_pwm_cfg                   = &g_timer_us_pwm_extend,
 #else
           .p_pwm_cfg = NULL,
 #endif
@@ -72,7 +72,7 @@ const gpt_extended_cfg_t g_timer_us_ctrl_extend =
           .gtior_setting.gtior = 0U,
 #endif
         };
-const timer_cfg_t g_timer_us_ctrl_cfg =
+const timer_cfg_t g_timer_us_cfg =
 { .mode = TIMER_MODE_PERIODIC,
 /* Actual period: 35.791394133333334 seconds. Actual duty: 50%. */.period_counts = (uint32_t) 0x100000000,
   .duty_cycle_counts = 0x80000000, .source_div = (timer_source_div_t) 0, .channel = 0, .p_callback =
@@ -83,7 +83,7 @@ const timer_cfg_t g_timer_us_ctrl_cfg =
 #else
   .p_context = &NULL,
 #endif
-  .p_extend = &g_timer_us_ctrl_extend,
+  .p_extend = &g_timer_us_extend,
   .cycle_end_ipl = (2),
 #if defined(VECTOR_NUMBER_GPT0_COUNTER_OVERFLOW)
     .cycle_end_irq       = VECTOR_NUMBER_GPT0_COUNTER_OVERFLOW,
@@ -92,8 +92,8 @@ const timer_cfg_t g_timer_us_ctrl_cfg =
 #endif
         };
 /* Instance structure to use this module. */
-const timer_instance_t g_timer_us_ctrl =
-{ .p_ctrl = &g_timer_us_ctrl_ctrl, .p_cfg = &g_timer_us_ctrl_cfg, .p_api = &g_timer_on_gpt };
+const timer_instance_t g_timer_us =
+{ .p_ctrl = &g_timer_us_ctrl, .p_cfg = &g_timer_us_cfg, .p_api = &g_timer_on_gpt };
 sci_b_uart_instance_ctrl_t g_uart3_ctrl;
 
 sci_b_baud_setting_t g_uart3_baud_setting =

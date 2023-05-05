@@ -38,7 +38,7 @@ void ei_timer_init(void)
     fsp_err_t err = FSP_SUCCESS;
     timer_info_t info;
 
-    err = R_GPT_Open (&g_timer_us_ctrl, &g_timer_us_ctrl_cfg);
+    err = R_GPT_Open (&g_timer_us_ctrl, &g_timer_us_cfg);
 
     if (err != FSP_SUCCESS)
     {
@@ -47,7 +47,7 @@ void ei_timer_init(void)
         }
     }
 
-    (void) R_GPT_InfoGet(&g_timer_us_ctrl, &info);
+    (void) R_GPT_InfoGet(&g_timer_us, &info);
 
     div_ratio = (info.clock_frequency / MICROSECONDS_TO_SECONDS);
 }

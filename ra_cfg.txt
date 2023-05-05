@@ -644,8 +644,8 @@ FSP Configuration
       Interrupts: Transmit End Interrupt Priority: Priority 12
       Interrupts: Error Interrupt Priority: Priority 12
       
-    Instance "g_timer_us_ctrl Timer, General PWM (r_gpt)"
-      General: Name: g_timer_us_ctrl
+    Instance "g_timer_us Timer, General PWM (r_gpt)"
+      General: Name: g_timer_us
       General: Channel: 0
       General: Mode: Periodic
       General: Period: 0x100000000
