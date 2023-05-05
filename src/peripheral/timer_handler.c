@@ -1,33 +1,33 @@
-/* Edge Impulse ingestion SDK
+/*
  * Copyright (c) 2022 EdgeImpulse Inc.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * SPDX-License-Identifier: Apache-2.0
  */
+
 /* Includes */
 #include "timer_handler.h"
-#include "edge-impulse-sdk/porting/ei_classifier_porting.h"
-
+#include "hal_data.h"
 #include <stdint.h>
 
+#define MICROSECONDS_TO_SECONDS 1000000
 
-static volatile uint32_t _ms_time = 0;
-volatile bool _timer_1_set = false;
+static uint64_t timer_overflow_times;
+static uint64_t div_ratio = 0;
+
+static inline void set_timer_overflow_times(uint64_t value);
+static inline uint64_t get_timer_overflow_times(void);
+static inline uint64_t get_timer_count(void);
 
 /* public functions */
 /**
@@ -36,8 +36,10 @@ volatile bool _timer_1_set = false;
 void ei_timer_init(void)
 {
     fsp_err_t err = FSP_SUCCESS;
+    timer_info_t info;
 
-    err = R_GPT_Open (&g_timer0_ctrl, &g_timer0_cfg);
+    err = R_GPT_Open (&g_timer_us_ctrl, &g_timer_us_ctrl_cfg);
+
     if (err != FSP_SUCCESS)
     {
         while(1) {
@@ -45,20 +47,9 @@ void ei_timer_init(void)
         }
     }
 
-    /* timer 1 */
-    err = R_GPT_Open (&g_timer1_ctrl, &g_timer1_cfg);
-    if (err != FSP_SUCCESS)
-    {
-        while(1) {
-            __NOP();
-        }
-    }
+    (void) R_GPT_InfoGet(&g_timer_us_ctrl, &info);
 
-    if (FSP_SUCCESS != err)
-    {
-        /* GPT Timer failure message */
-        //APP_ERR_PRINT ("\r\n** R_GPT_TimerOpen API failed **\r\n");
-    }
+    div_ratio = (info.clock_frequency / MICROSECONDS_TO_SECONDS);
 }
 
 /**
@@ -69,23 +60,9 @@ void ei_timer0_start(void)
     fsp_err_t err = FSP_SUCCESS;
 
     /* Start GPT module - no error control for now */
-    err = R_GPT_Start (&g_timer0_ctrl);
-    err = R_GPT_Start (&g_timer1_ctrl);
-
-    timer_status_t status;
-    (void) R_GPT_StatusGet(&g_timer1_ctrl, &status);
-
-    if (status.state == TIMER_STATE_STOPPED) {
-        while (1)
-        {
-            __NOP();
-        }
-    }
-
-    _ms_time = 0;
+    err = R_GPT_Start (&g_timer_us_ctrl);
+    set_timer_overflow_times(0);
 }
-
-/**
 
 
 /**
@@ -96,11 +73,8 @@ void ei_timer0_stop(void)
     fsp_err_t err = FSP_SUCCESS;
 
     /* Stop GPT module - no error control for now */
-    err =  R_GPT_Stop (&g_timer0_ctrl);
-
-    _ms_time = 0;
+    err =  R_GPT_Stop(&g_timer_us_ctrl);
 }
-
 
 /**
  * @brief callback function for interrupt
@@ -109,9 +83,9 @@ void ei_timer0_stop(void)
  */
 void periodic_timer_msgq_cb(timer_callback_args_t *p_args)
 {
-    FSP_PARAMETER_NOT_USED (p_args);
-
-    _ms_time++;
+    if (TIMER_EVENT_CYCLE_END == p_args->event) {
+        set_timer_overflow_times(get_timer_overflow_times() + 1);
+    }
 }
 
 /**
@@ -120,19 +94,46 @@ void periodic_timer_msgq_cb(timer_callback_args_t *p_args)
  */
 uint32_t timer_get_ms(void)
 {
-    return _ms_time;
-
-    /* Read the current counter value. Counter value is in status.counter. */
-    timer_status_t status;
-    (void) R_GPT_StatusGet(&g_timer0_ctrl, &status);
-    return status.counter;
+    return (timer_get_us()/1000u);
 }
 
+/**
+ *
+ * @return
+ */
 uint32_t timer_get_us(void)
 {
-    /* Read the current counter value. Counter value is in status.counter. */
-    timer_status_t status;
-    (void) R_GPT_StatusGet(&g_timer1_ctrl, &status);
+    uint64_t overflow_time = ((uint64_t)1 << 32) / div_ratio;
+    return (uint32_t)((get_timer_overflow_times() * overflow_time)
+         + (get_timer_count()/div_ratio));
+}
 
-    return (status.counter);
+
+/**
+ *
+ * @param value
+ */
+static inline void set_timer_overflow_times(uint64_t value)
+{
+    timer_overflow_times = value;
+}
+
+/**
+ *
+ * @return
+ */
+static inline uint64_t get_timer_overflow_times(void)
+{
+    return timer_overflow_times;
+}
+
+/**
+ *
+ * @return
+ */
+static inline uint64_t get_timer_count(void)
+{
+    timer_status_t status;
+    R_GPT_StatusGet(&g_timer_us_ctrl, &status);
+    return status.counter;
 }
