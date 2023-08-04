@@ -3,7 +3,7 @@ FSP Configuration
   R7FA8D1BH2CBD
     part_number: R7FA8D1BH2CBD
     rom_size_bytes: 2064384
-    ram_size_bytes: 1048576
+    ram_size_bytes: 917504
     data_flash_size_bytes: 12288
     package_style: BGA
     package_pins: 224
@@ -23,14 +23,13 @@ FSP Configuration
     Security: SRAM Accessibility: Standby RAM: Regions 7-0 are all Secure.
     Security: BUS Accessibility: Bus Security Attribution Register A: Both Secure and Non-Secure State
     Security: BUS Accessibility: Bus Security Attribution Register B: Both Secure and Non-Secure State
-    Startup C-Cache Line Size: 32 Bytes
     OFS0 register settings: Independent WDT: Start Mode: IWDT is stopped after a reset (Register-start mode)
     OFS0 register settings: Independent WDT: Timeout Period: 2048 cycles
     OFS0 register settings: Independent WDT: Dedicated Clock Frequency Divisor: 128
     OFS0 register settings: Independent WDT: Window End Position:  0% (no window end position)
     OFS0 register settings: Independent WDT: Window Start Position: 100% (no window start position)
     OFS0 register settings: Independent WDT: Reset Interrupt Request Select: Reset is enabled
-    OFS0 register settings: Independent WDT: Stop Control: Stop counting when in Sleep, Snooze mode, or Software Standby
+    OFS0 register settings: Independent WDT: Stop Control: Stop counting when in Sleep, Deep Sleep, or Software Standby
     OFS0 register settings: WDT0: Start Mode Select: Stop WDT after a reset (register-start mode)
     OFS0 register settings: WDT0: Timeout Period: 16384 cycles
     OFS0 register settings: WDT0: Clock Frequency Division Ratio: 128
@@ -110,7 +109,7 @@ FSP Configuration
     LCDCLK Disabled
     I3CCLK Disabled
     UCK Disabled
-    UHSCK Disabled
+    U60CK Disabled
     OCTASPICLK Disabled
     CPUCLK Div /1
     ICLK Div /2
@@ -131,14 +130,21 @@ FSP Configuration
     ADCCLK Div /1
     LCDCLK Div /1
     UCK Div /5
-    UHSCK Div /5
+    U60CK Div /5
     OCTASPICLK Div /1
     
   Pin Configurations
     RA8D1 EK -> g_bsp_pin_cfg
       AVCC0 N8 SYSTEM_AVCC0 - - - - - - - - IO "Read only" - 
+      AVCC_MIPI B9 SYSTEM_AVCC_MIPI - - - - - - - - IO "Read only" - 
       AVCC_USBHS H13 SYSTEM_AVCC_USBHS - - - - - - - - IO "Read only" - 
       AVSS0 N9 SYSTEM_AVSS0 - - - - - - - - IO "Read only" - 
+      MIPI_CLN A11 SYSTEM_MIPI_CLN - - - - - - - - IO "Read only" - 
+      MIPI_CLP B11 SYSTEM_MIPI_CLP - - - - - - - - IO "Read only" - 
+      MIPI_DL0N A12 SYSTEM_MIPI_DL0N - - - - - - - - IO "Read only" - 
+      MIPI_DL0P B12 SYSTEM_MIPI_DL0P - - - - - - - - IO "Read only" - 
+      MIPI_DL1N A10 SYSTEM_MIPI_DL1N - - - - - - - - IO "Read only" - 
+      MIPI_DL1P B10 SYSTEM_MIPI_DL1P - - - - - - - - IO "Read only" - 
       P000 R13 - ETH_INT - - Disabled - - "ACMPHS1: IVCMP1_2; ADC1: AN100; IRQ6: IRQ6-DS" - None - - 
       P001 P12 - - - - Disabled - - "ACMPHS0: IVREF_0; ADC1: AN101; IRQ7: IRQ7-DS" - None - - 
       P002 R12 - GROVE2_2_AN - - Disabled - - "ACMPHS1: IVCMP1_3; ADC1: AN102; IRQ8: IRQ8-DS" - None - - 
@@ -167,10 +173,6 @@ FSP Configuration
       P115 D3 SDRAM_SDCS SDRAM_CS L - "Peripheral mode" - - "ETHER_MII: ET0_WOL; ETHER_RMII: ET0_WOL; GLCD: LCD_DATA7; GPT5: GTIOC5A; SCI0: CTS0; SDRAM: SDCS; SPI0: MOSI0; SSIE0: SSITXD0" - IO - - 
       P200 B8 - NMI - - Disabled - - "IRQ: NMI" - None - - 
       P201 E9 - MD - - Disabled - - "SYSTEM: MD" - None - - 
-      P202 A11 - - - - Disabled - - "CANFD0: CRX0; GPT5: GTIOC5B; IRQ3: IRQ3-DS; SDHI0: SD0DAT6; SPI0: MOSI0; ULPT1: ULPTOB1" - None - - 
-      P203 B11 - - - - Disabled - - "CANFD0: CTX0; GPT5: GTIOC5A; IRQ2: IRQ2-DS; SDHI0: SD0DAT5; SPI0: RSPCK0; ULPT1: ULPTOA1" - None - - 
-      P204 A12 - - - - Disabled - - "AGT1: AGTIO1; CAC: CACREF; GPT4: GTIOC4B; GPT_OPS: GTIW; SCI4: DE4; SCI4: SCK4; SDHI0: SD0DAT4; SPI0: SSLA0; SSIE1: SSISCK1; USB FS: USB_OVRCURB" - None - - 
-      P205 B12 - - - - Disabled - - "AGT1: AGTO1; CLKOUT: CLKOUT; GPT4: GTIOC4A; GPT_OPS: GTIV; IIC1: SCL1; IRQ1: IRQ1-DS; SCI4: TXD4; SDHI0: SD0DAT3; SPI0: SSLA1; SSIE1: SSIWS1; USB FS: USB_OVRCURA" - None - - 
       P206 D11 - MIPI_DSI_TE - - Disabled - - "BUS: CS7#; GPT_OPS: GTIU; IIC1: SDA1; IRQ0: IRQ0-DS; MIPI: DSI_TE; SCI4: RXD4; SDHI0: SD0DAT2; SPI0: SSLA2; SSIE1: SSIDATA1; USB FS: USB_VBUSEN" - None - - 
       P207 C13 - LCD_DATA9 - - Disabled - - "GLCD: LCD_DATA9" - None - - 
       P208 F8 JTAG/SWD_TDI TDI L None "Peripheral mode" - - "CANFD1: CRX1; CLKOUT: VCOUT; GPT1: GTIOC1B; GPT_OPS: GTOVLO; IRQ3: IRQ3; JTAG/SWD: TDI; SCI9: RXD9" - IO - - 
@@ -192,9 +194,6 @@ FSP Configuration
       P310 D6 SDRAM_A11 SDRAM_A11 L - "Peripheral mode" - - "AGT1: AGTEE1; BUS: A11; ETHER_MII: ET0_ETXD2; GLCD: LCD_DATA16; SCI3: TXD3; SDRAM: A11" - IO - - 
       P311 B6 SDRAM_A12 SDRAM_A12 L - "Peripheral mode" - - "AGT1: AGTOB1; BUS: A12; CANFD0: CRX0; ETHER_MII: ET0_TX_ER; GLCD: LCD_DATA17; GPT_OPS: GTADSM1; SCI3: DE3; SCI3: SCK3; SDRAM: A12" - IO - - 
       P312 D7 SDRAM_A13 SDRAM_A13 L - "Peripheral mode" - - "AGT1: AGTOA1; BUS: A13; CANFD0: CTX0; ETHER_MII: ET0_TX_CLK; GLCD: LCD_DATA18; GPT_OPS: GTADSM0; SCI3: CTS_RTS3; SCI3: DE3; SDRAM: A13" - IO - - 
-      P313 B10 - - - - Disabled - - "SCI3: CTS3; SDHI0: SD0DAT7; SPI0: MISO0" - None - - 
-      P314 A10 - - - - Disabled - - "ADC(Digital): ADTRG0; SCI3: CTS_RTS3; SCI3: DE3" - None - - 
-      P315 C11 - - - - Disabled - - "SCI3: DE3; SCI3: SCK3" - None - - 
       P400 R15 - CAM_D0_I3C_SCL0 - - Disabled - - "ADC(Digital): ADTRG1; AGT1: AGTIO1; CEU: VIO_D0; ETHER_MII: ET0_WOL; ETHER_RMII: ET0_WOL; GPT6: GTIOC6A; I3C0: I3C_SCL0; IRQ0: IRQ0; SCI1: TXD1; SDHI1: SD1CLK; SSIE: AUDIO_CLK" - None - - 
       P401 P15 - ETH_B_MDC_CAM_D1_I3C_SDA0 - - Disabled - - "CANFD0: CTX0; CEU: VIO_D1; ETHER_MII: ET0_MDC; ETHER_RMII: ET0_MDC; GPT6: GTIOC6B; GPT_POEGA: GTETRGA; I3C0: I3C_SDA0; IRQ5: IRQ5-DS; SCI1: RXD1; SDHI1: SD1CMD" - None - - 
       P402 M12 - ETH_B_MDIO - - Disabled - - "CAC: CACREF; CANFD0: CRX0; ETHER_MII: ET0_MDIO; ETHER_RMII: ET0_MDIO; IRQ4: IRQ4-DS; RTC: RTCIC0; SCI1: DE1; SCI1: SCK1; SDHI1: SD1DAT0; SSIE: AUDIO_CLK" - None - - 
@@ -274,8 +273,6 @@ FSP Configuration
       P813 J5 GPIO ARDUINO_RESET L - "Output mode (Initial Low)" - - "BUS: D20; SDRAM: DQ20" - IO - - 
       P814 A14 "USB FS_USB_DP" USB_DP L - "Peripheral mode" - - "CANFD0: CRX0; GPT8: GTIOC8B; USB FS: USB_DP" - IO - - 
       P815 B14 "USB FS_USB_DM" USB_DM L - "Peripheral mode" - - "CANFD0: CTX0; GPT8: GTIOC8A; USB FS: USB_DM" - IO - - 
-      P900 C10 - - - - Disabled - - "SCI3: TXD3" - None - - 
-      P901 B9 - - - - Disabled - - "AGT1: AGTIO1; SCI3: RXD3" - None - - 
       P902 D10 - LCD_DATA8 - - Disabled - - "GLCD: LCD_DATA8" - None - - 
       P903 C9 - LCD_DATA7 - - Disabled - - "GLCD: LCD_DATA7; GPT11: GTIOC11A" - None - - 
       P904 D9 - LCD_DATA6 - - Disabled - - "GLCD: LCD_DATA6; GPT11: GTIOC11B" - None - - 
@@ -325,6 +322,7 @@ FSP Configuration
       VCC H9 SYSTEM_VCC - - - - - - - - IO "Read only" - 
       VCC J6 SYSTEM_VCC - - - - - - - - IO "Read only" - 
       VCC J9 SYSTEM_VCC - - - - - - - - IO "Read only" - 
+      VCC18_MIPI C11 SYSTEM_VCC18_MIPI - - - - - - - - IO "Read only" - 
       VCC2 J3 SYSTEM_VCC2 - - - - - - - - IO "Read only" - 
       VCC2 P3 SYSTEM_VCC2 - - - - - - - - IO "Read only" - 
       VCC_DCDC G1 SYSTEM_VCC_DCDC - - - - - - - - IO "Read only" - 
@@ -357,13 +355,21 @@ FSP Configuration
       VSS1_USBHS G15 SYSTEM_VSS1_USBHS - - - - - - - - IO "Read only" - 
       VSS2_USBHS G14 SYSTEM_VSS2_USBHS - - - - - - - - IO "Read only" - 
       VSS_DCDC J1 SYSTEM_VSS_DCDC - - - - - - - - IO "Read only" - 
+      VSS_MIPI C10 SYSTEM_VSS_MIPI - - - - - - - - IO "Read only" - 
       VSS_USB B13 SYSTEM_VSS_USB - - - - - - - - IO "Read only" - 
       XCIN J15 CGC_XCIN - - - - - - - - IO "Read only" - 
       XCOUT J14 CGC_XCOUT - - - - - - - - IO "Read only" - 
     R7FA8D1BH2CBD.pincfg -> 
       AVCC0 N8 SYSTEM_AVCC0 - - - - - - - - IO "Read only" - 
+      AVCC_MIPI B9 SYSTEM_AVCC_MIPI - - - - - - - - IO "Read only" - 
       AVCC_USBHS H13 SYSTEM_AVCC_USBHS - - - - - - - - IO "Read only" - 
       AVSS0 N9 SYSTEM_AVSS0 - - - - - - - - IO "Read only" - 
+      MIPI_CLN A11 SYSTEM_MIPI_CLN - - - - - - - - IO "Read only" - 
+      MIPI_CLP B11 SYSTEM_MIPI_CLP - - - - - - - - IO "Read only" - 
+      MIPI_DL0N A12 SYSTEM_MIPI_DL0N - - - - - - - - IO "Read only" - 
+      MIPI_DL0P B12 SYSTEM_MIPI_DL0P - - - - - - - - IO "Read only" - 
+      MIPI_DL1N A10 SYSTEM_MIPI_DL1N - - - - - - - - IO "Read only" - 
+      MIPI_DL1P B10 SYSTEM_MIPI_DL1P - - - - - - - - IO "Read only" - 
       P000 R13 - ETH_INT - - Disabled - - "ACMPHS1: IVCMP1_2; ADC1: AN100; IRQ6: IRQ6-DS" - None - - 
       P001 P12 - - - - Disabled - - "ACMPHS0: IVREF_0; ADC1: AN101; IRQ7: IRQ7-DS" - None - - 
       P002 R12 - GROVE2_2_AN - - Disabled - - "ACMPHS1: IVCMP1_3; ADC1: AN102; IRQ8: IRQ8-DS" - None - - 
@@ -392,10 +398,6 @@ FSP Configuration
       P115 D3 - SDRAM_CS L - Disabled - - "ETHER_MII: ET0_WOL; ETHER_RMII: ET0_WOL; GLCD: LCD_DATA7; GPT5: GTIOC5A; SCI0: CTS0; SDRAM: SDCS; SPI0: MOSI0; SSIE0: SSITXD0" - IO - - 
       P200 B8 - NMI - - Disabled - - "IRQ: NMI" - None - - 
       P201 E9 - MD - - Disabled - - "SYSTEM: MD" - None - - 
-      P202 A11 - - - - Disabled - - "CANFD0: CRX0; GPT5: GTIOC5B; IRQ3: IRQ3-DS; SDHI0: SD0DAT6; SPI0: MOSI0; ULPT1: ULPTOB1" - None - - 
-      P203 B11 - - - - Disabled - - "CANFD0: CTX0; GPT5: GTIOC5A; IRQ2: IRQ2-DS; SDHI0: SD0DAT5; SPI0: RSPCK0; ULPT1: ULPTOA1" - None - - 
-      P204 A12 - - - - Disabled - - "AGT1: AGTIO1; CAC: CACREF; GPT4: GTIOC4B; GPT_OPS: GTIW; SCI4: DE4; SCI4: SCK4; SDHI0: SD0DAT4; SPI0: SSLA0; SSIE1: SSISCK1; USB FS: USB_OVRCURB" - None - - 
-      P205 B12 - - - - Disabled - - "AGT1: AGTO1; CLKOUT: CLKOUT; GPT4: GTIOC4A; GPT_OPS: GTIV; IIC1: SCL1; IRQ1: IRQ1-DS; SCI4: TXD4; SDHI0: SD0DAT3; SPI0: SSLA1; SSIE1: SSIWS1; USB FS: USB_OVRCURA" - None - - 
       P206 D11 - MIPI_DSI_TE - - Disabled - - "BUS: CS7#; GPT_OPS: GTIU; IIC1: SDA1; IRQ0: IRQ0-DS; MIPI: DSI_TE; SCI4: RXD4; SDHI0: SD0DAT2; SPI0: SSLA2; SSIE1: SSIDATA1; USB FS: USB_VBUSEN" - None - - 
       P207 C13 - LCD_DATA9 - - Disabled - - "GLCD: LCD_DATA9" - None - - 
       P208 F8 JTAG/SWD_TDI TDI L None "Peripheral mode" - - "CANFD1: CRX1; CLKOUT: VCOUT; GPT1: GTIOC1B; GPT_OPS: GTOVLO; IRQ3: IRQ3; JTAG/SWD: TDI; SCI9: RXD9" - IO - - 
@@ -417,9 +419,6 @@ FSP Configuration
       P310 D6 - SDRAM_A11 L - Disabled - - "AGT1: AGTEE1; BUS: A11; ETHER_MII: ET0_ETXD2; GLCD: LCD_DATA16; SCI3: TXD3; SDRAM: A11" - IO - - 
       P311 B6 - SDRAM_A12 L - Disabled - - "AGT1: AGTOB1; BUS: A12; CANFD0: CRX0; ETHER_MII: ET0_TX_ER; GLCD: LCD_DATA17; GPT_OPS: GTADSM1; SCI3: DE3; SCI3: SCK3; SDRAM: A12" - IO - - 
       P312 D7 - SDRAM_A13 L - Disabled - - "AGT1: AGTOA1; BUS: A13; CANFD0: CTX0; ETHER_MII: ET0_TX_CLK; GLCD: LCD_DATA18; GPT_OPS: GTADSM0; SCI3: CTS_RTS3; SCI3: DE3; SDRAM: A13" - IO - - 
-      P313 B10 - - - - Disabled - - "SCI3: CTS3; SDHI0: SD0DAT7; SPI0: MISO0" - None - - 
-      P314 A10 - - - - Disabled - - "ADC(Digital): ADTRG0; SCI3: CTS_RTS3; SCI3: DE3" - None - - 
-      P315 C11 - - - - Disabled - - "SCI3: DE3; SCI3: SCK3" - None - - 
       P400 R15 - CAM_D0_I3C_SCL0 - - Disabled - - "ADC(Digital): ADTRG1; AGT1: AGTIO1; CEU: VIO_D0; ETHER_MII: ET0_WOL; ETHER_RMII: ET0_WOL; GPT6: GTIOC6A; I3C0: I3C_SCL0; IRQ0: IRQ0; SCI1: TXD1; SDHI1: SD1CLK; SSIE: AUDIO_CLK" - None - - 
       P401 P15 - ETH_B_MDC_CAM_D1_I3C_SDA0 - - Disabled - - "CANFD0: CTX0; CEU: VIO_D1; ETHER_MII: ET0_MDC; ETHER_RMII: ET0_MDC; GPT6: GTIOC6B; GPT_POEGA: GTETRGA; I3C0: I3C_SDA0; IRQ5: IRQ5-DS; SCI1: RXD1; SDHI1: SD1CMD" - None - - 
       P402 M12 - ETH_B_MDIO - - Disabled - - "CAC: CACREF; CANFD0: CRX0; ETHER_MII: ET0_MDIO; ETHER_RMII: ET0_MDIO; IRQ4: IRQ4-DS; RTC: RTCIC0; SCI1: DE1; SCI1: SCK1; SDHI1: SD1DAT0; SSIE: AUDIO_CLK" - None - - 
@@ -499,8 +498,6 @@ FSP Configuration
       P813 J5 - ARDUINO_RESET L - Disabled - - "BUS: D20; SDRAM: DQ20" - IO - - 
       P814 A14 - USB_DP L - Disabled - - "CANFD0: CRX0; GPT8: GTIOC8B; USB FS: USB_DP" - IO - - 
       P815 B14 - USB_DM L - Disabled - - "CANFD0: CTX0; GPT8: GTIOC8A; USB FS: USB_DM" - IO - - 
-      P900 C10 - - - - Disabled - - "SCI3: TXD3" - None - - 
-      P901 B9 - - - - Disabled - - "AGT1: AGTIO1; SCI3: RXD3" - None - - 
       P902 D10 - LCD_DATA8 - - Disabled - - "GLCD: LCD_DATA8" - None - - 
       P903 C9 - LCD_DATA7 - - Disabled - - "GLCD: LCD_DATA7; GPT11: GTIOC11A" - None - - 
       P904 D9 - LCD_DATA6 - - Disabled - - "GLCD: LCD_DATA6; GPT11: GTIOC11B" - None - - 
@@ -550,6 +547,7 @@ FSP Configuration
       VCC H9 SYSTEM_VCC - - - - - - - - IO "Read only" - 
       VCC J6 SYSTEM_VCC - - - - - - - - IO "Read only" - 
       VCC J9 SYSTEM_VCC - - - - - - - - IO "Read only" - 
+      VCC18_MIPI C11 SYSTEM_VCC18_MIPI - - - - - - - - IO "Read only" - 
       VCC2 J3 SYSTEM_VCC2 - - - - - - - - IO "Read only" - 
       VCC2 P3 SYSTEM_VCC2 - - - - - - - - IO "Read only" - 
       VCC_DCDC G1 SYSTEM_VCC_DCDC - - - - - - - - IO "Read only" - 
@@ -582,6 +580,7 @@ FSP Configuration
       VSS1_USBHS G15 SYSTEM_VSS1_USBHS - - - - - - - - IO "Read only" - 
       VSS2_USBHS G14 SYSTEM_VSS2_USBHS - - - - - - - - IO "Read only" - 
       VSS_DCDC J1 SYSTEM_VSS_DCDC - - - - - - - - IO "Read only" - 
+      VSS_MIPI C10 SYSTEM_VSS_MIPI - - - - - - - - IO "Read only" - 
       VSS_USB B13 SYSTEM_VSS_USB - - - - - - - - IO "Read only" - 
       XCIN J15 CGC_XCIN - - - - - - - - IO "Read only" - 
       XCOUT J14 CGC_XCOUT - - - - - - - - IO "Read only" - 
@@ -608,14 +607,10 @@ FSP Configuration
   HAL
     Instance "g_ioport I/O Port (r_ioport)"
       Name: g_ioport
-      Port 1 ELC Trigger Source: Disabled
-      Port 2 ELC Trigger Source: Disabled
-      Port 3 ELC Trigger Source: Disabled
-      Port 4 ELC Trigger Source: Disabled
-      Port B ELC Trigger Source: Disabled
-      Port C ELC Trigger Source: Disabled
-      Port D ELC Trigger Source: Disabled
-      Port E ELC Trigger Source: Disabled
+      1st Port ELC Trigger Source: Disabled
+      2nd Port ELC Trigger Source: Disabled
+      3rd Port ELC Trigger Source: Disabled
+      4th Port ELC Trigger Source: Disabled
       Pin Configuration Name: g_bsp_pin_cfg
       
     Instance "g_uart3 UART (r_sci_b_uart)"

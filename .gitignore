@@ -1,2 +1,9 @@
 .vscode
 Debug
+
+ra
+ra_cfg
+ra_gen
+
+src/tflite-model
+src/model-parameters
