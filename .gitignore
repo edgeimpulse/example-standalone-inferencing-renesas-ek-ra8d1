@@ -7,3 +7,6 @@ ra_gen
 
 src/tflite-model
 src/model-parameters
+*.log
+*.launch
+*.jlink
