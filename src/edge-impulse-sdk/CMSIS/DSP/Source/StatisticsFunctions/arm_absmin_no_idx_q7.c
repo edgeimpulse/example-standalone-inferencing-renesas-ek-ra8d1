@@ -60,7 +60,7 @@ void arm_absmin_no_idx_q7(
     int32_t  blkCnt;           /* loop counters */
     q7x16_t        vecSrc;
     q7_t   const *pSrcVec;
-    uint8x16_t     curExtremValVec = (uint8x16_t)vdupq_n_s8(Q7_ABSMAX);
+    uint8x16_t     curExtremValVec = vdupq_n_s8(Q7_ABSMAX);
     q7_t            minValue = Q7_ABSMAX;
     mve_pred16_t    p0;
 

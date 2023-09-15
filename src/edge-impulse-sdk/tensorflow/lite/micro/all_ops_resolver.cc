@@ -89,6 +89,7 @@ AllOpsResolver::AllOpsResolver() {
   AddPadV2();
   AddPrelu();
   AddQuantize();
+  AddReal();
   AddReadVariable();
   AddReduceMax();
   AddReduceMin();
@@ -97,6 +98,7 @@ AllOpsResolver::AllOpsResolver() {
   AddReshape();
   AddResizeBilinear();
   AddResizeNearestNeighbor();
+  AddRfft2D();
   AddRound();
   AddRsqrt();
 #ifndef TF_LITE_STATIC_MEMORY
@@ -122,6 +124,7 @@ AllOpsResolver::AllOpsResolver() {
   AddTanh();
   AddTranspose();
   AddTransposeConv();
+  AddTreeEnsembleClassifier();
   AddUnidirectionalSequenceLSTM();
   AddUnpack();
   AddVarHandle();

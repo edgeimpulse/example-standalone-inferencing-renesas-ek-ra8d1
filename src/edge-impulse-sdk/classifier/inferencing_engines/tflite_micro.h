@@ -26,6 +26,7 @@
 #include "edge-impulse-sdk/tensorflow/lite/micro/all_ops_resolver.h"
 #include "edge-impulse-sdk/tensorflow/lite/micro/micro_interpreter.h"
 #include "edge-impulse-sdk/tensorflow/lite/schema/schema_generated.h"
+#include "edge-impulse-sdk/tensorflow/lite/schema/schema_generated_full.h"
 #include "edge-impulse-sdk/classifier/ei_aligned_malloc.h"
 #include "edge-impulse-sdk/classifier/ei_fill_result_struct.h"
 #include "edge-impulse-sdk/classifier/ei_model_types.h"
@@ -327,7 +328,7 @@ EI_IMPULSE_ERROR run_nn_inference(
     return EI_IMPULSE_OK;
 }
 
-#if EI_CLASSIFIER_TFLITE_INPUT_QUANTIZED == 1
+#if EI_CLASSIFIER_QUANTIZATION_ENABLED == 1
 /**
  * Special function to run the classifier on images, only works on TFLite models (either interpreter or EON or for tensaiflow)
  * that allocates a lot less memory by quantizing in place. This only works if 'can_run_classifier_image_quantized'
@@ -375,7 +376,8 @@ EI_IMPULSE_ERROR run_nn_inference_image_quantized(
     ei::matrix_i8_t features_matrix(1, impulse->nn_input_frame_size, input->data.int8);
 
     // run DSP process and quantize automatically
-    int ret = extract_image_features_quantized(signal, &features_matrix, ei_dsp_blocks[0].config, input->params.scale, input->params.zero_point, impulse->frequency);
+    int ret = extract_image_features_quantized(signal, &features_matrix, impulse->dsp_blocks[0].config, input->params.scale, input->params.zero_point,
+        impulse->frequency, impulse->learning_blocks[0].image_scaling);
     if (ret != EIDSP_OK) {
         ei_printf("ERR: Failed to run DSP process (%d)\n", ret);
         return EI_IMPULSE_DSP_ERROR;
@@ -417,7 +419,7 @@ EI_IMPULSE_ERROR run_nn_inference_image_quantized(
 
     return EI_IMPULSE_OK;
 }
-#endif // EI_CLASSIFIER_TFLITE_INPUT_QUANTIZED == 1
+#endif // EI_CLASSIFIER_QUANTIZATION_ENABLED == 1
 
 __attribute__((unused)) int extract_tflite_features(signal_t *signal, matrix_t *output_matrix, void *config_ptr, const float frequency) {
     ei_dsp_config_tflite_t *dsp_config = (ei_dsp_config_tflite_t*)config_ptr;
@@ -437,6 +439,8 @@ __attribute__((unused)) int extract_tflite_features(signal_t *signal, matrix_t *
         .output_data_tensor = 0,
         .output_labels_tensor = 255,
         .output_score_tensor = 255,
+        .quantized = 0,
+        .compiled = 0,
         .graph_config = &ei_config_tflite_graph_0
     };
 

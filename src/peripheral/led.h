@@ -24,7 +24,7 @@
 #define PERIPHERAL_LED_H_
 
 #include "common_utils.h"
-#include "fsp_common_api.h"
+#include "bsp_api.h"
 
 typedef enum
 {

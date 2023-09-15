@@ -147,7 +147,7 @@ arm_status arm_mat_ldlt_f32(
 
         int32x4_t vecOffs;
         int w;
-        vecOffs = (int32x4_t)vidupq_u32((uint32_t)0, 1);
+        vecOffs = vidupq_u32((uint32_t)0, 1);
         vecOffs = vmulq_n_s32(vecOffs,n);
 
         for(w=k+1; w<n; w+=4)

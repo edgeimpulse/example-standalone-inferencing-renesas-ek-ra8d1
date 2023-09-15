@@ -27,6 +27,7 @@ limitations under the License.
 #include "edge-impulse-sdk/tensorflow/lite/micro/kernels/conv.h"
 #include "edge-impulse-sdk/tensorflow/lite/micro/kernels/depthwise_conv.h"
 #include "edge-impulse-sdk/tensorflow/lite/micro/kernels/ethosu.h"
+#include "edge-impulse-sdk/tensorflow/lite/micro/kernels/tree_ensemble_classifier.h"
 #include "edge-impulse-sdk/tensorflow/lite/micro/kernels/fully_connected.h"
 #include "edge-impulse-sdk/tensorflow/lite/micro/kernels/micro_ops.h"
 #include "edge-impulse-sdk/tensorflow/lite/micro/kernels/pooling.h"
@@ -591,6 +592,11 @@ class MicroMutableOpResolver : public MicroOpResolver {
   TfLiteStatus AddTranspose() {
     return AddBuiltin(BuiltinOperator_TRANSPOSE, Register_TRANSPOSE(),
                       ParseTranspose);
+  }
+
+  TfLiteStatus AddTreeEnsembleClassifier() {
+    return AddCustom(tflite::GetString_TreeEnsembleClassifier(),
+                     tflite::Register_TreeEnsembleClassifier());
   }
 
   TfLiteStatus AddUnpack() {

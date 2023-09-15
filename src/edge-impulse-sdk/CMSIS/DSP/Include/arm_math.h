@@ -205,6 +205,7 @@
 #include "edge-impulse-sdk/CMSIS/DSP/Include/dsp/transform_functions.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/dsp/filtering_functions.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/dsp/quaternion_math_functions.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/dsp/window_functions.h"
 
 
 

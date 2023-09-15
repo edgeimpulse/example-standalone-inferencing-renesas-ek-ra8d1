@@ -14,6 +14,7 @@ limitations under the License.
 ==============================================================================*/
 
 #include "edge-impulse-sdk/tensorflow/lite/micro/flatbuffer_utils.h"
+#include "edge-impulse-sdk/tensorflow/lite/schema/schema_generated_full.h"
 
 namespace tflite {
 

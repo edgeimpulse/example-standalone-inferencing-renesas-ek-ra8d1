@@ -996,8 +996,6 @@ TfLiteStatus Eval(TfLiteContext* context, TfLiteNode* node) {
 }  // namespace add
 }  // namespace sl
 
-namespace ops {
-namespace micro {
 TfLiteRegistration Register_ADD() {
   return {/*init=*/sl::add::Init,
           /*free=*/nullptr,
@@ -1009,8 +1007,6 @@ TfLiteRegistration Register_ADD() {
           /*version=*/0};
 }
 
-}  // namespace micro
-}  // namespace ops
 }  // namespace tflite
 
 #elif EI_CLASSIFIER_TFLITE_ENABLE_ESP_NN == 1

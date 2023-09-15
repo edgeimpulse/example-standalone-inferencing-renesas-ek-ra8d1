@@ -23,7 +23,7 @@
 #define PERIPHERAL_TIMER_HANDLER_H_
 
 #include "common_utils.h"
-#include "fsp_common_api.h"
+#include "bsp_api.h"
 
 FSP_CPP_HEADER
 

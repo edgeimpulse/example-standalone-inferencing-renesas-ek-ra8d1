@@ -1146,9 +1146,6 @@ TfLiteStatus MaxEval(TfLiteContext* context, TfLiteNode* node)
 }  // namespace pooling
 }  // namespace sl
 
-namespace ops {
-namespace micro {
-
 TfLiteRegistration Register_MAX_POOL_2D() {
   static TfLiteRegistration max_pool_registration = {
     /*init=*/sl::pooling::Init,
@@ -1163,9 +1160,6 @@ TfLiteRegistration Register_MAX_POOL_2D() {
 
   return max_pool_registration;
 }
-
-}  // namespace micro
-}  // namespace ops
 
 // Just to keep all_ops_resolver() happy during development ...
 TfLiteRegistration Register_AVERAGE_POOL_2D() {

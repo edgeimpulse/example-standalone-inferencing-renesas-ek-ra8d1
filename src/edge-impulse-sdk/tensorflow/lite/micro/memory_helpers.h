@@ -20,6 +20,7 @@ limitations under the License.
 
 #include "edge-impulse-sdk/tensorflow/lite/c/common.h"
 #include "edge-impulse-sdk/tensorflow/lite/schema/schema_generated.h"
+#include "edge-impulse-sdk/tensorflow/lite/schema/schema_generated_full.h"
 
 namespace tflite {
 

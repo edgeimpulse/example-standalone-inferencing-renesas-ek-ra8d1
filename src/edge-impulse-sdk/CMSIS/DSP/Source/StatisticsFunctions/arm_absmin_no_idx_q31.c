@@ -58,7 +58,7 @@ void arm_absmin_no_idx_q31(
     int32_t  blkCnt;           /* loop counters */
     q31x4_t       vecSrc;
     q31_t   const *pSrcVec;
-    uint32x4_t    curExtremValVec = (uint32x4_t)vdupq_n_s32(Q31_ABSMAX);
+    uint32x4_t    curExtremValVec = vdupq_n_s32(Q31_ABSMAX);
     q31_t           minValue = Q31_ABSMAX;
     mve_pred16_t    p0;
 

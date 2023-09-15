@@ -30,6 +30,7 @@ limitations under the License.
 #include "edge-impulse-sdk/tensorflow/lite/micro/micro_profiler_interface.h"
 #include "edge-impulse-sdk/tensorflow/lite/portable_type_to_tflitetype.h"
 #include "edge-impulse-sdk/tensorflow/lite/schema/schema_generated.h"
+#include "edge-impulse-sdk/tensorflow/lite/schema/schema_generated_full.h"
 
 /// Copied from tensorflow/lite/version.h to avoid a dependency chain into
 // tensorflow/core.

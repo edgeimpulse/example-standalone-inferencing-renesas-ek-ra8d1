@@ -15,7 +15,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 #include "ei_main.h"
-#include "fsp_common_api.h"
+#include "bsp_api.h"
 #include "peripheral/uart_ep.h"
 #include "peripheral/led.h"
 #include "peripheral/timer_handler.h"
@@ -48,6 +48,7 @@ int ei_init(void)
     else {
         ei_led_turn_on(e_user_led_red);
     }
+    ei_timer0_start();
 
     return FSP_SUCCESS;
 }
@@ -67,7 +68,12 @@ int ei_main()
         return 1;
     }
     ei_impulse_result_t result = { 0 };
-    ei_timer0_start();
+    uint32_t start = timer_get_us();
+
+    ei_sleep(100);
+    uint32_t stop = timer_get_us();
+
+    ei_printf("Elapsed %d\r\n", stop-start);
 
     while (1) {
         // the features are stored into flash, and we don't want to load everything into RAM
@@ -76,7 +82,7 @@ int ei_main()
         features_signal.get_data = &raw_feature_get_data;
 
         // invoke the impulse
-        EI_IMPULSE_ERROR res = run_classifier(&features_signal, &result, true);
+        EI_IMPULSE_ERROR res = run_classifier(&features_signal, &result, false);
 
 
         ei_printf("run_classifier returned: %d\n", res);
