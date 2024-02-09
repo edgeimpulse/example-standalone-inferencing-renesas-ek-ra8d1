@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mfcc_init_q31.c
@@ -42,7 +44,7 @@
 
 
 /**
-  @brief         Initialization of the MFCC Q31 instance structure
+  @brief         Initialization of the MFCC F32 instance structure
   @param[out]    S       points to the mfcc instance structure
   @param[in]     fftLen  fft length
   @param[in]     nbMelFilters  number of Mel filters
@@ -105,3 +107,5 @@ arm_status arm_mfcc_init_q31(
 /**
   @} end of MFCC group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

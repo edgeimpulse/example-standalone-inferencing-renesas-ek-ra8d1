@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * SPDX-FileCopyrightText: Copyright 2010-2022 Arm Limited and/or its affiliates <open-source-office@arm.com>
+ * Copyright (C) 2010-2020 Arm Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,8 +23,8 @@
  * Title:        arm_nn_depthwise_conv_s8_core.c
  * Description:  Depthwise convolution on im2col buffers.
  *
- * $Date:        26 October 2022
- * $Revision:    V.1.0.5
+ * $Date:        09. October 2020
+ * $Revision:    V.1.0.4
  *
  * Target Processor:  Cortex-M cores
  * -------------------------------------------------------------------- */
@@ -37,17 +39,17 @@
  *
  */
 
-int8_t *arm_nn_depthwise_conv_s8_core(const int8_t *row,
-                                      const int16_t *col,
-                                      const uint16_t num_ch,
-                                      const int32_t *out_shift,
-                                      const int32_t *out_mult,
-                                      const int32_t out_offset,
-                                      const int32_t activation_min,
-                                      const int32_t activation_max,
-                                      const uint16_t kernel_size,
-                                      const int32_t *const output_bias,
-                                      int8_t *out)
+q7_t *arm_nn_depthwise_conv_s8_core(const q7_t *row,
+                                    const q15_t *col,
+                                    const uint16_t num_ch,
+                                    const int32_t *out_shift,
+                                    const int32_t *out_mult,
+                                    const int32_t out_offset,
+                                    const int32_t activation_min,
+                                    const int32_t activation_max,
+                                    const uint16_t kernel_size,
+                                    const int32_t *const output_bias,
+                                    q7_t *out)
 {
 #if defined(ARM_MATH_MVEI)
     int32_t ch_per_loop = num_ch / 4;
@@ -216,3 +218,5 @@ int8_t *arm_nn_depthwise_conv_s8_core(const int8_t *row,
     return NULL;
 #endif
 }
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

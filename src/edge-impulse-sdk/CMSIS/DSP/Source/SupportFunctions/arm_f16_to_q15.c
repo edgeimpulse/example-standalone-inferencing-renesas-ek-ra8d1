@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_float_to_q15.c
@@ -124,8 +126,8 @@ void arm_f16_to_q15(
          * convert from float to Q31 and then store the results in the destination buffer
          */
         in = *pIn++;
-        in = ((_Float16)in * (_Float16)32768.0f16);
-        in += (_Float16)in > 0.0f16 ? 0.5f16 : -0.5f16;
+        in = (in * 32768.0);
+        in += in > 0.0 ? 0.5 : -0.5;
         *pDst++ = clip_q31_to_q15((q31_t) (in));
 
 #else
@@ -155,3 +157,5 @@ void arm_f16_to_q15(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

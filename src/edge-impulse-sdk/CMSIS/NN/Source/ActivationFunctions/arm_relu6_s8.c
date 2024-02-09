@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * SPDX-FileCopyrightText: Copyright 2010-2019, 2022 Arm Limited and/or its affiliates <open-source-office@arm.com>
+ * Copyright (C) 2010-2019 Arm Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,8 +23,8 @@
  * Title:        arm_relu6_s8.c
  * Description:  Basic s8 version of ReLU6
  *
- * $Date:        26 October 2022
- * $Revision:    V.1.0.2
+ * $Date:        09. October 2020
+ * $Revision:    V.1.0.1
  *
  * Target Processor:  Cortex-M cores
  *
@@ -32,7 +34,7 @@
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnsupportfunctions.h"
 
 /**
- *  @ingroup Public
+ *  @ingroup groupNN
  */
 
 /**
@@ -47,7 +49,7 @@
  *
  */
 
-void arm_relu6_s8(int8_t *data, uint16_t size)
+void arm_relu6_s8(q7_t *data, uint16_t size)
 {
     int32_t i;
 
@@ -63,3 +65,5 @@ void arm_relu6_s8(int8_t *data, uint16_t size)
 /**
  * @} end of Acti group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

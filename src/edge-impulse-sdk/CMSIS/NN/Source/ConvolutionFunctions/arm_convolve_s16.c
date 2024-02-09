@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * SPDX-FileCopyrightText: Copyright 2010-2023 Arm Limited and/or its affiliates <open-source-office@arm.com>
+ * Copyright (C) 2010-2022 Arm Limited or its affiliates.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,10 +23,10 @@
  * Title:        arm_convolve_s16.c
  * Description:  s16 version of convolution using symmetric quantization.
  *
- * $Date:        30 January 2023
- * $Revision:    V.2.1.0
+ * $Date:        19 April 2022
+ * $Revision:    V.2.0.0
  *
- * Target :  Arm(R) M-Profile Architecture
+ * Target Processor:  Cortex-M cores
  *
  * -------------------------------------------------------------------- */
 
@@ -32,7 +34,7 @@
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnsupportfunctions.h"
 
 /**
- *  @ingroup Public
+ *  @ingroup groupNN
  */
 
 /**
@@ -52,13 +54,13 @@ arm_cmsis_nn_status arm_convolve_s16(const cmsis_nn_context *ctx,
                                      const cmsis_nn_conv_params *conv_params,
                                      const cmsis_nn_per_channel_quant_params *quant_params,
                                      const cmsis_nn_dims *input_dims,
-                                     const int16_t *input_data,
+                                     const q15_t *input_data,
                                      const cmsis_nn_dims *filter_dims,
-                                     const int8_t *filter_data,
+                                     const q7_t *filter_data,
                                      const cmsis_nn_dims *bias_dims,
                                      const int64_t *bias_data,
                                      const cmsis_nn_dims *output_dims,
-                                     int16_t *output_data)
+                                     q15_t *output_data)
 {
     (void)bias_dims;
     (void)ctx;
@@ -90,7 +92,7 @@ arm_cmsis_nn_status arm_convolve_s16(const cmsis_nn_context *ctx,
         /* Run the following code as reference implementation for Cortex-M0 and Cortex-M3 */
         for (int32_t i_out_ch = 0; i_out_ch < output_ch; i_out_ch++)
         {
-            const int32_t reduced_multiplier = REDUCE_MULTIPLIER(output_mult[i_out_ch]);
+            const q31_t reduced_multiplier = REDUCE_MULTIPLIER(output_mult[i_out_ch]);
 
             for (int32_t base_idx_y = -pad_y, i_out_y = 0; i_out_y < output_y; base_idx_y += stride_y, i_out_y++)
             {
@@ -144,6 +146,15 @@ arm_cmsis_nn_status arm_convolve_s16(const cmsis_nn_context *ctx,
     return ARM_CMSIS_NN_SUCCESS;
 }
 
+int32_t arm_convolve_s16_get_buffer_size(const cmsis_nn_dims *input_dims, const cmsis_nn_dims *filter_dims)
+{
+    (void)input_dims;
+    (void)filter_dims;
+    return 0;
+}
+
 /**
  * @} end of NNConv group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

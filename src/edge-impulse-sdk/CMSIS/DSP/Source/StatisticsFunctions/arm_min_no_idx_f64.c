@@ -1,10 +1,12 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_min_no_idx_f64.c
  * Description:  Maximum value of a floating-point vector without returning the index
  *
- * $Date:        10 August 2022
- * $Revision:    V1.10.1
+ * $Date:        16 November 2021
+ * $Revision:    V1.10.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
@@ -50,49 +52,28 @@ void arm_min_no_idx_f64(
     uint32_t   blockSize,
     float64_t *pResult)
 {
-    float64_t   minValue = F64_MAX;
-    float64_t   newVal;
-    uint32_t blkCnt ;
-#if defined(ARM_MATH_NEON) && defined(__aarch64__)
-    float64x2_t minValueV , newValV ;
-    minValueV = vdupq_n_f64(F64_MAX);
-    blkCnt = blockSize >> 1U;
-    while(blkCnt > 0)
-    {
-        newValV = vld1q_f64(pSrc);
-        minValueV = vminq_f64(minValueV, newValV);
-        pSrc += 2 ;
-        blkCnt--;
-        
-    }
-    minValue =vgetq_lane_f64(minValueV, 0);
-    if(minValue > vgetq_lane_f64(minValueV, 1))
-    {
-        minValue = vgetq_lane_f64(minValueV, 1);
-    }
+   float64_t   minValue = F64_MAX;
+   float64_t   newVal;
+
+   while (blockSize > 0U)
+   {
+       newVal = *pSrc++;
+   
+       /* compare for the minimum value */
+       if (minValue > newVal)
+       {
+           /* Update the minimum value and it's index */
+           minValue = newVal;
+       }
+   
+       blockSize --;
+   }
     
-    blkCnt = blockSize & 1 ;
-#else
-    blkCnt = blockSize;
-#endif
-    
-    while (blkCnt > 0U)
-    {
-        newVal = *pSrc++;
-        
-        /* compare for the minimum value */
-        if (minValue > newVal)
-        {
-            /* Update the minimum value and it's index */
-            minValue = newVal;
-        }
-        
-        blkCnt --;
-    }
-    
-    *pResult = minValue;
+   *pResult = minValue;
 }
 
 /**
   @} end of Min group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

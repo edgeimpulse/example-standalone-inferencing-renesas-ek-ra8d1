@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * SPDX-FileCopyrightText: Copyright 2021-2023 Arm Limited and/or its affiliates <open-source-office@arm.com>
+ * Copyright (C) 2021-2022 Arm Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -22,17 +24,17 @@
  * Description:  s16 convolution layer wrapper function with the main purpose to call the optimal kernel available in
  * cmsis-nn to perform the convolution.
  *
- * $Date:        30 January 2023
- * $Revision:    V.2.1.0
+ * $Date:        19 April 2022
+ * $Revision:    V.2.0.0
  *
- * Target :  Arm(R) M-Profile Architecture
+ * Target Processor:  Cortex-M cores
  *
  * -------------------------------------------------------------------- */
 
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnfunctions.h"
 
 /**
- *  @ingroup Public
+ *  @ingroup groupNN
  */
 
 /**
@@ -51,13 +53,13 @@ arm_cmsis_nn_status arm_convolve_wrapper_s16(const cmsis_nn_context *ctx,
                                              const cmsis_nn_conv_params *conv_params,
                                              const cmsis_nn_per_channel_quant_params *quant_params,
                                              const cmsis_nn_dims *input_dims,
-                                             const int16_t *input_data,
+                                             const q15_t *input_data,
                                              const cmsis_nn_dims *filter_dims,
-                                             const int8_t *filter_data,
+                                             const q7_t *filter_data,
                                              const cmsis_nn_dims *bias_dims,
                                              const int64_t *bias_data,
                                              const cmsis_nn_dims *output_dims,
-                                             int16_t *output_data)
+                                             q15_t *output_data)
 {
 #if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
     if (filter_dims->w * filter_dims->h * input_dims->c < 512 &&
@@ -104,6 +106,29 @@ arm_cmsis_nn_status arm_convolve_wrapper_s16(const cmsis_nn_context *ctx,
 #endif
 }
 
+int32_t arm_convolve_wrapper_s16_get_buffer_size(const cmsis_nn_conv_params *conv_params,
+                                                 const cmsis_nn_dims *input_dims,
+                                                 const cmsis_nn_dims *filter_dims,
+                                                 const cmsis_nn_dims *output_dims)
+{
+    (void)conv_params;
+    (void)output_dims;
+
+#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
+    if (filter_dims->w * filter_dims->h * input_dims->c < 512 &&
+        (conv_params->dilation.w == 1 && conv_params->dilation.h == 1))
+    {
+        return arm_convolve_fast_s16_get_buffer_size(input_dims, filter_dims);
+    }
+
+    return arm_convolve_s16_get_buffer_size(input_dims, filter_dims);
+#else
+    return arm_convolve_s16_get_buffer_size(input_dims, filter_dims);
+#endif
+}
+
 /**
  * @} end of NNConv group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

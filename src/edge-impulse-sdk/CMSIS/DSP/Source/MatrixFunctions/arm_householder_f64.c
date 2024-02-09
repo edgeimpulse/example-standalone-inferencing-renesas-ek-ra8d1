@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_householder_f64.c
@@ -115,3 +117,5 @@ float64_t arm_householder_f64(
 /**
   @} end of MatrixHouseholder group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

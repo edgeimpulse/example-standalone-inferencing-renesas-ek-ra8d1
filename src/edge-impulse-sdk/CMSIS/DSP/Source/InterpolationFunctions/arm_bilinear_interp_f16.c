@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_bilinear_interp_f16.c
@@ -57,7 +59,7 @@
   {
     float16_t out;
     float16_t f00, f01, f10, f11;
-    const float16_t *pData = S->pData;
+    float16_t *pData = S->pData;
     int32_t xIndex, yIndex, index;
     float16_t xdiff, ydiff;
     float16_t b1, b2, b3, b4;
@@ -115,3 +117,5 @@
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

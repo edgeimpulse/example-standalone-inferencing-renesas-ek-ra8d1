@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_bitonic_sort_f32.c
@@ -27,7 +29,7 @@
  */
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/dsp/support_functions.h"
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_sorting.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_sorting.h"
 
 
 #if !defined(ARM_MATH_NEON)
@@ -1037,3 +1039,5 @@ const arm_sort_instance_f32 * S,
 /**
   @} end of Sorting group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mse_f32.c
@@ -42,7 +44,7 @@
   @param[in]     pSrcA       points to the first input vector
   @param[in]     pSrcB       points to the second input vector
   @param[in]     blockSize   number of samples in input vector
-  @param[out]    pResult      mean square error
+  @param[out]    result      mean square error
   @return        none
  */
 
@@ -55,7 +57,7 @@ void arm_mse_f32(
     const float32_t * pSrcA,
     const float32_t * pSrcB,
     uint32_t    blockSize,
-    float32_t * pResult)
+    float32_t * result)
 
 {
     float32x4_t vecA, vecB;
@@ -98,7 +100,7 @@ void arm_mse_f32(
     sum = vecAddAcrossF32Mve(vecSum);
 
     /* Store result in destination buffer */
-    *pResult = sum / blockSize;
+    *result = sum / blockSize;
 
 }
 
@@ -109,7 +111,7 @@ void arm_mse_f32(
     const float32_t * pSrcA,
     const float32_t * pSrcB,
     uint32_t    blockSize,
-    float32_t * pResult)
+    float32_t * result)
 
 {
     float32x4_t vecA, vecB;
@@ -163,7 +165,7 @@ void arm_mse_f32(
     }
     
     /* Store result in destination buffer */
-    *pResult = sum / blockSize;
+    *result = sum / blockSize;
 
 }
 #endif
@@ -179,7 +181,7 @@ void arm_mse_f32(
     const float32_t * pSrcA,
     const float32_t * pSrcB,
     uint32_t    blockSize,
-    float32_t * pResult)
+    float32_t * result)
 
 {
   uint32_t blkCnt;                               /* Loop counter */
@@ -237,7 +239,7 @@ void arm_mse_f32(
   }
 
   /* Store result in destination buffer */
-  *pResult = sum / blockSize;
+  *result = sum / blockSize;
 }
 
 #endif /* end of test for vector instruction availability */
@@ -245,3 +247,5 @@ void arm_mse_f32(
 /**
   @} end of MSE group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

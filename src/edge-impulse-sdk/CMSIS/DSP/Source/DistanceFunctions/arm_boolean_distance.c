@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
@@ -45,7 +47,7 @@
 #define TF 
 #define FT
 #define EXT _TT_TF_FT
-#include "arm_boolean_distance_template.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Source/DistanceFunctions/arm_boolean_distance_template.h"
 
 #undef TT
 #undef FF
@@ -55,7 +57,7 @@
 #define TF 
 #define FT
 #define EXT _TF_FT
-#include "arm_boolean_distance_template.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Source/DistanceFunctions/arm_boolean_distance_template.h"
 
 #undef TT
 #undef FF
@@ -67,7 +69,7 @@
 #define TF 
 #define FT
 #define EXT _TT_FF_TF_FT
-#include "arm_boolean_distance_template.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Source/DistanceFunctions/arm_boolean_distance_template.h"
 
 #undef TT
 #undef FF
@@ -76,5 +78,7 @@
 #undef EXT
 #define TT
 #define EXT _TT
-#include "arm_boolean_distance_template.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Source/DistanceFunctions/arm_boolean_distance_template.h"
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

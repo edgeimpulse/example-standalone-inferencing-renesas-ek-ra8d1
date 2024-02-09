@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_f32.c
@@ -86,6 +88,12 @@ void arm_split_rifft_f32(
   @param[out]    pDst points to the output buffer
   @return        none
 
+  @par
+                   For the RIFFT, the source buffer must at least have length 
+                   fftLenReal + 2.
+                   The last two elements must be equal to what would be generated
+                   by the RFFT:
+                     (pSrc[0] - pSrc[1]) and 0.0f
  */
 
 void arm_rfft_f32(
@@ -310,3 +318,5 @@ void arm_split_rifft_f32(
   }
 
 }
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

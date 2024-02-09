@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_absmax_q7.c
@@ -46,12 +48,7 @@
   @return        none
  */
 
-#if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE) && defined(__CMSIS_GCC_H)
-#pragma GCC warning "Scalar version of arm_absmax_q7 built. Helium version has build issues with gcc."
-#endif 
-
-
-#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE) &&  !defined(__CMSIS_GCC_H)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include <stdint.h>
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
@@ -84,7 +81,7 @@ static void arm_small_blk_absmax_q7(
          * Get current max per lane and current index per lane
          * when a max is selected
          */
-        p0 = vcmpgtq_m(extremIdxVal, extremValVec, p);
+        p0 = vcmpgeq_m(extremIdxVal, extremValVec, p);
 
         extremValVec = vorrq_m(extremValVec, extremIdxVal, extremIdxVal, p0);
         /* store per-lane extrema indexes */
@@ -297,3 +294,5 @@ void arm_absmax_q7(
 /**
   @} end of AbsMax group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

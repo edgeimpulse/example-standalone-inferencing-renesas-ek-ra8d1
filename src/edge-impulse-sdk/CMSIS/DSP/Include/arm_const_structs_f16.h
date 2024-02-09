@@ -32,7 +32,7 @@
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_math_types_f16.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_common_tables.h"
-#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_common_tables_f16.h"
+#include "arm_common_tables_f16.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/dsp/transform_functions_f16.h"
 
 #ifdef   __cplusplus

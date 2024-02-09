@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_correlate_f32.c
@@ -105,7 +107,7 @@
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_filtering.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_filtering.h"
 
 
 void arm_correlate_f32(
@@ -268,7 +270,7 @@ void arm_correlate_f32(
         pA++;
     }
 
-    for (i = block3 - 1; i > 0; i -= 2)
+    for (i = block3 - 1; i >= 0; i -= 2)
     {
 
         uint32_t  count = (i + 1);
@@ -1102,3 +1104,5 @@ void arm_correlate_f32(
 /**
   @} end of Corr group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

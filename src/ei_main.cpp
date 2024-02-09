@@ -25,7 +25,6 @@
 
 static const float features[] = {
     // copy raw features here (for example from the 'Live classification' page)
-
 };
 
 int raw_feature_get_data(size_t offset, size_t length, float *out_ptr)
@@ -68,12 +67,6 @@ int ei_main()
         return 1;
     }
     ei_impulse_result_t result = { 0 };
-    uint32_t start = timer_get_us();
-
-    ei_sleep(100);
-    uint32_t stop = timer_get_us();
-
-    ei_printf("Elapsed %d\r\n", stop-start);
 
     while (1) {
         // the features are stored into flash, and we don't want to load everything into RAM

@@ -1,10 +1,12 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_vlog_f64.c
  * Description:  Fast vectorized log
  *
- * $Date:        10 August 2022
- * $Revision:    V1.10.1
+ * $Date:        13 September 2021
+ * $Revision:    V1.10.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
@@ -30,23 +32,24 @@
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_common_tables.h"
 
 void arm_vlog_f64(
-    const float64_t * pSrc,
-    float64_t * pDst,
-    uint32_t blockSize)
+  const float64_t * pSrc,
+        float64_t * pDst,
+        uint32_t blockSize)
 {
-    uint32_t blkCnt;
+   uint32_t blkCnt; 
 
-    blkCnt = blockSize;
-    
-    
-    while (blkCnt > 0U)
-    {
-        /* C = log(A) */
-        
-        /* Calculate log and store result in destination buffer. */
-        *pDst++ = log(*pSrc++);
-        
-        /* Decrement loop counter */
-        blkCnt--;
-    }
+   blkCnt = blockSize;
+
+   while (blkCnt > 0U)
+   {
+      /* C = log(A) */
+  
+      /* Calculate log and store result in destination buffer. */
+      *pDst++ = log(*pSrc++);
+  
+      /* Decrement loop counter */
+      blkCnt--;
+   }
 }
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

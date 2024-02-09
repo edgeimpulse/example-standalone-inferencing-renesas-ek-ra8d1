@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_fir_init_f64.c
@@ -61,24 +63,26 @@
  */
 
 void arm_fir_init_f64(
-    arm_fir_instance_f64 * S,
-    uint16_t numTaps,
-    const float64_t * pCoeffs,
-    float64_t * pState,
-    uint32_t blockSize)
+        arm_fir_instance_f64 * S,
+        uint16_t numTaps,
+  const float64_t * pCoeffs,
+        float64_t * pState,
+        uint32_t blockSize)
 {
-    /* Assign filter taps */
-    S->numTaps = numTaps;
-    
-    /* Assign coefficient pointer */
-    S->pCoeffs = pCoeffs;
-    
-    /* Clear state buffer. The size is always (blockSize + numTaps - 1) */
-    memset(pState, 0, (numTaps + (blockSize - 1U)) * sizeof(float64_t));
-    /* Assign state pointer */
-    S->pState = pState;
+  /* Assign filter taps */
+  S->numTaps = numTaps;
+
+  /* Assign coefficient pointer */
+  S->pCoeffs = pCoeffs;
+
+  /* Clear state buffer. The size is always (blockSize + numTaps - 1) */
+  memset(pState, 0, (numTaps + (blockSize - 1U)) * sizeof(float64_t));
+  /* Assign state pointer */
+  S->pState = pState;
 }
 
 /**
   @} end of FIR group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

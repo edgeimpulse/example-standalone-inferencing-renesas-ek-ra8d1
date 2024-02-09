@@ -79,7 +79,7 @@ extern "C"
 #define __STATIC_INLINE static inline
 
 #else
-#include "cmsis_compiler.h"
+#include "edge-impulse-sdk/CMSIS/Core/Include/cmsis_compiler.h"
 #endif
 
 

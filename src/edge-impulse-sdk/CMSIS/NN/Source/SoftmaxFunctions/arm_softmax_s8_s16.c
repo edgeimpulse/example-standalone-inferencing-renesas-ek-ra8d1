@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * Copyright (C) 2022 Arm Limited or its affiliates.
  *
@@ -32,7 +34,7 @@
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnsupportfunctions.h"
 
 /**
- *  @ingroup Public
+ *  @ingroup groupNN
  */
 
 /**
@@ -53,3 +55,5 @@ void arm_softmax_s8_s16(const int8_t *input,
 /**
  * @} end of Softmax group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

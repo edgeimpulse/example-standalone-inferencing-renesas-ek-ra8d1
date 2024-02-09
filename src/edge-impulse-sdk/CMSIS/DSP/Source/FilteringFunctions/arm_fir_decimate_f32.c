@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_fir_decimate_f32.c
@@ -121,7 +123,7 @@
   @param[in]     S         points to an instance of the floating-point FIR decimator structure
   @param[in]     pSrc      points to the block of input data
   @param[out]    pDst      points to the block of output data
-  @param[in]     blockSize number of input samples to process
+  @param[in]     blockSize number of samples to process
   @return        none
  */
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
@@ -949,3 +951,5 @@ void arm_fir_decimate_f32(
 /**
   @} end of FIR_decimate group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

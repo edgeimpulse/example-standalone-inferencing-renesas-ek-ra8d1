@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_correlate_q7.c
@@ -56,15 +58,10 @@
  @remark
                    Refer to \ref arm_correlate_opt_q7() for a faster implementation of this function.
  */
-
-#if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE) && defined(__CMSIS_GCC_H)
-#pragma GCC warning "Scalar version of arm_correlate_q7 built. Helium version has build issues with gcc."
-#endif 
-
-#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE) &&  !defined(__CMSIS_GCC_H)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
 
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_filtering.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_filtering.h"
 void arm_correlate_q7(
   const q7_t * pSrcA,
         uint32_t srcALen,
@@ -225,7 +222,7 @@ void arm_correlate_q7(
         pA++;
     }
 
-    for (i = block3 - 1; i > 0; i -= 2)
+    for (i = block3 - 1; i >= 0; i -= 2)
     {
         uint32_t  count = (i + 1);
         int32_t   acc0 = 0LL;
@@ -1005,3 +1002,5 @@ void arm_correlate_q7(
 /**
   @} end of Corr group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

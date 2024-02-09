@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_scale_q31.c
@@ -48,12 +50,7 @@
 
   @par           Scaling and Overflow Behavior
                    The input data <code>*pSrc</code> and <code>scaleFract</code> are in 1.31 format.
-                   These are multiplied to yield a 2.62 intermediate result and this is shifted 
-                   with saturation to 1.31 format.
-                   There is an intermediate shift by 32 to go from the
-                   2.62 to 1.31 format. 
-                   The shift argument is applied on the 1.31 result and not to the intermediate
-                   2.62 format. 
+                   These are multiplied to yield a 2.62 intermediate result and this is shifted with saturation to 1.31 format.
  */
 
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
@@ -247,3 +244,5 @@ void arm_scale_q31(
 /**
   @} end of BasicScale group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

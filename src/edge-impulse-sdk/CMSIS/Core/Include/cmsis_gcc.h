@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     cmsis_gcc.h
  * @brief    CMSIS compiler GCC header file
- * @version  V5.4.2
- * @date     17. December 2022
+ * @version  V5.4.1
+ * @date     27. May 2021
  ******************************************************************************/
 /*
  * Copyright (c) 2009-2021 Arm Limited. All rights reserved.
@@ -116,12 +116,6 @@
 #ifndef   __COMPILER_BARRIER
   #define __COMPILER_BARRIER()                   __ASM volatile("":::"memory")
 #endif
-#ifndef __NO_INIT
-  #define __NO_INIT                              __attribute__ ((section (".bss.noinit")))
-#endif
-#ifndef __ALIAS
-  #define __ALIAS(x)                             __attribute__ ((alias(x)))
-#endif
 
 /* #########################  Startup and Lowlevel Init  ######################## */
 
@@ -138,13 +132,13 @@ __STATIC_FORCEINLINE __NO_RETURN void __cmsis_start(void)
 {
   extern void _start(void) __NO_RETURN;
 
-  typedef struct __copy_table {
+  typedef struct {
     uint32_t const* src;
     uint32_t* dest;
     uint32_t  wlen;
   } __copy_table_t;
 
-  typedef struct __zero_table {
+  typedef struct {
     uint32_t* dest;
     uint32_t  wlen;
   } __zero_table_t;
@@ -952,10 +946,13 @@ __STATIC_FORCEINLINE uint32_t __STLEX(uint32_t value, volatile uint32_t *ptr)
   \details Enables IRQ interrupts by clearing special-purpose register PRIMASK.
            Can only be executed in Privileged modes.
  */
+// Patched by Edge Impulse, fix for targets that already have __enable_irq
+#ifndef __enable_irq
 __STATIC_FORCEINLINE void __enable_irq(void)
 {
   __ASM volatile ("cpsie i" : : : "memory");
 }
+#endif
 
 
 /**
@@ -963,10 +960,13 @@ __STATIC_FORCEINLINE void __enable_irq(void)
   \details Disables IRQ interrupts by setting special-purpose register PRIMASK.
            Can only be executed in Privileged modes.
  */
+// Patched by Edge Impulse, fix for targets that already have __disable_irq
+#ifndef __disable_irq
 __STATIC_FORCEINLINE void __disable_irq(void)
 {
   __ASM volatile ("cpsid i" : : : "memory");
 }
+#endif
 
 
 /**

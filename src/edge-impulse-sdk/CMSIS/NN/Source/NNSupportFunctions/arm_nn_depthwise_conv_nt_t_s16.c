@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * SPDX-FileCopyrightText: Copyright 2022 Arm Limited and/or its affiliates <open-source-office@arm.com>
  *
@@ -21,8 +23,8 @@
  * Title:        arm_nn_depthwise_conv_nt_t_s16.c
  * Description:  Depthwise convolution on matrices with no padding.
  *
- * $Date:        26 October 2022
- * $Revision:    V.1.0.1
+ * $Date:        6 July 2022
+ * $Revision:    V.1.0.0
  *
  * Target Processor:  Cortex-M processors with MVE extension
  * -------------------------------------------------------------------- */
@@ -34,7 +36,7 @@
  */
 
 /**
- * @addtogroup supportConvolution
+ * @addtogroup NNBasicMath
  * @{
  */
 
@@ -45,7 +47,7 @@
  *
  */
 int16_t *arm_nn_depthwise_conv_nt_t_s16(const int16_t *lhs,
-                                        const int8_t *rhs,
+                                        const q7_t *rhs,
                                         const uint16_t num_ch,
                                         const int32_t *out_shift,
                                         const int32_t *out_mult,
@@ -167,5 +169,7 @@ int16_t *arm_nn_depthwise_conv_nt_t_s16(const int16_t *lhs,
 }
 
 /**
- * @} end of Doxygen group
+ * @} end of NNBasicMath group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

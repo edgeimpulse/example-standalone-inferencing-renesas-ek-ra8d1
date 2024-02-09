@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_fir_interpolate_q15.c
@@ -42,7 +44,7 @@
   @param[in]     S          points to an instance of the Q15 FIR interpolator structure
   @param[in]     pSrc       points to the block of input data
   @param[out]    pDst       points to the block of output data
-  @param[in]     blockSize  number of input samples to process
+  @param[in]     blockSize  number of samples to process
   @return        none
 
   @par           Scaling and Overflow Behavior
@@ -772,3 +774,5 @@ void arm_fir_interpolate_q15(
 /**
   @} end of FIR_Interpolate group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

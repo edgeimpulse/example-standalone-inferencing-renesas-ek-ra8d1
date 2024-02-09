@@ -87,6 +87,12 @@ void ei_serial_set_baudrate(int baudrate);
 void ei_putchar(char c);
 
 /**
+ * @brief       Connect to getchar of target
+ * @return      character from serial
+*/
+char ei_getchar(void);
+
+/**
  * Print wrapper around printf()
  * This is used internally to print debug information.
  */
@@ -119,6 +125,16 @@ void ei_free(void *ptr);
 #endif // defined(__cplusplus) && EI_C_LINKAGE == 1
 
 // Load porting layer depending on target
+
+// First check if any of the general frameworks or operating systems are supported/enabled
+#ifndef EI_PORTING_ZEPHYR
+#if defined(__ZEPHYR__)
+#define EI_PORTING_ZEPHYR      1
+#else
+#define EI_PORTING_ZEPHYR      0
+#endif
+#endif
+
 #ifndef EI_PORTING_ARDUINO
 #ifdef ARDUINO
 #define EI_PORTING_ARDUINO      1
@@ -127,19 +143,26 @@ void ei_free(void *ptr);
 #endif
 #endif
 
-#ifndef EI_PORTING_ESPRESSIF
-#if defined(CONFIG_IDF_TARGET_ESP32) && EI_PORTING_ARDUINO == 0
-#define EI_PORTING_ESPRESSIF      1
-#else
-#define EI_PORTING_ESPRESSIF     0
-#endif
-#endif
-
 #ifndef EI_PORTING_MBED
 #ifdef __MBED__
 #define EI_PORTING_MBED      1
 #else
 #define EI_PORTING_MBED      0
+#endif
+#endif
+
+// Then check for target spcific build systems
+
+#ifndef EI_PORTING_ESPRESSIF
+#if ((defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S3)) && EI_PORTING_ZEPHYR == 0)
+#include "esp_idf_version.h"
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+#define portTICK_RATE_MS portTICK_PERIOD_MS
+#endif
+#define EI_PORTING_ESPRESSIF      1
+#define EI_PORTING_ARDUINO        0
+#else
+#define EI_PORTING_ESPRESSIF     0
 #endif
 #endif
 
@@ -167,13 +190,6 @@ void ei_free(void *ptr);
 #endif
 #endif
 
-#ifndef EI_PORTING_ZEPHYR
-#if defined(__ZEPHYR__)
-#define EI_PORTING_ZEPHYR      1
-#else
-#define EI_PORTING_ZEPHYR      0
-#endif
-#endif
 
 #ifndef EI_PORTING_STM32_CUBEAI
 #if defined(USE_HAL_DRIVER) && !defined(__MBED__) && EI_PORTING_ZEPHYR == 0
@@ -212,6 +228,11 @@ void ei_free(void *ptr);
 #endif
 
 #endif
+
+#if defined(CONFIG_IDF_TARGET_ESP32S3)
+#define EI_MAX_OVERFLOW_BUFFER_COUNT	30
+#endif
+
 // End additional configuration
 
 #endif // _EI_CLASSIFIER_PORTING_H_

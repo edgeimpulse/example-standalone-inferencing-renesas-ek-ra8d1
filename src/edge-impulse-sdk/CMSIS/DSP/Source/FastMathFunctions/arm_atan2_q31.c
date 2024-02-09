@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_atan2_q31.c
@@ -234,3 +236,5 @@ arm_status arm_atan2_q31(q31_t y,q31_t x,q31_t *result)
 /**
   @} end of atan2 group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

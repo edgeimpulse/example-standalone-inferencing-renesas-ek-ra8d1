@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_bitreversal2.c
@@ -43,8 +45,7 @@ void arm_bitreversal_64(
   const uint16_t bitRevLen,
   const uint16_t *pBitRevTab)
 {
-  uint64_t a, b, tmp;
-  uint32_t i;
+  uint64_t a, b, i, tmp;
 
   for (i = 0; i < bitRevLen; )
   {
@@ -113,8 +114,7 @@ void arm_bitreversal_16(
   const uint16_t bitRevLen,
   const uint16_t *pBitRevTab)
 {
-  uint16_t a, b, tmp;
-  uint32_t i;
+  uint16_t a, b, i, tmp;
 
   for (i = 0; i < bitRevLen; )
   {
@@ -134,3 +134,5 @@ void arm_bitreversal_16(
     i += 2;
   }
 }
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

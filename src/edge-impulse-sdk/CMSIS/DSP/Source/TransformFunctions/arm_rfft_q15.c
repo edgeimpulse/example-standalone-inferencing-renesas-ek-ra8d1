@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_q15.c
@@ -93,13 +95,14 @@ void arm_split_rifft_q15(
 | 8192        | 1.15          | 13.3           | 0                         |
   
   @par
-                   If the input buffer is of length N (fftLenReal), the output buffer must have length 2N
-                   since it is containing the conjugate part (except for MVE version where N+2 is enough).
+                   If the input buffer is of length N, the output buffer must have length 2*N.
                    The input buffer is modified by this function.
   @par
-                   For the RIFFT, the source buffer must have length N+2 since the Nyquist frequency value
-                   is needed but conjugate part is ignored. 
-                   It is not using the packing trick of the float version.
+                   For the RIFFT, the source buffer must at least have length 
+                   fftLenReal + 2.
+                   The last two elements must be equal to what would be generated
+                   by the RFFT:
+                     (pSrc[0] - pSrc[1]) >> 1 and 0
  */
 
 void arm_rfft_q15(
@@ -159,7 +162,7 @@ void arm_rfft_q15(
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_fft.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_fft.h"
 
 #if defined(__CMSIS_GCC_H)
 #define MVE_CMPLX_MULT_FX_AxB_S16(A,B)          vqdmladhxq_s16(vqdmlsdhq_s16((__typeof(A))vuninitializedq_s16(), A, B), A, B)
@@ -391,7 +394,7 @@ void arm_split_rfft_q15(
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_fft.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_fft.h"
 
 void arm_split_rifft_q15(
         q15_t * pSrc,
@@ -547,3 +550,5 @@ void arm_split_rifft_q15(
 
 }
 #endif /* defined(ARM_MATH_MVEI) */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

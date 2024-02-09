@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_cfft_init_f16.c
@@ -56,7 +58,7 @@
 
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_fft.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_fft.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_mve_tables_f16.h"
 
 arm_status arm_cfft_radix4by2_rearrange_twiddles_f16(arm_cfft_instance_f16 *S, int twidCoefModifier)
@@ -361,3 +363,5 @@ arm_status arm_cfft_init_f16(
 /**
   @} end of ComplexFFT group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

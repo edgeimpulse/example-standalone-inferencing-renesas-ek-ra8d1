@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_absmax_no_idx_q7.c
@@ -45,7 +47,6 @@
   @return        none
  */
 
-
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include <stdint.h>
@@ -61,31 +62,47 @@ void arm_absmax_no_idx_q7(
     int32_t  blkCnt;           /* loop counters */
     q7x16_t        vecSrc;
     q7_t   const *pSrcVec;
-    uint8x16_t     curExtremValVec = vdupq_n_u8(Q7_ABSMIN);
-    uint8_t            maxValue = Q7_ABSMIN;
+    uint8x16_t     curExtremValVec = vdupq_n_s8(Q7_ABSMIN);
+    q7_t            maxValue = Q7_ABSMIN;
+    mve_pred16_t    p0;
 
 
     pSrcVec = (q7_t const *) pSrc;
-    blkCnt = blockSize;
+    blkCnt = blockSize >> 4;
     while (blkCnt > 0)
     {
-        mve_pred16_t    p = vctp8q(blkCnt);
-        vecSrc = vld1q_z_s8(pSrcVec,p); 
+        vecSrc = vld1q(pSrcVec); 
         pSrcVec += 16;
         /*
          * update per-lane max.
          */
-        curExtremValVec = vmaxaq_m(curExtremValVec, vecSrc,p);
+        curExtremValVec = vmaxaq(curExtremValVec, vecSrc);
         /*
          * Decrement the blockSize loop counter
          */
-        blkCnt -= 16;
+        blkCnt--;
+    }
+    /*
+     * tail
+     * (will be merged thru tail predication)
+     */
+    blkCnt = blockSize & 0xF;
+    if (blkCnt > 0)
+    {
+        vecSrc = vld1q(pSrcVec); 
+        pSrcVec += 16;
+        p0 = vctp8q(blkCnt);
+        /*
+         * Get current max per lane and current index per lane
+         * when a max is selected
+         */
+         curExtremValVec = vmaxaq_m(curExtremValVec, vecSrc, p0);
     }
     /*
      * Get max value across the vector
      */
-    maxValue = vmaxvq(maxValue, curExtremValVec);
-    *pResult = __USAT(maxValue,7);
+    maxValue = vmaxavq(maxValue, (q7x16_t)curExtremValVec);
+    *pResult = maxValue;
 }
 #else
 #if defined(ARM_MATH_DSP)
@@ -207,3 +224,5 @@ void arm_absmax_no_idx_q7(
 /**
   @} end of AbsMax group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

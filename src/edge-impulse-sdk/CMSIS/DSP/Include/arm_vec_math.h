@@ -28,7 +28,7 @@
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_math_types.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_common_tables.h"
-#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
+#include "arm_helium_utils.h"
 
 #ifdef   __cplusplus
 extern "C"

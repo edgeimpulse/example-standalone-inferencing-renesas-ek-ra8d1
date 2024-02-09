@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_bitreversal_f16.c
@@ -100,3 +102,5 @@ const uint16_t * pBitRevTab)
    }
 }
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

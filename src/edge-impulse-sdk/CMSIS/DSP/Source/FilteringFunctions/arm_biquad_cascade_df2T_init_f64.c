@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_biquad_cascade_df2T_init_f64.c
@@ -63,24 +65,26 @@
  */
 
 void arm_biquad_cascade_df2T_init_f64(
-    arm_biquad_cascade_df2T_instance_f64 * S,
-    uint8_t numStages,
-    const float64_t * pCoeffs,
-    float64_t * pState)
+        arm_biquad_cascade_df2T_instance_f64 * S,
+        uint8_t numStages,
+        const float64_t * pCoeffs,
+        float64_t * pState)
 {
-    /* Assign filter stages */
-    S->numStages = numStages;
-    
-    /* Assign coefficient pointer */
-    S->pCoeffs = pCoeffs;
-    
-    /* Clear state buffer and size is always 2 * numStages */
-    memset(pState, 0, (2U * (uint32_t) numStages) * sizeof(float64_t));
-    
-    /* Assign state pointer */
-    S->pState = pState;
+  /* Assign filter stages */
+  S->numStages = numStages;
+
+  /* Assign coefficient pointer */
+  S->pCoeffs = pCoeffs;
+
+  /* Clear state buffer and size is always 2 * numStages */
+  memset(pState, 0, (2U * (uint32_t) numStages) * sizeof(float64_t));
+
+  /* Assign state pointer */
+  S->pState = pState;
 }
 
 /**
   @} end of BiquadCascadeDF2T group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

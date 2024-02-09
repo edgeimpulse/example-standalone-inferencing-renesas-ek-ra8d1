@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * SPDX-FileCopyrightText: Copyright 2022-2023 Arm Limited and/or its affiliates <open-source-office@arm.com>
+ * Copyright (C) 2022 Arm Limited or its affiliates.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,10 +23,10 @@
  * Title:        arm_nn_softmax_common_s8.c
  * Description:  Softmax with s8 input and output of s8 or s16.
  *
- * $Date:        5 January 2023
- * $Revision:    V.1.1.0
+ * $Date:        17 March 2022
+ * $Revision:    V.1.0.1
  *
- * Target :  Arm(R) M-Profile Architecture
+ * Target Processor:  Cortex-M processors
  * -------------------------------------------------------------------- */
 
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnsupportfunctions.h"
@@ -36,14 +38,7 @@
  */
 
 /**
- * @defgroup supportSoftmax Softmax
- *
- * Support functions for Softmax
- *
- */
-
-/**
- * @addtogroup supportSoftmax
+ * @addtogroup Softmax
  * @{
  */
 
@@ -89,12 +84,15 @@ void arm_nn_softmax_common_s8(const int8_t *input,
             }
         }
 
-        const int32_t headroom = CLZ(sum);
+        const int32_t headroom = __CLZ(sum);
         const int32_t shifted_scale = ONE_OVER1((sum > 0 ? sum << headroom : 0) - (1 << 31));
         int32_t bits_over_unit;
 
         if (int16_output)
         {
+#if EI_TFLITE_DISABLE_SOFTMAX_IN_I16
+      return;
+#endif
             int16_t *output_s16 = (int16_t *)output + row_idx * row_size;
 
             bits_over_unit = ACCUM_BITS - headroom + 15;
@@ -118,6 +116,9 @@ void arm_nn_softmax_common_s8(const int8_t *input,
         }
         else
         {
+#if EI_TFLITE_DISABLE_SOFTMAX_IN_I8
+      return;
+#endif
             int8_t *output_s8 = (int8_t *)output + row_idx * row_size;
 
             bits_over_unit = ACCUM_BITS - headroom + 23;
@@ -144,5 +145,7 @@ void arm_nn_softmax_common_s8(const int8_t *input,
 }
 
 /**
- * @} end of Doxygen group
+ * @} end of NNBasicMath group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

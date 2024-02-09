@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_quick_sort_f32.c
@@ -26,7 +28,7 @@
  * limitations under the License.
  */
 
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_sorting.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_sorting.h"
 
 static uint32_t arm_quick_sort_partition_f32(float32_t *pSrc, int32_t first, int32_t last, uint8_t dir)
 {
@@ -179,3 +181,5 @@ void arm_quick_sort_f32(
 /**
   @} end of Sorting group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

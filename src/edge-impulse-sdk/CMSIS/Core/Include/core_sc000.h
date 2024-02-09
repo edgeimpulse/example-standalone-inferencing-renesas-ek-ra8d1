@@ -1,11 +1,11 @@
 /**************************************************************************//**
  * @file     core_sc000.h
  * @brief    CMSIS SC000 Core Peripheral Access Layer Header File
- * @version  V5.1.0
- * @date     04. April 2023
+ * @version  V5.0.7
+ * @date     27. March 2020
  ******************************************************************************/
 /*
- * Copyright (c) 2009-2023 Arm Limited. All rights reserved.
+ * Copyright (c) 2009-2020 Arm Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -85,11 +85,6 @@
     #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
   #endif
 
-#elif defined (__ti__)
-  #if defined (__ARM_FP)
-    #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-  #endif
-
 #elif defined ( __GNUC__ )
   #if defined (__VFP_FP__) && !defined(__SOFTFP__)
     #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
@@ -117,7 +112,7 @@
 
 #endif
 
-#include "cmsis_compiler.h"               /* CMSIS compiler specific defines */
+#include "edge-impulse-sdk/CMSIS/Core/Include/cmsis_compiler.h"               /* CMSIS compiler specific defines */
 
 
 #ifdef __cplusplus

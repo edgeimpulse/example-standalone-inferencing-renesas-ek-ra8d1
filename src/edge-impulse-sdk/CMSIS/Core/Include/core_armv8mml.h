@@ -1,11 +1,11 @@
 /**************************************************************************//**
  * @file     core_armv8mml.h
  * @brief    CMSIS Armv8-M Mainline Core Peripheral Access Layer Header File
- * @version  V5.3.0
- * @date     04. April 2023
+ * @version  V5.2.4
+ * @date     30. May 2022
  ******************************************************************************/
 /*
- * Copyright (c) 2009-2023 Arm Limited. All rights reserved.
+ * Copyright (c) 2009-2022 Arm Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -121,29 +121,6 @@
     #define __DSP_USED         0U
   #endif
 
-#elif defined (__ti__)
-  #if defined (__ARM_FP)
-    #if defined (__FPU_PRESENT) && (__FPU_PRESENT == 1U)
-      #define __FPU_USED       1U
-    #else
-      #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-      #define __FPU_USED       0U
-    #endif
-  #else
-    #define __FPU_USED         0U
-  #endif
-
-  #if defined (__ARM_FEATURE_DSP) && (__ARM_FEATURE_DSP == 1U)
-    #if defined (__DSP_PRESENT) && (__DSP_PRESENT == 1U)
-      #define __DSP_USED       1U
-    #else
-      #error "Compiler generates DSP (SIMD) instructions for a devices without DSP extensions (check __DSP_PRESENT)"
-      #define __DSP_USED       0U
-    #endif
-  #else
-    #define __DSP_USED         0U
-  #endif
-
 #elif defined ( __GNUC__ )
   #if defined (__VFP_FP__) && !defined(__SOFTFP__)
     #if defined (__FPU_PRESENT) && (__FPU_PRESENT == 1U)
@@ -228,7 +205,7 @@
 
 #endif
 
-#include "cmsis_compiler.h"               /* CMSIS compiler specific defines */
+#include "edge-impulse-sdk/CMSIS/Core/Include/cmsis_compiler.h"               /* CMSIS compiler specific defines */
 
 
 #ifdef __cplusplus

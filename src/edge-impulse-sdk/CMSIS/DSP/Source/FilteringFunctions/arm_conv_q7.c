@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_conv_q7.c
@@ -58,7 +60,7 @@
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
 
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_filtering.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_filtering.h"
 
 void arm_conv_q7(
   const q7_t * pSrcA,
@@ -858,3 +860,5 @@ void arm_conv_q7(
 /**
   @} end of Conv group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

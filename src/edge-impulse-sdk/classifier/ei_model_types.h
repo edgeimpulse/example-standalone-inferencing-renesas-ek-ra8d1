@@ -22,7 +22,7 @@
 
 #include "edge-impulse-sdk/classifier/ei_classifier_types.h"
 #include "edge-impulse-sdk/dsp/numpy.hpp"
-#if EI_CLASSIFIER_USE_FULL_TFLITE || (EI_CLASSIFIER_INFERENCING_ENGINE == EI_CLASSIFIER_AKIDA)
+#if EI_CLASSIFIER_USE_FULL_TFLITE || (EI_CLASSIFIER_INFERENCING_ENGINE == EI_CLASSIFIER_AKIDA) || (EI_CLASSIFIER_INFERENCING_ENGINE == EI_CLASSIFIER_MEMRYX)
 #include "tensorflow-lite/tensorflow/lite/c/common.h"
 #else
 #include "edge-impulse-sdk/tensorflow/lite/c/common.h"
@@ -61,12 +61,23 @@
 #define EI_CLASSIFIER_LAST_LAYER_YOLOX                 4
 #define EI_CLASSIFIER_LAST_LAYER_YOLOV5_V5_DRPAI       5
 #define EI_CLASSIFIER_LAST_LAYER_YOLOV7                6
+#define EI_CLASSIFIER_LAST_LAYER_TAO_RETINANET         7
+#define EI_CLASSIFIER_LAST_LAYER_TAO_SSD               8
+#define EI_CLASSIFIER_LAST_LAYER_TAO_YOLOV3            9
+#define EI_CLASSIFIER_LAST_LAYER_TAO_YOLOV4            10
 
 #define EI_CLASSIFIER_IMAGE_SCALING_NONE          0
 #define EI_CLASSIFIER_IMAGE_SCALING_0_255         1
 #define EI_CLASSIFIER_IMAGE_SCALING_TORCH         2
+#define EI_CLASSIFIER_IMAGE_SCALING_MIN1_1        3
+#define EI_CLASSIFIER_IMAGE_SCALING_MIN128_127    4
 
 struct ei_impulse;
+
+typedef struct {
+    ei::matrix_t* matrix;
+    uint32_t blockId;
+} ei_feature_t;
 
 typedef struct {
     uint16_t implementation_version;
@@ -78,6 +89,7 @@ typedef struct {
 } ei_model_performance_calibration_t;
 
 typedef struct {
+    uint32_t blockId;
     size_t n_output_features;
     int (*extract_fn)(ei::signal_t *signal, ei::matrix_t *output_matrix, void *config, const float frequency);
     void *config;
@@ -91,9 +103,14 @@ typedef struct {
 } ei_classifier_anom_cluster_t;
 
 typedef struct {
-    EI_IMPULSE_ERROR (*infer_fn)(const ei_impulse *impulse, ei::matrix_t *fmatrix, ei_impulse_result_t *result, void *config, bool debug);
+    uint32_t blockId;
+    bool keep_output;
+    EI_IMPULSE_ERROR (*infer_fn)(const ei_impulse *impulse, ei_feature_t *fmatrix, uint32_t* input_block_ids, uint32_t input_block_ids_size, ei_impulse_result_t *result, void *config, bool debug);
     void *config;
     int image_scaling;
+    const uint32_t* input_block_ids;
+    const uint32_t input_block_ids_size;
+    uint32_t output_features_count;
 } ei_learning_block_t;
 
 typedef struct {
@@ -154,6 +171,8 @@ typedef struct {
     uint16_t implementation_version;
     const uint16_t *anom_axis;
     uint16_t anom_axes_size;
+    float anomaly_threshold;
+    bool visual;
     void* graph_config;
 } ei_learning_block_config_anomaly_gmm_t;
 
@@ -199,7 +218,7 @@ typedef struct ei_impulse {
     uint32_t slices_per_model_window;
 
     /* output details */
-    bool has_anomaly;
+    uint16_t has_anomaly;
     uint16_t label_count;
     const ei_model_performance_calibration_t calibration;
     const char **categories;

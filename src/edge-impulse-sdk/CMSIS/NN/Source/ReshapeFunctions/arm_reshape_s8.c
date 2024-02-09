@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
  * SPDX-FileCopyrightText: Copyright 2010-2022 Arm Limited and/or its affiliates <open-source-office@arm.com>
  *
@@ -21,8 +23,8 @@
  * Title:        arm_reshape_s8.c
  * Description:  Reshape a s8 vector
  *
- * $Date:        26 October 2022
- * $Revision:    V.1.0.2
+ * $Date:        4 Aug 2022
+ * $Revision:    V.1.0.1
  *
  * Target Processor:  Cortex-M cores
  *
@@ -32,7 +34,7 @@
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnsupportfunctions.h"
 
 /**
- *  @ingroup Public
+ *  @ingroup groupNN
  */
 
 /**
@@ -49,9 +51,11 @@
 
 void arm_reshape_s8(const int8_t *input, int8_t *output, const uint32_t total_size)
 {
-    arm_memcpy_s8(output, input, total_size);
+    arm_memcpy_q7(output, input, total_size);
 }
 
 /**
  * @} end of Reshape group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

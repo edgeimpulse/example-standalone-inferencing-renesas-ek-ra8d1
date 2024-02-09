@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_max_no_idx_q7.c
@@ -141,3 +143,5 @@ void arm_max_no_idx_q7(
 /**
   @} end of Max group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

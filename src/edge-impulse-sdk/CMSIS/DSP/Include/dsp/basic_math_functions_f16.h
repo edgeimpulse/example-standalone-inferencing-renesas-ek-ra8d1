@@ -27,16 +27,17 @@
 #ifndef _BASIC_MATH_FUNCTIONS_F16_H_
 #define _BASIC_MATH_FUNCTIONS_F16_H_
 
+#ifdef   __cplusplus
+extern "C"
+{
+#endif
+
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_math_types_f16.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_math_memory.h"
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/dsp/none.h"
 #include "edge-impulse-sdk/CMSIS/DSP/Include/dsp/utils.h"
 
-#ifdef   __cplusplus
-extern "C"
-{
-#endif
 
 #if defined(ARM_FLOAT16_SUPPORTED)
 

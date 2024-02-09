@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * SPDX-FileCopyrightText: Copyright 2022-2023 Arm Limited and/or its affiliates <open-source-office@arm.com>
+ * SPDX-FileCopyrightText: Copyright 2022 Arm Limited and/or its affiliates <open-source-office@arm.com>
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,10 +23,10 @@
  * Title:        arm_avgpool_s16.c
  * Description:  Pooling function implementations
  *
- * $Date:        30 January 2023
- * $Revision:    V.2.4.0
+ * $Date:        27 July 2022
+ * $Revision:    V.2.2.0
  *
- * Target :  Arm(R) M-Profile Architecture
+ * Target Processor:  Cortex-M CPUs
  *
  * -------------------------------------------------------------------- */
 
@@ -33,8 +35,8 @@
 
 #if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
 
-static void scale_q31_to_q15_and_clamp(const int32_t *buffer,
-                                       int16_t *target,
+static void scale_q31_to_q15_and_clamp(const q31_t *buffer,
+                                       q15_t *target,
                                        int32_t length,
                                        const int32_t count,
                                        const int act_min,
@@ -49,13 +51,13 @@ static void scale_q31_to_q15_and_clamp(const int32_t *buffer,
         sum = MAX(sum, act_min);
         sum = MIN(sum, act_max);
 
-        target[i] = (int16_t)sum;
+        target[i] = (q15_t)sum;
     }
 }
 #endif
 
 /**
- *  @ingroup Public
+ *  @ingroup groupNN
 
  */
 
@@ -73,10 +75,10 @@ static void scale_q31_to_q15_and_clamp(const int32_t *buffer,
 arm_cmsis_nn_status arm_avgpool_s16(const cmsis_nn_context *ctx,
                                     const cmsis_nn_pool_params *pool_params,
                                     const cmsis_nn_dims *input_dims,
-                                    const int16_t *src,
+                                    const q15_t *src,
                                     const cmsis_nn_dims *filter_dims,
                                     const cmsis_nn_dims *output_dims,
-                                    int16_t *dst)
+                                    q15_t *dst)
 {
     const int32_t input_y = input_dims->h;
     const int32_t input_x = input_dims->w;
@@ -180,7 +182,7 @@ arm_cmsis_nn_status arm_avgpool_s16(const cmsis_nn_context *ctx,
     }
 #elif defined(ARM_MATH_DSP)
 
-    int32_t *buffer = (int32_t *)ctx->buf;
+    q31_t *buffer = (q31_t *)ctx->buf;
 
     if (buffer == NULL)
     {
@@ -209,7 +211,7 @@ arm_cmsis_nn_status arm_avgpool_s16(const cmsis_nn_context *ctx,
             {
                 for (int k_x = kernel_x_start; k_x < kernel_x_end; k_x++)
                 {
-                    const int16_t *start = src + ch_src * (k_x + idx_x + (k_y + idx_y) * input_x);
+                    const q15_t *start = src + ch_src * (k_x + idx_x + (k_y + idx_y) * input_x);
 
                     if (count == 0)
                     {
@@ -222,7 +224,7 @@ arm_cmsis_nn_status arm_avgpool_s16(const cmsis_nn_context *ctx,
                     {
                         for (int i = 0; i < ch_src; i++)
                         {
-                            buffer[i] = QADD(start[i], buffer[i]);
+                            buffer[i] = __QADD(start[i], buffer[i]);
                         }
                     }
                     count++;
@@ -291,6 +293,19 @@ arm_cmsis_nn_status arm_avgpool_s16(const cmsis_nn_context *ctx,
     return ARM_CMSIS_NN_SUCCESS;
 }
 
+int32_t arm_avgpool_s16_get_buffer_size(const int output_x, const int ch_src)
+{
+    (void)output_x;
+#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
+    return (ch_src * (int32_t)sizeof(int32_t));
+#else
+    (void)ch_src;
+#endif
+    return 0;
+}
+
 /**
  * @} end of Pooling group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

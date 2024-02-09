@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_absmax_no_idx_q31.c
@@ -56,31 +58,47 @@ void arm_absmax_no_idx_q31(
     int32_t  blkCnt;           /* loop counters */
     q31x4_t       vecSrc;
     q31_t   const *pSrcVec;
-    uint32x4_t    curExtremValVec = vdupq_n_u32(Q31_ABSMIN);
-    uint32_t           maxValue = Q31_ABSMIN;
+    uint32x4_t    curExtremValVec = vdupq_n_s32(Q31_ABSMIN);
+    q31_t           maxValue = Q31_ABSMIN;
+    mve_pred16_t    p0;
 
 
     pSrcVec = (q31_t const *) pSrc;
-    blkCnt = blockSize ;
+    blkCnt = blockSize >> 2;
     while (blkCnt > 0)
     {
-        mve_pred16_t    p = vctp32q(blkCnt);
-        vecSrc = vldrwq_z_s32(pSrcVec,p);  
+        vecSrc = vldrwq_s32(pSrcVec);  
         pSrcVec += 4;
         /*
          * update per-lane max.
          */
-        curExtremValVec = vmaxaq_m(curExtremValVec, vecSrc,p);
+        curExtremValVec = vmaxaq(curExtremValVec, vecSrc);
         /*
          * Decrement the blockSize loop counter
          */
-        blkCnt -= 4;
+        blkCnt--;
+    }
+    /*
+     * tail
+     * (will be merged thru tail predication)
+     */
+    blkCnt = blockSize & 3;
+    if (blkCnt > 0)
+    {
+        vecSrc = vldrwq_s32(pSrcVec);  
+        pSrcVec += 4;
+        p0 = vctp32q(blkCnt);
+        /*
+         * Get current max per lane and current index per lane
+         * when a max is selected
+         */
+         curExtremValVec = vmaxaq_m(curExtremValVec, vecSrc, p0);
     }
     /*
      * Get max value across the vector
      */
-    maxValue = vmaxvq(maxValue, curExtremValVec);
-    *pResult = clip_q63_to_q31((q63_t)maxValue);
+    maxValue = vmaxavq(maxValue, (q31x4_t)curExtremValVec);
+    *pResult = maxValue;
 }
 #else
 #if defined(ARM_MATH_DSP)
@@ -202,3 +220,5 @@ void arm_absmax_no_idx_q31(
 /**
   @} end of AbsMax group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

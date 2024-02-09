@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * SPDX-FileCopyrightText: Copyright 2010-2023 Arm Limited and/or its affiliates <open-source-office@arm.com>
+ * SPDX-FileCopyrightText: Copyright 2010-2022 Arm Limited and/or its affiliates <open-source-office@arm.com>
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,10 +23,10 @@
  * Title:        arm_relu_q7.c
  * Description:  Q7 version of ReLU
  *
- * $Date:        31 January 2023
- * $Revision:    V.1.2.1
+ * $Date:        4 Aug 2022
+ * $Revision:    V.1.1.4
  *
- * Target :  Arm(R) M-Profile Architecture
+ * Target Processor:  Cortex-M cores
  *
  * -------------------------------------------------------------------- */
 
@@ -32,7 +34,7 @@
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnsupportfunctions.h"
 
 /**
- *  @ingroup Public
+ *  @ingroup groupNN
  */
 
 /**
@@ -47,30 +49,30 @@
  *
  */
 
-void arm_relu_q7(int8_t *data, uint16_t size)
+void arm_relu_q7(q7_t *data, uint16_t size)
 {
 
 #if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
     /* Run the following code for M cores with DSP extension */
 
     uint16_t i = size >> 2;
-    int8_t *input = data;
-    int8_t *output = data;
-    int32_t in;
-    int32_t buf;
-    int32_t mask;
+    q7_t *input = data;
+    q7_t *output = data;
+    q31_t in;
+    q31_t buf;
+    q31_t mask;
 
     while (i)
     {
-        in = arm_nn_read_s8x4_ia((const int8_t **)&input);
+        in = arm_nn_read_q7x4_ia((const q7_t **)&input);
 
         /* extract the first bit */
-        buf = (int32_t)ROR((uint32_t)in & 0x80808080, 7);
+        buf = (int32_t)__ROR((uint32_t)in & 0x80808080, 7);
 
         /* if MSB=1, mask will be 0xFF, 0x0 otherwise */
-        mask = QSUB8(0x00000000, buf);
+        mask = __QSUB8(0x00000000, buf);
 
-        arm_nn_write_s8x4_ia(&output, in & (~mask));
+        arm_nn_write_q7x4_ia(&output, in & (~mask));
 
         i--;
     }
@@ -103,3 +105,5 @@ void arm_relu_q7(int8_t *data, uint16_t size)
 /**
  * @} end of Acti group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

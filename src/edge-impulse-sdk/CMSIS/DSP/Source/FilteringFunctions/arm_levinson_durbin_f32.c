@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_levinson_durbin_f32.c
@@ -277,3 +279,5 @@ void arm_levinson_durbin_f32(const float32_t *phi,
 /**
   @} end of LD group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_linear_interp_q15.c
@@ -54,7 +56,7 @@
     q15_t x1, x2, y1, y2;                        /* Nearest output values */
     q31_t xfract, yfract;                        /* X, Y fractional parts */
     int32_t rI, cI;                              /* Row and column indices */
-    const q15_t *pYData = S->pData;                    /* pointer to output table values */
+    q15_t *pYData = S->pData;                    /* pointer to output table values */
     uint32_t nCols = S->numCols;                 /* num of rows */
 
     /* Input is in 12.20 format */
@@ -119,3 +121,5 @@
    * @} end of BilinearInterpolate group
    */
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

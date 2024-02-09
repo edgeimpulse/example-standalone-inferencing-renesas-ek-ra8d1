@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * SPDX-FileCopyrightText: Copyright 2022 Arm Limited and/or its affiliates <open-source-office@arm.com>
+ * Copyright (C) 2022 Arm Limited or its affiliates.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,8 +23,8 @@
  * Title:        arm_elementwise_add_s16
  * Description:  Elementwise add
  *
- * $Date:        24 Oct 2022
- * $Revision:    V.2.2.0
+ * $Date:        10 May 2022
+ * $Revision:    V.2.1.0
  *
  * Target Processor:  Cortex-M CPUs
  *
@@ -32,11 +34,11 @@
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnsupportfunctions.h"
 
 /**
- *  @ingroup Public
+ *  @ingroup groupNN
  */
 
 /**
- * @addtogroup groupElementwise
+ * @addtogroup BasicMath
  * @{
  */
 
@@ -69,47 +71,13 @@ arm_cmsis_nn_status arm_elementwise_add_s16(const int16_t *input_1_vect,
     (void)input_1_offset;
     (void)input_2_offset;
     (void)out_offset;
-
-#if defined(ARM_MATH_MVEI)
-
-    int32_t count = block_size;
-
-    while (count > 0)
-    {
-
-        mve_pred16_t pred = vctp32q(count);
-
-        int32x4_t vect_1 = vldrhq_z_s32(input_1_vect, pred);
-        int32x4_t vect_2 = vldrhq_z_s32(input_2_vect, pred);
-
-        vect_1 = vshlq_r_s32(vect_1, left_shift);
-        vect_2 = vshlq_r_s32(vect_2, left_shift);
-
-        vect_1 = arm_requantize_mve(vect_1, input_1_mult, input_1_shift);
-        vect_2 = arm_requantize_mve(vect_2, input_2_mult, input_2_shift);
-
-        vect_1 = vaddq_s32(vect_1, vect_2);
-        vect_1 = arm_requantize_mve(vect_1, out_mult, out_shift);
-
-        vect_1 = vmaxq_s32(vect_1, vdupq_n_s32(out_activation_min));
-        vect_1 = vminq_s32(vect_1, vdupq_n_s32(out_activation_max));
-
-        input_1_vect += 4;
-        input_2_vect += 4;
-
-        vstrhq_p_s32(output, vect_1, pred);
-
-        output += 4;
-        count -= 4;
-    }
-
-#else  // #if defined(ARM_MATH_MVEI)
     int32_t input_1;
     int32_t input_2;
     int32_t sum;
     int32_t two_halfword_1, two_halfword_2;
     int16_t sum_1, sum_2;
     int32_t loop_count = block_size / 2;
+
     while (loop_count > 0)
     {
         two_halfword_1 = arm_nn_read_q15x2_ia(&input_1_vect);
@@ -161,10 +129,12 @@ arm_cmsis_nn_status arm_elementwise_add_s16(const int16_t *input_1_vect,
         /* Decrement loop counter */
         loop_count--;
     }
-#endif // #if defined(ARM_MATH_MVEI)
+
     return (ARM_CMSIS_NN_SUCCESS);
 }
 
 /**
- * @} end of Doxygen group
+ * @} end of BasicMath group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES

@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_absmax_q15.c
@@ -75,7 +77,7 @@ void arm_absmax_q15(
          * Get current max per lane and current index per lane
          * when a max is selected
          */
-        p0 = vcmpgtq_m(extremIdxVal, extremValVec, p);
+        p0 = vcmpgeq_m(extremIdxVal, extremValVec, p);
 
         extremValVec = vorrq_m(extremValVec, extremIdxVal, extremIdxVal, p0);
         /* store per-lane extrema indexes */
@@ -234,3 +236,5 @@ void arm_absmax_q15(
 /**
   @} end of AbsMax group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

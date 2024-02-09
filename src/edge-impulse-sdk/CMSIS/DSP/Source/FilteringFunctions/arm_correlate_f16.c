@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_correlate_f16.c
@@ -53,7 +55,7 @@
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "edge-impulse-sdk/CMSIS/DSP/Include/arm_helium_utils.h"
-#include "edge-impulse-sdk/CMSIS/DSP/PrivateInclude/arm_vec_filtering.h"
+#include "edge-impulse-sdk/CMSIS/DSP/Include/arm_vec_filtering.h"
 
 #define MVE_INTR_CORR_DUAL_DEC_Y_INC_SIZE_F16(acc0, acc1, pX, pY, count)                            \
 {                                                                                                   \
@@ -418,7 +420,7 @@ void arm_correlate_f16(
         pA++;
     }
 
-    for (i = block3 - 1; i > 0; i -= 2)
+    for (i = block3 - 1; i >= 0; i -= 2)
     {
 
         uint32_t  count = (i + 1);
@@ -1113,3 +1115,5 @@ void arm_correlate_f16(
  */
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

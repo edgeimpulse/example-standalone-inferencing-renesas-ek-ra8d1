@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mfcc_f16.c
@@ -159,3 +161,5 @@ void arm_mfcc_f16(
 /**
   @} end of MFCC group
  */
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

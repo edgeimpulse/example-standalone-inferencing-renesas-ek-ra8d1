@@ -1,3 +1,5 @@
+#include "edge-impulse-sdk/dsp/config.hpp"
+#if EIDSP_LOAD_CMSIS_DSP_SOURCES
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mve_tables.c
@@ -38,26 +40,26 @@
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_F32_16) || defined(ARM_TABLE_TWIDDLECOEF_F32_32)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_16_f32[2]={
+uint32_t rearranged_twiddle_tab_stride1_arr_16_f32[2]={
 0,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_16_f32[2]={
+uint32_t rearranged_twiddle_tab_stride2_arr_16_f32[2]={
 0,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_16_f32[2]={
+uint32_t rearranged_twiddle_tab_stride3_arr_16_f32[2]={
 0,0,};
 
-const float32_t rearranged_twiddle_stride1_16_f32[8]={
+float32_t rearranged_twiddle_stride1_16_f32[8]={
 1.00000000000000000000f,0.00000000000000000000f,0.92387950420379638672f,
 0.38268342614173889160f,0.70710676908493041992f,0.70710676908493041992f,
 0.38268342614173889160f,0.92387950420379638672f,};
 
-const float32_t rearranged_twiddle_stride2_16_f32[8]={
+float32_t rearranged_twiddle_stride2_16_f32[8]={
 1.00000000000000000000f,0.00000000000000000000f,0.70710676908493041992f,
 0.70710676908493041992f,0.00000000000000006123f,1.00000000000000000000f,
 -0.70710676908493041992f,0.70710676908493041992f,};
 
-const float32_t rearranged_twiddle_stride3_16_f32[8]={
+float32_t rearranged_twiddle_stride3_16_f32[8]={
 1.00000000000000000000f,0.00000000000000000000f,0.38268342614173889160f,
 0.92387950420379638672f,-0.70710676908493041992f,0.70710676908493041992f,
 -0.92387950420379638672f,-0.38268342614173889160f,};
@@ -66,16 +68,16 @@ const float32_t rearranged_twiddle_stride3_16_f32[8]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_F32_64) || defined(ARM_TABLE_TWIDDLECOEF_F32_128)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_64_f32[3]={
+uint32_t rearranged_twiddle_tab_stride1_arr_64_f32[3]={
 0,32,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_64_f32[3]={
+uint32_t rearranged_twiddle_tab_stride2_arr_64_f32[3]={
 0,32,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_64_f32[3]={
+uint32_t rearranged_twiddle_tab_stride3_arr_64_f32[3]={
 0,32,0,};
 
-const float32_t rearranged_twiddle_stride1_64_f32[40]={
+float32_t rearranged_twiddle_stride1_64_f32[40]={
 1.00000000000000000000f,0.00000000000000000000f,0.99518471956253051758f,
 0.09801714122295379639f,0.98078525066375732422f,0.19509032368659973145f,
 0.95694035291671752930f,0.29028466343879699707f,0.92387950420379638672f,
@@ -91,7 +93,7 @@ const float32_t rearranged_twiddle_stride1_64_f32[40]={
 0.70710676908493041992f,0.70710676908493041992f,0.38268342614173889160f,
 0.92387950420379638672f,};
 
-const float32_t rearranged_twiddle_stride2_64_f32[40]={
+float32_t rearranged_twiddle_stride2_64_f32[40]={
 1.00000000000000000000f,0.00000000000000000000f,0.98078525066375732422f,
 0.19509032368659973145f,0.92387950420379638672f,0.38268342614173889160f,
 0.83146959543228149414f,0.55557024478912353516f,0.70710676908493041992f,
@@ -107,7 +109,7 @@ const float32_t rearranged_twiddle_stride2_64_f32[40]={
 0.00000000000000006123f,1.00000000000000000000f,-0.70710676908493041992f,
 0.70710676908493041992f,};
 
-const float32_t rearranged_twiddle_stride3_64_f32[40]={
+float32_t rearranged_twiddle_stride3_64_f32[40]={
 1.00000000000000000000f,0.00000000000000000000f,0.95694035291671752930f,
 0.29028466343879699707f,0.83146959543228149414f,0.55557024478912353516f,
 0.63439327478408813477f,0.77301043272018432617f,0.38268342614173889160f,
@@ -127,16 +129,16 @@ const float32_t rearranged_twiddle_stride3_64_f32[40]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_F32_256) || defined(ARM_TABLE_TWIDDLECOEF_F32_512)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_256_f32[4]={
+uint32_t rearranged_twiddle_tab_stride1_arr_256_f32[4]={
 0,128,160,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_256_f32[4]={
+uint32_t rearranged_twiddle_tab_stride2_arr_256_f32[4]={
 0,128,160,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_256_f32[4]={
+uint32_t rearranged_twiddle_tab_stride3_arr_256_f32[4]={
 0,128,160,0,};
 
-const float32_t rearranged_twiddle_stride1_256_f32[168]={
+float32_t rearranged_twiddle_stride1_256_f32[168]={
 1.00000000000000000000f,0.00000000000000000000f,0.99969881772994995117f,
 0.02454122900962829590f,0.99879544973373413086f,0.04906767606735229492f,
 0.99729043245315551758f,0.07356456667184829712f,0.99518471956253051758f,
@@ -194,7 +196,7 @@ const float32_t rearranged_twiddle_stride1_256_f32[168]={
 0.92387950420379638672f,0.38268342614173889160f,0.70710676908493041992f,
 0.70710676908493041992f,0.38268342614173889160f,0.92387950420379638672f,};
 
-const float32_t rearranged_twiddle_stride2_256_f32[168]={
+float32_t rearranged_twiddle_stride2_256_f32[168]={
 1.00000000000000000000f,0.00000000000000000000f,0.99879544973373413086f,
 0.04906767606735229492f,0.99518471956253051758f,0.09801714122295379639f,
 0.98917651176452636719f,0.14673046767711639404f,0.98078525066375732422f,
@@ -252,7 +254,7 @@ const float32_t rearranged_twiddle_stride2_256_f32[168]={
 0.70710676908493041992f,0.70710676908493041992f,0.00000000000000006123f,
 1.00000000000000000000f,-0.70710676908493041992f,0.70710676908493041992f,};
 
-const float32_t rearranged_twiddle_stride3_256_f32[168]={
+float32_t rearranged_twiddle_stride3_256_f32[168]={
 1.00000000000000000000f,0.00000000000000000000f,0.99729043245315551758f,
 0.07356456667184829712f,0.98917651176452636719f,0.14673046767711639404f,
 0.97570210695266723633f,0.21910123527050018311f,0.95694035291671752930f,
@@ -314,16 +316,16 @@ const float32_t rearranged_twiddle_stride3_256_f32[168]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_F32_1024) || defined(ARM_TABLE_TWIDDLECOEF_F32_2048)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_1024_f32[5]={
+uint32_t rearranged_twiddle_tab_stride1_arr_1024_f32[5]={
 0,512,640,672,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_1024_f32[5]={
+uint32_t rearranged_twiddle_tab_stride2_arr_1024_f32[5]={
 0,512,640,672,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_1024_f32[5]={
+uint32_t rearranged_twiddle_tab_stride3_arr_1024_f32[5]={
 0,512,640,672,0,};
 
-const float32_t rearranged_twiddle_stride1_1024_f32[680]={
+float32_t rearranged_twiddle_stride1_1024_f32[680]={
 1.00000000000000000000f,0.00000000000000000000f,0.99998116493225097656f,
 0.00613588467240333557f,0.99992471933364868164f,0.01227153837680816650f,
 0.99983060359954833984f,0.01840673014521598816f,0.99969881772994995117f,
@@ -552,7 +554,7 @@ const float32_t rearranged_twiddle_stride1_1024_f32[680]={
 0.38268342614173889160f,0.70710676908493041992f,0.70710676908493041992f,
 0.38268342614173889160f,0.92387950420379638672f,};
 
-const float32_t rearranged_twiddle_stride2_1024_f32[680]={
+float32_t rearranged_twiddle_stride2_1024_f32[680]={
 1.00000000000000000000f,0.00000000000000000000f,0.99992471933364868164f,
 0.01227153837680816650f,0.99969881772994995117f,0.02454122900962829590f,
 0.99932235479354858398f,0.03680722415447235107f,0.99879544973373413086f,
@@ -781,7 +783,7 @@ const float32_t rearranged_twiddle_stride2_1024_f32[680]={
 0.70710676908493041992f,0.00000000000000006123f,1.00000000000000000000f,
 -0.70710676908493041992f,0.70710676908493041992f,};
 
-const float32_t rearranged_twiddle_stride3_1024_f32[680]={
+float32_t rearranged_twiddle_stride3_1024_f32[680]={
 1.00000000000000000000f,0.00000000000000000000f,0.99983060359954833984f,
 0.01840673014521598816f,0.99932235479354858398f,0.03680722415447235107f,
 0.99847555160522460938f,0.05519524589180946350f,0.99729043245315551758f,
@@ -1014,16 +1016,16 @@ const float32_t rearranged_twiddle_stride3_1024_f32[680]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_F32_4096) || defined(ARM_TABLE_TWIDDLECOEF_F32_8192)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_4096_f32[6]={
+uint32_t rearranged_twiddle_tab_stride1_arr_4096_f32[6]={
 0,2048,2560,2688,2720,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_4096_f32[6]={
+uint32_t rearranged_twiddle_tab_stride2_arr_4096_f32[6]={
 0,2048,2560,2688,2720,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_4096_f32[6]={
+uint32_t rearranged_twiddle_tab_stride3_arr_4096_f32[6]={
 0,2048,2560,2688,2720,0,};
 
-const float32_t rearranged_twiddle_stride1_4096_f32[2728]={
+float32_t rearranged_twiddle_stride1_4096_f32[2728]={
 1.00000000000000000000f,0.00000000000000000000f,0.99999880790710449219f,
 0.00153398013208061457f,0.99999529123306274414f,0.00306795677170157433f,
 0.99998939037322998047f,0.00460192607715725899f,0.99998116493225097656f,
@@ -1935,7 +1937,7 @@ const float32_t rearranged_twiddle_stride1_4096_f32[2728]={
 0.70710676908493041992f,0.70710676908493041992f,0.38268342614173889160f,
 0.92387950420379638672f,};
 
-const float32_t rearranged_twiddle_stride2_4096_f32[2728]={
+float32_t rearranged_twiddle_stride2_4096_f32[2728]={
 1.00000000000000000000f,0.00000000000000000000f,0.99999529123306274414f,
 0.00306795677170157433f,0.99998116493225097656f,0.00613588467240333557f,
 0.99995762109756469727f,0.00920375436544418335f,0.99992471933364868164f,
@@ -3774,24 +3776,24 @@ float32_t rearranged_twiddle_stride3_4096_f32[2728]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q31_16) || defined(ARM_TABLE_TWIDDLECOEF_Q31_32)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_16_q31[2]={
+uint32_t rearranged_twiddle_tab_stride1_arr_16_q31[2]={
 0,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_16_q31[2]={
+uint32_t rearranged_twiddle_tab_stride2_arr_16_q31[2]={
 0,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_16_q31[2]={
+uint32_t rearranged_twiddle_tab_stride3_arr_16_q31[2]={
 0,0,};
 
-const q31_t rearranged_twiddle_stride1_16_q31[8]={
+q31_t rearranged_twiddle_stride1_16_q31[8]={
 0x7FFFFFFF,0x00000000,0x7641AF3D,0xCF043AB3,0x5A82799A,0xA57D8666,0x30FBC54D,
 0x89BE50C3,};
 
-const q31_t rearranged_twiddle_stride2_16_q31[8]={
+q31_t rearranged_twiddle_stride2_16_q31[8]={
 0x7FFFFFFF,0x00000000,0x5A82799A,0xA57D8666,0x00000000,0x80000000,0xA57D8666,
 0xA57D8666,};
 
-const q31_t rearranged_twiddle_stride3_16_q31[8]={
+q31_t rearranged_twiddle_stride3_16_q31[8]={
 0x7FFFFFFF,0x00000000,0x30FBC54D,0x89BE50C3,0xA57D8666,0xA57D8666,0x89BE50C3,
 0x30FBC54D,};
 
@@ -3799,16 +3801,16 @@ const q31_t rearranged_twiddle_stride3_16_q31[8]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q31_64) || defined(ARM_TABLE_TWIDDLECOEF_Q31_128)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_64_q31[3]={
+uint32_t rearranged_twiddle_tab_stride1_arr_64_q31[3]={
 0,32,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_64_q31[3]={
+uint32_t rearranged_twiddle_tab_stride2_arr_64_q31[3]={
 0,32,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_64_q31[3]={
+uint32_t rearranged_twiddle_tab_stride3_arr_64_q31[3]={
 0,32,0,};
 
-const q31_t rearranged_twiddle_stride1_64_q31[40]={
+q31_t rearranged_twiddle_stride1_64_q31[40]={
 0x7FFFFFFF,0x00000000,0x7F62368F,0xF3742CA2,0x7D8A5F40,0xE70747C4,0x7A7D055B,
 0xDAD7F3A2,0x7641AF3D,0xCF043AB3,0x70E2CBC6,0xC3A94590,0x6A6D98A4,0xB8E31319,
 0x62F201AC,0xAECC336C,0x5A82799A,0xA57D8666,0x5133CC94,0x9D0DFE54,0x471CECE7,
@@ -3816,7 +3818,7 @@ const q31_t rearranged_twiddle_stride1_64_q31[40]={
 0x18F8B83C,0x8275A0C0,0x0C8BD35E,0x809DC971,0x7FFFFFFF,0x00000000,0x7641AF3D,
 0xCF043AB3,0x5A82799A,0xA57D8666,0x30FBC54D,0x89BE50C3,};
 
-const q31_t rearranged_twiddle_stride2_64_q31[40]={
+q31_t rearranged_twiddle_stride2_64_q31[40]={
 0x7FFFFFFF,0x00000000,0x7D8A5F40,0xE70747C4,0x7641AF3D,0xCF043AB3,0x6A6D98A4,
 0xB8E31319,0x5A82799A,0xA57D8666,0x471CECE7,0x9592675C,0x30FBC54D,0x89BE50C3,
 0x18F8B83C,0x8275A0C0,0x00000000,0x80000000,0xE70747C4,0x8275A0C0,0xCF043AB3,
@@ -3824,7 +3826,7 @@ const q31_t rearranged_twiddle_stride2_64_q31[40]={
 0x89BE50C3,0xCF043AB3,0x8275A0C0,0xE70747C4,0x7FFFFFFF,0x00000000,0x5A82799A,
 0xA57D8666,0x00000000,0x80000000,0xA57D8666,0xA57D8666,};
 
-const q31_t rearranged_twiddle_stride3_64_q31[40]={
+q31_t rearranged_twiddle_stride3_64_q31[40]={
 0x7FFFFFFF,0x00000000,0x7A7D055B,0xDAD7F3A2,0x6A6D98A4,0xB8E31319,0x5133CC94,
 0x9D0DFE54,0x30FBC54D,0x89BE50C3,0x0C8BD35E,0x809DC971,0xE70747C4,0x8275A0C0,
 0xC3A94590,0x8F1D343A,0xA57D8666,0xA57D8666,0x8F1D343A,0xC3A94590,0x8275A0C0,
@@ -3836,16 +3838,16 @@ const q31_t rearranged_twiddle_stride3_64_q31[40]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q31_256) || defined(ARM_TABLE_TWIDDLECOEF_Q31_512)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_256_q31[4]={
+uint32_t rearranged_twiddle_tab_stride1_arr_256_q31[4]={
 0,128,160,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_256_q31[4]={
+uint32_t rearranged_twiddle_tab_stride2_arr_256_q31[4]={
 0,128,160,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_256_q31[4]={
+uint32_t rearranged_twiddle_tab_stride3_arr_256_q31[4]={
 0,128,160,0,};
 
-const q31_t rearranged_twiddle_stride1_256_q31[168]={
+q31_t rearranged_twiddle_stride1_256_q31[168]={
 0x7FFFFFFF,0x00000000,0x7FF62182,0xFCDBD541,0x7FD8878E,0xF9B82684,0x7FA736B4,
 0xF6956FB7,0x7F62368F,0xF3742CA2,0x7F0991C4,0xF054D8D5,0x7E9D55FC,0xED37EF91,
 0x7E1D93EA,0xEA1DEBBB,0x7D8A5F40,0xE70747C4,0x7CE3CEB2,0xE3F47D96,0x7C29FBEE,
@@ -3871,7 +3873,7 @@ const q31_t rearranged_twiddle_stride1_256_q31[168]={
 0x25280C5E,0x8582FAA5,0x18F8B83C,0x8275A0C0,0x0C8BD35E,0x809DC971,0x7FFFFFFF,
 0x00000000,0x7641AF3D,0xCF043AB3,0x5A82799A,0xA57D8666,0x30FBC54D,0x89BE50C3,};
 
-const q31_t rearranged_twiddle_stride2_256_q31[168]={
+q31_t rearranged_twiddle_stride2_256_q31[168]={
 0x7FFFFFFF,0x00000000,0x7FD8878E,0xF9B82684,0x7F62368F,0xF3742CA2,0x7E9D55FC,
 0xED37EF91,0x7D8A5F40,0xE70747C4,0x7C29FBEE,0xE0E60685,0x7A7D055B,0xDAD7F3A2,
 0x78848414,0xD4E0CB15,0x7641AF3D,0xCF043AB3,0x73B5EBD1,0xC945DFEC,0x70E2CBC6,
@@ -3897,7 +3899,7 @@ const q31_t rearranged_twiddle_stride2_256_q31[168]={
 0x9592675C,0xB8E31319,0x89BE50C3,0xCF043AB3,0x8275A0C0,0xE70747C4,0x7FFFFFFF,
 0x00000000,0x5A82799A,0xA57D8666,0x00000000,0x80000000,0xA57D8666,0xA57D8666,};
 
-const q31_t rearranged_twiddle_stride3_256_q31[168]={
+q31_t rearranged_twiddle_stride3_256_q31[168]={
 0x7FFFFFFF,0x00000000,0x7FA736B4,0xF6956FB7,0x7E9D55FC,0xED37EF91,0x7CE3CEB2,
 0xE3F47D96,0x7A7D055B,0xDAD7F3A2,0x776C4EDB,0xD1EEF59E,0x73B5EBD1,0xC945DFEC,
 0x6F5F02B2,0xC0E8B648,0x6A6D98A4,0xB8E31319,0x64E88926,0xB140175B,0x5ED77C8A,
@@ -3927,16 +3929,16 @@ const q31_t rearranged_twiddle_stride3_256_q31[168]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q31_1024) || defined(ARM_TABLE_TWIDDLECOEF_Q31_2048)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_1024_q31[5]={
+uint32_t rearranged_twiddle_tab_stride1_arr_1024_q31[5]={
 0,512,640,672,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_1024_q31[5]={
+uint32_t rearranged_twiddle_tab_stride2_arr_1024_q31[5]={
 0,512,640,672,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_1024_q31[5]={
+uint32_t rearranged_twiddle_tab_stride3_arr_1024_q31[5]={
 0,512,640,672,0,};
 
-const q31_t rearranged_twiddle_stride1_1024_q31[680]={
+q31_t rearranged_twiddle_stride1_1024_q31[680]={
 0x7FFFFFFF,0x00000000,0x7FFF6216,0xFF36F078,0x7FFD885A,0xFE6DE2E0,0x7FFA72D1,
 0xFDA4D929,0x7FF62182,0xFCDBD541,0x7FF09478,0xFC12D91A,0x7FE9CBC0,0xFB49E6A3,
 0x7FE1C76B,0xFA80FFCB,0x7FD8878E,0xF9B82684,0x7FCE0C3E,0xF8EF5CBB,0x7FC25596,
@@ -4036,7 +4038,7 @@ const q31_t rearranged_twiddle_stride1_1024_q31[680]={
 0x7FFFFFFF,0x00000000,0x7641AF3D,0xCF043AB3,0x5A82799A,0xA57D8666,0x30FBC54D,
 0x89BE50C3,};
 
-const q31_t rearranged_twiddle_stride2_1024_q31[680]={
+q31_t rearranged_twiddle_stride2_1024_q31[680]={
 0x7FFFFFFF,0x00000000,0x7FFD885A,0xFE6DE2E0,0x7FF62182,0xFCDBD541,0x7FE9CBC0,
 0xFB49E6A3,0x7FD8878E,0xF9B82684,0x7FC25596,0xF826A462,0x7FA736B4,0xF6956FB7,
 0x7F872BF3,0xF50497FB,0x7F62368F,0xF3742CA2,0x7F3857F6,0xF1E43D1C,0x7F0991C4,
@@ -4136,7 +4138,7 @@ const q31_t rearranged_twiddle_stride2_1024_q31[680]={
 0x7FFFFFFF,0x00000000,0x5A82799A,0xA57D8666,0x00000000,0x80000000,0xA57D8666,
 0xA57D8666,};
 
-const q31_t rearranged_twiddle_stride3_1024_q31[680]={
+q31_t rearranged_twiddle_stride3_1024_q31[680]={
 0x7FFFFFFF,0x00000000,0x7FFA72D1,0xFDA4D929,0x7FE9CBC0,0xFB49E6A3,0x7FCE0C3E,
 0xF8EF5CBB,0x7FA736B4,0xF6956FB7,0x7F754E80,0xF43C53CB,0x7F3857F6,0xF1E43D1C,
 0x7EF05860,0xEF8D5FB8,0x7E9D55FC,0xED37EF91,0x7E3F57FF,0xEAE4207A,0x7DD6668F,
@@ -4240,16 +4242,16 @@ const q31_t rearranged_twiddle_stride3_1024_q31[680]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q31_4096) || defined(ARM_TABLE_TWIDDLECOEF_Q31_8192)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_4096_q31[6]={
+uint32_t rearranged_twiddle_tab_stride1_arr_4096_q31[6]={
 0,2048,2560,2688,2720,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_4096_q31[6]={
+uint32_t rearranged_twiddle_tab_stride2_arr_4096_q31[6]={
 0,2048,2560,2688,2720,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_4096_q31[6]={
+uint32_t rearranged_twiddle_tab_stride3_arr_4096_q31[6]={
 0,2048,2560,2688,2720,0,};
 
-const q31_t rearranged_twiddle_stride1_4096_q31[2728]={
+q31_t rearranged_twiddle_stride1_4096_q31[2728]={
 0x7FFFFFFF,0x00000000,0x7FFFF621,0xFFCDBC0B,0x7FFFD886,0xFF9B781D,0x7FFFA72C,
 0xFF69343F,0x7FFF6216,0xFF36F078,0x7FFF0943,0xFF04ACD0,0x7FFE9CB2,0xFED2694F,
 0x7FFE1C65,0xFEA025FD,0x7FFD885A,0xFE6DE2E0,0x7FFCE093,0xFE3BA002,0x7FFC250F,
@@ -4641,7 +4643,7 @@ const q31_t rearranged_twiddle_stride1_4096_q31[2728]={
 0x18F8B83C,0x8275A0C0,0x0C8BD35E,0x809DC971,0x7FFFFFFF,0x00000000,0x7641AF3D,
 0xCF043AB3,0x5A82799A,0xA57D8666,0x30FBC54D,0x89BE50C3,};
 
-const q31_t rearranged_twiddle_stride2_4096_q31[2728]={
+q31_t rearranged_twiddle_stride2_4096_q31[2728]={
 0x7FFFFFFF,0x00000000,0x7FFFD886,0xFF9B781D,0x7FFF6216,0xFF36F078,0x7FFE9CB2,
 0xFED2694F,0x7FFD885A,0xFE6DE2E0,0x7FFC250F,0xFE095D69,0x7FFA72D1,0xFDA4D929,
 0x7FF871A2,0xFD40565C,0x7FF62182,0xFCDBD541,0x7FF38274,0xFC775616,0x7FF09478,
@@ -5033,7 +5035,7 @@ const q31_t rearranged_twiddle_stride2_4096_q31[2728]={
 0x89BE50C3,0xCF043AB3,0x8275A0C0,0xE70747C4,0x7FFFFFFF,0x00000000,0x5A82799A,
 0xA57D8666,0x00000000,0x80000000,0xA57D8666,0xA57D8666,};
 
-const q31_t rearranged_twiddle_stride3_4096_q31[2728]={
+q31_t rearranged_twiddle_stride3_4096_q31[2728]={
 0x7FFFFFFF,0x00000000,0x7FFFA72C,0xFF69343F,0x7FFE9CB2,0xFED2694F,0x7FFCE093,
 0xFE3BA002,0x7FFA72D1,0xFDA4D929,0x7FF75370,0xFD0E1594,0x7FF38274,0xFC775616,
 0x7FEEFFE1,0xFBE09B80,0x7FE9CBC0,0xFB49E6A3,0x7FE3E616,0xFAB3384F,0x7FDD4EEC,
@@ -5440,50 +5442,50 @@ const q31_t rearranged_twiddle_stride3_4096_q31[2728]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q15_16) || defined(ARM_TABLE_TWIDDLECOEF_Q15_32)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_16_q15[2]={
+uint32_t rearranged_twiddle_tab_stride1_arr_16_q15[2]={
 0,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_16_q15[2]={
+uint32_t rearranged_twiddle_tab_stride2_arr_16_q15[2]={
 0,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_16_q15[2]={
+uint32_t rearranged_twiddle_tab_stride3_arr_16_q15[2]={
 0,0,};
 
-const q15_t rearranged_twiddle_stride1_16_q15[8]={
+q15_t rearranged_twiddle_stride1_16_q15[8]={
 0x7FFF,0x0000,0x7642,0xCF04,0x5A82,0xA57E,0x30FC,0x89BE,};
 
-const q15_t rearranged_twiddle_stride2_16_q15[8]={
+q15_t rearranged_twiddle_stride2_16_q15[8]={
 0x7FFF,0x0000,0x5A82,0xA57E,0x0000,0x8000,0xA57E,0xA57E,};
 
-const q15_t rearranged_twiddle_stride3_16_q15[8]={
+q15_t rearranged_twiddle_stride3_16_q15[8]={
 0x7FFF,0x0000,0x30FC,0x89BE,0xA57E,0xA57E,0x89BE,0x30FC,};
 
 #endif
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q15_64) || defined(ARM_TABLE_TWIDDLECOEF_Q15_128)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_64_q15[3]={
+uint32_t rearranged_twiddle_tab_stride1_arr_64_q15[3]={
 0,32,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_64_q15[3]={
+uint32_t rearranged_twiddle_tab_stride2_arr_64_q15[3]={
 0,32,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_64_q15[3]={
+uint32_t rearranged_twiddle_tab_stride3_arr_64_q15[3]={
 0,32,0,};
 
-const q15_t rearranged_twiddle_stride1_64_q15[40]={
+q15_t rearranged_twiddle_stride1_64_q15[40]={
 0x7FFF,0x0000,0x7F62,0xF374,0x7D8A,0xE707,0x7A7D,0xDAD8,0x7642,0xCF04,0x70E3,
 0xC3A9,0x6A6E,0xB8E3,0x62F2,0xAECC,0x5A82,0xA57E,0x5134,0x9D0E,0x471D,0x9592,
 0x3C57,0x8F1D,0x30FC,0x89BE,0x2528,0x8583,0x18F9,0x8276,0x0C8C,0x809E,0x7FFF,
 0x0000,0x7642,0xCF04,0x5A82,0xA57E,0x30FC,0x89BE,};
 
-const q15_t rearranged_twiddle_stride2_64_q15[40]={
+q15_t rearranged_twiddle_stride2_64_q15[40]={
 0x7FFF,0x0000,0x7D8A,0xE707,0x7642,0xCF04,0x6A6E,0xB8E3,0x5A82,0xA57E,0x471D,
 0x9592,0x30FC,0x89BE,0x18F9,0x8276,0x0000,0x8000,0xE707,0x8276,0xCF04,0x89BE,
 0xB8E3,0x9592,0xA57E,0xA57E,0x9592,0xB8E3,0x89BE,0xCF04,0x8276,0xE707,0x7FFF,
 0x0000,0x5A82,0xA57E,0x0000,0x8000,0xA57E,0xA57E,};
 
-const q15_t rearranged_twiddle_stride3_64_q15[40]={
+q15_t rearranged_twiddle_stride3_64_q15[40]={
 0x7FFF,0x0000,0x7A7D,0xDAD8,0x6A6E,0xB8E3,0x5134,0x9D0E,0x30FC,0x89BE,0x0C8C,
 0x809E,0xE707,0x8276,0xC3A9,0x8F1D,0xA57E,0xA57E,0x8F1D,0xC3A9,0x8276,0xE707,
 0x809E,0x0C8C,0x89BE,0x30FC,0x9D0E,0x5134,0xB8E3,0x6A6E,0xDAD8,0x7A7D,0x7FFF,
@@ -5493,16 +5495,16 @@ const q15_t rearranged_twiddle_stride3_64_q15[40]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q15_256) || defined(ARM_TABLE_TWIDDLECOEF_Q15_512)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_256_q15[4]={
+uint32_t rearranged_twiddle_tab_stride1_arr_256_q15[4]={
 0,128,160,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_256_q15[4]={
+uint32_t rearranged_twiddle_tab_stride2_arr_256_q15[4]={
 0,128,160,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_256_q15[4]={
+uint32_t rearranged_twiddle_tab_stride3_arr_256_q15[4]={
 0,128,160,0,};
 
-const q15_t rearranged_twiddle_stride1_256_q15[168]={
+q15_t rearranged_twiddle_stride1_256_q15[168]={
 0x7FFF,0x0000,0x7FF6,0xFCDC,0x7FD9,0xF9B8,0x7FA7,0xF695,0x7F62,0xF374,0x7F0A,
 0xF055,0x7E9D,0xED38,0x7E1E,0xEA1E,0x7D8A,0xE707,0x7CE4,0xE3F4,0x7C2A,0xE0E6,
 0x7B5D,0xDDDC,0x7A7D,0xDAD8,0x798A,0xD7D9,0x7885,0xD4E1,0x776C,0xD1EF,0x7642,
@@ -5520,7 +5522,7 @@ const q15_t rearranged_twiddle_stride1_256_q15[168]={
 0x2528,0x8583,0x18F9,0x8276,0x0C8C,0x809E,0x7FFF,0x0000,0x7642,0xCF04,0x5A82,
 0xA57E,0x30FC,0x89BE,};
 
-const q15_t rearranged_twiddle_stride2_256_q15[168]={
+q15_t rearranged_twiddle_stride2_256_q15[168]={
 0x7FFF,0x0000,0x7FD9,0xF9B8,0x7F62,0xF374,0x7E9D,0xED38,0x7D8A,0xE707,0x7C2A,
 0xE0E6,0x7A7D,0xDAD8,0x7885,0xD4E1,0x7642,0xCF04,0x73B6,0xC946,0x70E3,0xC3A9,
 0x6DCA,0xBE32,0x6A6E,0xB8E3,0x66D0,0xB3C0,0x62F2,0xAECC,0x5ED7,0xAA0A,0x5A82,
@@ -5538,7 +5540,7 @@ const q15_t rearranged_twiddle_stride2_256_q15[168]={
 0x9592,0xB8E3,0x89BE,0xCF04,0x8276,0xE707,0x7FFF,0x0000,0x5A82,0xA57E,0x0000,
 0x8000,0xA57E,0xA57E,};
 
-const q15_t rearranged_twiddle_stride3_256_q15[168]={
+q15_t rearranged_twiddle_stride3_256_q15[168]={
 0x7FFF,0x0000,0x7FA7,0xF695,0x7E9D,0xED38,0x7CE4,0xE3F4,0x7A7D,0xDAD8,0x776C,
 0xD1EF,0x73B6,0xC946,0x6F5F,0xC0E9,0x6A6E,0xB8E3,0x64E9,0xB140,0x5ED7,0xAA0A,
 0x5843,0xA34C,0x5134,0x9D0E,0x49B4,0x9759,0x41CE,0x9236,0x398D,0x8DAB,0x30FC,
@@ -5560,16 +5562,16 @@ const q15_t rearranged_twiddle_stride3_256_q15[168]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q15_1024) || defined(ARM_TABLE_TWIDDLECOEF_Q15_2048)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_1024_q15[5]={
+uint32_t rearranged_twiddle_tab_stride1_arr_1024_q15[5]={
 0,512,640,672,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_1024_q15[5]={
+uint32_t rearranged_twiddle_tab_stride2_arr_1024_q15[5]={
 0,512,640,672,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_1024_q15[5]={
+uint32_t rearranged_twiddle_tab_stride3_arr_1024_q15[5]={
 0,512,640,672,0,};
 
-const q15_t rearranged_twiddle_stride1_1024_q15[680]={
+q15_t rearranged_twiddle_stride1_1024_q15[680]={
 0x7FFF,0x0000,0x7FFF,0xFF37,0x7FFE,0xFE6E,0x7FFA,0xFDA5,0x7FF6,0xFCDC,0x7FF1,
 0xFC13,0x7FEA,0xFB4A,0x7FE2,0xFA81,0x7FD9,0xF9B8,0x7FCE,0xF8EF,0x7FC2,0xF827,
 0x7FB5,0xF75E,0x7FA7,0xF695,0x7F98,0xF5CD,0x7F87,0xF505,0x7F75,0xF43C,0x7F62,
@@ -5633,7 +5635,7 @@ const q15_t rearranged_twiddle_stride1_1024_q15[680]={
 0x471D,0x9592,0x3C57,0x8F1D,0x30FC,0x89BE,0x2528,0x8583,0x18F9,0x8276,0x0C8C,
 0x809E,0x7FFF,0x0000,0x7642,0xCF04,0x5A82,0xA57E,0x30FC,0x89BE,};
 
-const q15_t rearranged_twiddle_stride2_1024_q15[680]={
+q15_t rearranged_twiddle_stride2_1024_q15[680]={
 0x7FFF,0x0000,0x7FFE,0xFE6E,0x7FF6,0xFCDC,0x7FEA,0xFB4A,0x7FD9,0xF9B8,0x7FC2,
 0xF827,0x7FA7,0xF695,0x7F87,0xF505,0x7F62,0xF374,0x7F38,0xF1E4,0x7F0A,0xF055,
 0x7ED6,0xEEC6,0x7E9D,0xED38,0x7E60,0xEBAB,0x7E1E,0xEA1E,0x7DD6,0xE892,0x7D8A,
@@ -5697,7 +5699,7 @@ const q15_t rearranged_twiddle_stride2_1024_q15[680]={
 0xCF04,0x89BE,0xB8E3,0x9592,0xA57E,0xA57E,0x9592,0xB8E3,0x89BE,0xCF04,0x8276,
 0xE707,0x7FFF,0x0000,0x5A82,0xA57E,0x0000,0x8000,0xA57E,0xA57E,};
 
-const q15_t rearranged_twiddle_stride3_1024_q15[680]={
+q15_t rearranged_twiddle_stride3_1024_q15[680]={
 0x7FFF,0x0000,0x7FFA,0xFDA5,0x7FEA,0xFB4A,0x7FCE,0xF8EF,0x7FA7,0xF695,0x7F75,
 0xF43C,0x7F38,0xF1E4,0x7EF0,0xEF8D,0x7E9D,0xED38,0x7E3F,0xEAE4,0x7DD6,0xE892,
 0x7D63,0xE642,0x7CE4,0xE3F4,0x7C5A,0xE1A9,0x7BC6,0xDF61,0x7B27,0xDD1B,0x7A7D,
@@ -5765,16 +5767,16 @@ const q15_t rearranged_twiddle_stride3_1024_q15[680]={
 
 #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_TWIDDLECOEF_Q15_4096) || defined(ARM_TABLE_TWIDDLECOEF_Q15_8192)
 
-const uint32_t rearranged_twiddle_tab_stride1_arr_4096_q15[6]={
+uint32_t rearranged_twiddle_tab_stride1_arr_4096_q15[6]={
 0,2048,2560,2688,2720,0,};
 
-const uint32_t rearranged_twiddle_tab_stride2_arr_4096_q15[6]={
+uint32_t rearranged_twiddle_tab_stride2_arr_4096_q15[6]={
 0,2048,2560,2688,2720,0,};
 
-const uint32_t rearranged_twiddle_tab_stride3_arr_4096_q15[6]={
+uint32_t rearranged_twiddle_tab_stride3_arr_4096_q15[6]={
 0,2048,2560,2688,2720,0,};
 
-const q15_t rearranged_twiddle_stride1_4096_q15[2728]={
+q15_t rearranged_twiddle_stride1_4096_q15[2728]={
 0x7FFF,0x0000,0x7FFF,0xFFCE,0x7FFF,0xFF9B,0x7FFF,0xFF69,0x7FFF,0xFF37,0x7FFF,
 0xFF05,0x7FFF,0xFED2,0x7FFE,0xFEA0,0x7FFE,0xFE6E,0x7FFD,0xFE3C,0x7FFC,0xFE09,
 0x7FFB,0xFDD7,0x7FFA,0xFDA5,0x7FF9,0xFD73,0x7FF8,0xFD40,0x7FF7,0xFD0E,0x7FF6,
@@ -6024,7 +6026,7 @@ const q15_t rearranged_twiddle_stride1_4096_q15[2728]={
 0x5134,0x9D0E,0x471D,0x9592,0x3C57,0x8F1D,0x30FC,0x89BE,0x2528,0x8583,0x18F9,
 0x8276,0x0C8C,0x809E,0x7FFF,0x0000,0x7642,0xCF04,0x5A82,0xA57E,0x30FC,0x89BE,};
 
-const q15_t rearranged_twiddle_stride2_4096_q15[2728]={
+q15_t rearranged_twiddle_stride2_4096_q15[2728]={
 0x7FFF,0x0000,0x7FFF,0xFF9B,0x7FFF,0xFF37,0x7FFF,0xFED2,0x7FFE,0xFE6E,0x7FFC,
 0xFE09,0x7FFA,0xFDA5,0x7FF8,0xFD40,0x7FF6,0xFCDC,0x7FF4,0xFC77,0x7FF1,0xFC13,
 0x7FED,0xFBAE,0x7FEA,0xFB4A,0x7FE6,0xFAE5,0x7FE2,0xFA81,0x7FDD,0xFA1D,0x7FD9,
@@ -6274,7 +6276,7 @@ const q15_t rearranged_twiddle_stride2_4096_q15[2728]={
 0xE707,0x8276,0xCF04,0x89BE,0xB8E3,0x9592,0xA57E,0xA57E,0x9592,0xB8E3,0x89BE,
 0xCF04,0x8276,0xE707,0x7FFF,0x0000,0x5A82,0xA57E,0x0000,0x8000,0xA57E,0xA57E,};
 
-const q15_t rearranged_twiddle_stride3_4096_q15[2728]={
+q15_t rearranged_twiddle_stride3_4096_q15[2728]={
 0x7FFF,0x0000,0x7FFF,0xFF69,0x7FFF,0xFED2,0x7FFD,0xFE3C,0x7FFA,0xFDA5,0x7FF7,
 0xFD0E,0x7FF4,0xFC77,0x7FEF,0xFBE1,0x7FEA,0xFB4A,0x7FE4,0xFAB3,0x7FDD,0xFA1D,
 0x7FD6,0xF986,0x7FCE,0xF8EF,0x7FC5,0xF859,0x7FBC,0xF7C2,0x7FB2,0xF72C,0x7FA7,
@@ -6531,3 +6533,5 @@ const q15_t rearranged_twiddle_stride3_4096_q15[2728]={
 #endif /* !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_FFT_ALLOW_TABLES) */
 #endif /* defined(ARM_MATH_MVEI)  */
 
+
+#endif // EIDSP_LOAD_CMSIS_DSP_SOURCES

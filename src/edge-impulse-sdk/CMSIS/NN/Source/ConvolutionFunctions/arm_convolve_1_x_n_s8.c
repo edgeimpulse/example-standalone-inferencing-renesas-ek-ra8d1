@@ -1,5 +1,7 @@
+#include "edge-impulse-sdk/classifier/ei_classifier_config.h"
+#if EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
 /*
- * SPDX-FileCopyrightText: Copyright 2010-2023 Arm Limited and/or its affiliates <open-source-office@arm.com>
+ * SPDX-FileCopyrightText: Copyright 2010-2022 Arm Limited and/or its affiliates <open-source-office@arm.com>
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -21,10 +23,10 @@
  * Title:        arm_convolve_1_x_n_s8.c
  * Description:  s8 version of 1xN convolution using symmetric quantization.
  *
- * $Date:        30 January 2023
- * $Revision:    V.3.3.0
+ * $Date:        20 June 2022
+ * $Revision:    V.3.1.0
  *
- * Target :  Arm(R) M-Profile Architecture
+ * Target Processor:  Cortex-M cores
  *
  * -------------------------------------------------------------------- */
 
@@ -32,7 +34,7 @@
 #include "edge-impulse-sdk/CMSIS/NN/Include/arm_nnsupportfunctions.h"
 
 /**
- *  @ingroup Public
+ *  @ingroup groupNN
  */
 
 /**
@@ -51,13 +53,13 @@ arm_cmsis_nn_status arm_convolve_1_x_n_s8(const cmsis_nn_context *ctx,
                                           const cmsis_nn_conv_params *conv_params,
                                           const cmsis_nn_per_channel_quant_params *quant_params,
                                           const cmsis_nn_dims *input_dims,
-                                          const int8_t *input_data,
+                                          const q7_t *input_data,
                                           const cmsis_nn_dims *filter_dims,
-                                          const int8_t *filter_data,
+                                          const q7_t *filter_data,
                                           const cmsis_nn_dims *bias_dims,
                                           const int32_t *bias_data,
                                           const cmsis_nn_dims *output_dims,
-                                          int8_t *output_data)
+                                          q7_t *output_data)
 {
     (void)bias_dims;
     arm_cmsis_nn_status status = ARM_CMSIS_NN_SUCCESS;
@@ -101,15 +103,15 @@ arm_cmsis_nn_status arm_convolve_1_x_n_s8(const cmsis_nn_context *ctx,
                 for (int i = 0; i < 4; i++)
                 {
                     const int32_t actual_kernel_len = ker_end_idx[i] - ker_begin_idx[i];
-                    status = arm_nn_mat_mul_core_1x_s8(actual_kernel_len * input_ch,
-                                                       (kernel_x - actual_kernel_len) * input_ch,
-                                                       input_data + input_begin_idx[i] * input_ch,
-                                                       filter_data + (ker_begin_idx[i] * input_ch),
-                                                       output_ch,
-                                                       conv_params,
-                                                       quant_params,
-                                                       bias_data,
-                                                       output_data);
+                    arm_nn_mat_mul_core_1x_s8(actual_kernel_len * input_ch,
+                                              (kernel_x - actual_kernel_len) * input_ch,
+                                              input_data + input_begin_idx[i] * input_ch,
+                                              filter_data + (ker_begin_idx[i] * input_ch),
+                                              output_ch,
+                                              conv_params,
+                                              quant_params,
+                                              bias_data,
+                                              output_data);
                     output_data += output_ch;
                 }
             }
@@ -125,13 +127,7 @@ arm_cmsis_nn_status arm_convolve_1_x_n_s8(const cmsis_nn_context *ctx,
                                                         bias_data,
                                                         output_data);
             }
-
-            if (status != ARM_CMSIS_NN_SUCCESS || output_data == NULL)
-            {
-                return ARM_CMSIS_NN_NO_IMPL_ERROR;
-            }
         }
-
         /* Advance to the next batch */
         input_data += (input_x * input_ch);
     }
@@ -155,6 +151,19 @@ out:
     return status;
 }
 
+int32_t arm_convolve_1_x_n_s8_get_buffer_size(const cmsis_nn_dims *input_dims, const cmsis_nn_dims *filter_dims)
+{
+#if !defined(ARM_MATH_MVEI)
+    return arm_convolve_s8_get_buffer_size(input_dims, filter_dims);
+#else
+    (void)input_dims;
+    (void)filter_dims;
+    return 0;
+#endif
+}
+
 /**
  * @} end of NNConv group
  */
+
+#endif // EI_CLASSIFIER_TFLITE_LOAD_CMSIS_NN_SOURCES
