@@ -10,3 +10,4 @@ src/model-parameters
 *.log
 *.launch
 *.jlink
+*.settings

@@ -47,7 +47,7 @@ void ei_timer_init(void)
         }
     }
 
-    (void) R_GPT_InfoGet(&g_timer_us, &info);
+    (void) R_GPT_InfoGet(&g_timer_us_ctrl, &info);
 
     div_ratio = (info.clock_frequency / MICROSECONDS_TO_SECONDS);
 }

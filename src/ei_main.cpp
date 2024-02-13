@@ -77,13 +77,10 @@ int ei_main()
         // invoke the impulse
         EI_IMPULSE_ERROR res = run_classifier(&features_signal, &result, false);
 
-
-        ei_printf("run_classifier returned: %d\n", res);
-
         if (res != 0) return 1;
 
-        ei_printf("Predictions (DSP: %d ms., Classification: %d ms., Anomaly: %d ms.): \n",
-            result.timing.dsp, result.timing.classification, result.timing.anomaly);
+        ei_printf("Predictions (DSP: %ld us., Classification: %ld us., Anomaly: %ld us.): \n",
+                    (int32_t)result.timing.dsp_us, (int32_t)result.timing.classification_us, (int32_t)result.timing.anomaly_us);
 
         // print the predictions
         ei_printf("[");
@@ -98,7 +95,7 @@ int ei_main()
 
             ei_printf("    %s (", bb.label);
             ei_printf_float(bb.value);
-            ei_printf(") [ x: %u, y: %u, width: %u, height: %u ]\n", bb.x, bb.y, bb.width, bb.height);
+            ei_printf(") [ x: %lu, y: %lu, width: %lu, height: %lu ]\n", bb.x, bb.y, bb.width, bb.height);
         }
 
         if (!bb_found) {

@@ -48,6 +48,9 @@ void R_BSP_WarmStart(bsp_warm_start_event_t event)
         /* Configure pins. */
         R_IOPORT_Open (&g_ioport_ctrl, g_ioport.p_cfg);
 
+        /* Initialize SDRAM */
+        bsp_sdram_init();
+
         __DSB ();
         __ISB ();
 
